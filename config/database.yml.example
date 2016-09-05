@@ -1,0 +1,21 @@
+default: &default
+  adapter: postgresql
+  username: username
+  password: password
+  host: localhost
+  encoding: utf8
+  reconnect: true
+  pool: 5
+  timeout: 5000
+
+development:
+  <<: *default
+  database: retail_analytics_dev
+
+test:
+  <<: *default
+  database: retail_analytics_test
+
+production:
+  <<: *default
+  database: retail_analytics_prod
