@@ -5,8 +5,8 @@ source 'https://rubygems.org'
 gem 'rails', '~> 5.0.0'
 # Database
 gem 'pg'
-gem 'postgres_ext'
-gem 'foreigner'
+# gem 'postgres_ext'
+# gem 'foreigner'
 gem 'composite_primary_keys'
 
 # Users
@@ -39,6 +39,10 @@ gem 'jbuilder', '~> 2.5'
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
+
+# Use HAML for .html.haml assets and views
+gem 'hamlit'
+gem 'hamlit-rails'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
