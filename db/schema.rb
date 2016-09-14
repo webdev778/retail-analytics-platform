@@ -10,10 +10,31 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160906073851) do
+ActiveRecord::Schema.define(version: 20160913073043) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "inventories", force: :cascade do |t|
+    t.string   "msku"
+    t.decimal  "price",          precision: 10, scale: 2
+    t.date     "date_purchased"
+    t.datetime "created_at",                              null: false
+    t.datetime "updated_at",                              null: false
+  end
+
+  create_table "inventory_data_uploads", force: :cascade do |t|
+    t.string   "file_for_import_file_name"
+    t.string   "file_for_import_content_type"
+    t.integer  "file_for_import_file_size"
+    t.datetime "file_for_import_updated_at"
+    t.string   "description"
+    t.datetime "finished_at"
+    t.integer  "user_id"
+    t.datetime "created_at",                   null: false
+    t.datetime "updated_at",                   null: false
+    t.index ["user_id"], name: "index_inventory_data_uploads_on_user_id", using: :btree
+  end
 
   create_table "users", force: :cascade do |t|
     t.string   "email",                  default: "", null: false
@@ -26,6 +47,10 @@ ActiveRecord::Schema.define(version: 20160906073851) do
     t.datetime "last_sign_in_at"
     t.inet     "current_sign_in_ip"
     t.inet     "last_sign_in_ip"
+    t.string   "confirmation_token"
+    t.datetime "confirmed_at"
+    t.datetime "confirmation_sent_at"
+    t.string   "unconfirmed_email"
     t.datetime "created_at",                          null: false
     t.datetime "updated_at",                          null: false
     t.index ["email"], name: "index_users_on_email", unique: true, using: :btree

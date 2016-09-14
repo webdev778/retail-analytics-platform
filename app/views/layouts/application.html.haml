@@ -7,4 +7,22 @@
     = stylesheet_link_tag  'application', media: 'all', 'data-turbolinks-track': 'reload'
     = javascript_include_tag 'application', 'data-turbolinks-track': 'reload'
   %body
+    - if notice.present?
+      .alert.alert-info.alert-dismissible
+        %button.close{ data: { dismiss: 'alert' } } ×
+        = notice
+    - if alert.present?
+      .alert.alert-danger
+        %button.close{ data: { dismiss: 'alert' } } ×
+        = alert
+
+    - if user_signed_in?
+      %li
+        = link_to 'Upload Inventory Data', new_inventories_data_upload_path
+      %li
+        = link_to 'Logout', destroy_user_session_path, method: :delete
+    - else
+      %li
+        = link_to 'Login', new_user_session_path
+
     = yield

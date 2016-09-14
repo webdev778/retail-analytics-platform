@@ -22,3 +22,7 @@
 /config/database.yml
 /.idea/
 /coverage/
+
+# Ignore application configuration
+/config/application.yml
+/public/system/*

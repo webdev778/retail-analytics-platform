@@ -1,0 +1,4 @@
+= simple_form_for @inventory_data_upload, url: inventories_data_uploads_path do |f|
+  = render 'shared/error_messages', object: @inventory_data_upload
+  = f.input :file_for_import, as: :file, label: false
+  = f.submit

@@ -10,10 +10,17 @@ gem 'pg'
 gem 'composite_primary_keys'
 
 # Users
-gem 'devise'
+gem 'devise', '~> 4.0.3'
 gem 'cancancan'
 
+gem 'bootstrap-sass', '~> 3.2.0'
+gem 'autoprefixer-rails'
+
 gem 'simple_form'
+
+gem 'carrierwave'
+
+gem 'paperclip'
 
 # Use Puma as the app server
 gem 'puma', '~> 3.0'
@@ -44,10 +51,18 @@ gem 'jbuilder', '~> 2.5'
 gem 'hamlit'
 gem 'hamlit-rails'
 
+gem 'figaro'
+
+gem 'peddler'
+
+gem 'roo'
+
+gem 'sidekiq'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platform: :mri
-  gem 'rspec-rails', '~> 3.5'
+  gem 'rspec-rails'
   gem 'database_cleaner'
   gem 'capybara'
   gem 'capybara-webkit'
@@ -56,6 +71,9 @@ group :development, :test do
   gem 'factory_girl_rails'
   gem 'faker'
   gem 'rubocop', require: false
+  gem 'bullet', group: :development
+  gem 'better_errors', group: :development
+  gem 'binding_of_caller', group: :development
 end
 
 group :test do
