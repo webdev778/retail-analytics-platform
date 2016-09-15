@@ -30,6 +30,8 @@ ActiveRecord::Schema.define(version: 20160913073043) do
     t.datetime "file_for_import_updated_at"
     t.string   "description"
     t.datetime "finished_at"
+    t.integer  "imported_new"
+    t.integer  "already_exist"
     t.integer  "user_id"
     t.datetime "created_at",                   null: false
     t.datetime "updated_at",                   null: false

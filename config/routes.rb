@@ -10,4 +10,5 @@ Rails.application.routes.draw do
   resources :inventories_data_uploads
   resources :dashboard, only: :index
   resources :inventories, only: [:index, :new]
+
 end

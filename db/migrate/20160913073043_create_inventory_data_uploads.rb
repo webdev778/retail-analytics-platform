@@ -4,6 +4,8 @@ class CreateInventoryDataUploads < ActiveRecord::Migration[5.0]
       t.attachment :file_for_import
       t.string :description
       t.datetime :finished_at
+      t.integer :imported_new
+      t.integer :already_exist
       t.belongs_to :user, index: true
 
       t.timestamps

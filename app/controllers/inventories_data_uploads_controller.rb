@@ -12,6 +12,7 @@ class InventoriesDataUploadsController < ApplicationController
     @inventory_data_upload = InventoryDataUpload.new(inventory_data_upload_params)
 
     if @inventory_data_upload.save
+      flash[:notice] = 'File will be proceed in few minutes. After that you get notification.'
       redirect_to inventories_data_uploads_path
     else
       render :new
