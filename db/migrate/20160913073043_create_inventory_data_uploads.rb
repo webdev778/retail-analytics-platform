@@ -3,6 +3,7 @@ class CreateInventoryDataUploads < ActiveRecord::Migration[5.0]
     create_table :inventory_data_uploads do |t|
       t.attachment :file_for_import
       t.string :description
+      t.string :status
       t.datetime :finished_at
       t.integer :imported_new
       t.integer :already_exist

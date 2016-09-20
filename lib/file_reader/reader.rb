@@ -3,15 +3,15 @@ module FileReader
     include ApplicationHelper
     class << self
       def prepare_msku(msku)
-        msku.delete(' ')
+        msku.delete(' ').to_s
       end
 
       def prepare_price(price)
-        price.sub('$', '').delete(' ')
+        price.sub('$', '').delete(' ').to_s
       end
 
       def prepare_date_purchased(date)
-        date = date.delete("\n")
+        date = date.delete("\n").to_s
         Date.strptime(date.delete(' '), '%m/%d/%Y')
       end
     end
@@ -37,14 +37,18 @@ module FileReader
       end
 
       reader.iterate do |data|
-        inventory = Inventory.find_or_initialize_by(msku: data[:msku],
-                                                    price: data[:price],
-                                                    date_purchased: data[:date_purchased])
-        if inventory.new_record?
-          inventory.save!
-          count_of_new_records += 1
-        else
-          count_of_existing_records += 1
+        begin
+          inventory = Inventory.find_or_initialize_by(msku: data[:msku],
+                                                      price: data[:price],
+                                                      date_purchased: data[:date_purchased])
+          if inventory.new_record?
+            inventory.save!
+            count_of_new_records += 1
+          else
+            count_of_existing_records += 1
+          end
+        rescue
+          next
         end
       end
       @file_record.update_attributes(finished_at: Time.zone.now,

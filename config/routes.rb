@@ -1,3 +1,5 @@
+require 'sidekiq/web'
+
 Rails.application.routes.draw do
   root 'dashboard#index'
 
@@ -9,6 +11,9 @@ Rails.application.routes.draw do
 
   resources :inventories_data_uploads
   resources :dashboard, only: :index
-  resources :inventories, only: [:index, :new]
+  resources :inventories, only: %i(index new)
 
+  authenticate :user do
+    mount Sidekiq::Web => '/sidekiq'
+  end
 end

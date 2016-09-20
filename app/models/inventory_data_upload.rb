@@ -10,13 +10,17 @@ class InventoryDataUpload < ApplicationRecord
 
   belongs_to :user
 
-  cattr_accessor :skip_callbacks
+  attr_accessor :skip_callbacks
 
-  after_save :start_import, unless: :skip_callbacks
+  after_commit :start_import, on: :create, unless: :skip_callbacks
+
+  default_scope { order(:created_at) }
+
+  scope :successfully_finished, -> { where.not(finished_at: nil) }
 
   private
 
   def start_import
-    ImportFileDataJob.new.perform(self)
+    ImportFileDataJob.perform_later(self)
   end
 end

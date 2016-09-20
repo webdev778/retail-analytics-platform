@@ -6,6 +6,7 @@ abort("The Rails environment is running in production mode!") if Rails.env.produ
 require 'spec_helper'
 require 'rspec/rails'
 require 'capybara/rails'
+require 'support/controller_helpers'
 # Add additional requires below this line. Rails is not loaded until this point!
 
 # Requires supporting ruby files with custom matchers and macros, etc, in
@@ -44,7 +45,12 @@ RSpec.configure do |config|
   # instead of true.
   config.use_transactional_fixtures = true
 
-  config.include Devise::TestHelpers, type: :controller
+  config.include Devise::Test::ControllerHelpers, type: :controller
+  config.include ControllerHelpers, type: :controller
+
+  config.include FactoryGirl::Syntax::Methods
+
+  config.include Warden::Test::Helpers
 
   Capybara.javascript_driver = :webkit
   Capybara.default_max_wait_time = 30
@@ -52,6 +58,17 @@ RSpec.configure do |config|
   Capybara::Webkit.configure do |config|
     config.skip_image_loading
     config.block_unknown_urls
+  end
+
+  RSpec::Sidekiq.configure do |config|
+    # Clears all job queues before each example
+    config.clear_all_enqueued_jobs = true # default => true
+
+    # Whether to use terminal colours when outputting messages
+    config.enable_terminal_colours = true # default => true
+
+    # Warn when jobs are not enqueued to Redis but to a job array
+    config.warn_when_jobs_not_processed_by_sidekiq = true # default => true
   end
 
   # RSpec Rails can automatically mix in different behaviours to your tests

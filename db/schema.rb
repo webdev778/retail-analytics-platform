@@ -29,6 +29,7 @@ ActiveRecord::Schema.define(version: 20160913073043) do
     t.integer  "file_for_import_file_size"
     t.datetime "file_for_import_updated_at"
     t.string   "description"
+    t.string   "status"
     t.datetime "finished_at"
     t.integer  "imported_new"
     t.integer  "already_exist"

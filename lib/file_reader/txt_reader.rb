@@ -9,8 +9,9 @@ module FileReader
       # ["MSKU\tPrice\tDate Purchased"]
       if @file.headers == [:msku_price_date_purchased]
         @file.each do |line|
-          split_string = []
-          line.to_s.split("\t").each { |row| split_string << row }
+          # split_string = []
+          split_string = line.to_s.split("\t").each_with_object([]) { |row, array| array << row }
+          # line.to_s.split("\t").each { |row| split_string << row }
           next unless split_string.count == 3
           msku = Reader.prepare_msku(split_string[0])
           price = Reader.prepare_price(split_string[1])

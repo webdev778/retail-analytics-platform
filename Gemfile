@@ -10,7 +10,7 @@ gem 'pg'
 gem 'composite_primary_keys'
 
 # Users
-gem 'devise', '~> 4.0.3'
+gem 'devise', '~> 4.2.0'
 gem 'cancancan'
 
 gem 'bootstrap-sass', '~> 3.2.0'
@@ -78,6 +78,7 @@ end
 
 group :test do
   gem 'shoulda-matchers', require: false
+  gem 'rspec-sidekiq'
   gem 'timecop'
   gem 'simplecov', require: false
 end
