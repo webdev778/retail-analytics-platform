@@ -10,10 +10,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160913073043) do
+ActiveRecord::Schema.define(version: 20160921083413) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "accounts", force: :cascade do |t|
+    t.integer  "user_id"
+    t.string   "seller_id"
+    t.string   "mws_auth_token"
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
+    t.index ["user_id"], name: "index_accounts_on_user_id", using: :btree
+  end
 
   create_table "inventories", force: :cascade do |t|
     t.string   "msku"
@@ -37,6 +46,19 @@ ActiveRecord::Schema.define(version: 20160913073043) do
     t.datetime "created_at",                   null: false
     t.datetime "updated_at",                   null: false
     t.index ["user_id"], name: "index_inventory_data_uploads_on_user_id", using: :btree
+  end
+
+  create_table "marketplaces", force: :cascade do |t|
+    t.integer  "user_id"
+    t.integer  "account_id"
+    t.string   "external_marketplace_id"
+    t.string   "aws_access_key_id"
+    t.string   "secret_key"
+    t.string   "status"
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
+    t.index ["account_id"], name: "index_marketplaces_on_account_id", using: :btree
+    t.index ["user_id"], name: "index_marketplaces_on_user_id", using: :btree
   end
 
   create_table "users", force: :cascade do |t|

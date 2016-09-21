@@ -18,8 +18,6 @@ gem 'autoprefixer-rails'
 
 gem 'simple_form'
 
-gem 'carrierwave'
-
 gem 'paperclip'
 
 # Use Puma as the app server
