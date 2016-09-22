@@ -21,8 +21,5 @@ module MWS
       #return {"Status"=>"GREEN", "Timestamp"=>"2016-09-21T12:50:49.979Z"}
     end
 
-
-
-
   end
 end
