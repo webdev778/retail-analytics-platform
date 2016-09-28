@@ -3,8 +3,7 @@ class Account < ApplicationRecord
   has_one :marketplace
 
   validates_presence_of :user,
-                        :seller_id,
-                        :mws_auth_token
+                        :seller_id
 
   validates_uniqueness_of :seller_id
 end
