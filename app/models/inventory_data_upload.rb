@@ -6,15 +6,13 @@ class InventoryDataUpload < ApplicationRecord
                                     message: 'Allowed only .txt, .csv, .xls, .xlsx files extentions'
   validates_attachment_presence :file_for_import
 
-  # ['text/csv', text/comma-separated-values', 'text/csv', application/csv', 'application/excel', 'application/vnd.ms-excel', 'application/vnd.msexcel', 'text/anytext', 'text/plain', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet']
-
   belongs_to :user
 
   attr_accessor :skip_callbacks
 
   after_commit :start_import, on: :create, unless: :skip_callbacks
 
-  default_scope { order(:created_at) }
+  default_scope { order(created_at: :desc) }
 
   scope :successfully_finished, -> { where.not(finished_at: nil) }
 

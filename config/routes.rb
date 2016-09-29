@@ -9,7 +9,7 @@ Rails.application.routes.draw do
 
   # get '/upload_inventories_data', to: 'inventories_data_uploads#new'
 
-  resources :inventories_data_uploads
+  resources :inventories_data_uploads, except: :index
   resources :dashboard, only: :index
   resources :inventories, only: %i(index new)
 
