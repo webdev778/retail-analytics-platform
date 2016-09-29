@@ -12,7 +12,9 @@
 //
 //= require jquery
 //= require jquery_ujs
-//= require turbolinks
 //= require bootstrap-sprockets
+//= require main
+//= require bower
+//= require common
 //= require jquery.timeago
 //= require_tree .

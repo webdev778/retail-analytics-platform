@@ -13,5 +13,14 @@ module RetailAnalyticsPlatform
     # Application configuration should go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded.
     config.active_job.queue_adapter = :sidekiq
+
+    config.to_prepare do
+      Devise::SessionsController.layout 'devise'
+      Devise::RegistrationsController.layout 'devise'
+      Devise::ConfirmationsController.layout 'devise'
+      # Devise::UnlocksController.layout 'devise'
+      Devise::PasswordsController.layout 'devise'
+      # Devise::Mailer.layout 'default_mailer'
+    end
   end
 end

@@ -1,0 +1,20 @@
+.sidebar-menu.row
+  .collapse.navbar-collapse
+    %h5 Menu
+    %ul.nav
+      %li
+        = link_to 'Upload Inventory Data', new_inventories_data_upload_path
+      %li
+        = link_to 'Total Data', '#'
+      %li
+        = link_to 'Shipment List', '#'
+      %li
+        = link_to 'Shipment Summary', '#'
+      %li
+        = link_to 'Inventory Summary', '#'
+      %li
+        = link_to 'MSKU Summary', '#'
+    .header-search.block-center.visible-xs
+      %input{ placeholder: 'Search...', type: 'text' }
+      %button{ type: 'submit' }
+        %i.fa.fa-search

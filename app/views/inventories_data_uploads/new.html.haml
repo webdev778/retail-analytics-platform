@@ -1,4 +1,48 @@
-= simple_form_for @inventory_data_upload, url: inventories_data_uploads_path do |f|
-  = render 'shared/error_messages', object: @inventory_data_upload
-  = f.input :file_for_import, as: :file, label: false
-  = f.submit
+%h4 Upload Inventory Data
+.content-box.upload
+  = simple_form_for @inventory_data_upload, url: inventories_data_uploads_path do |f|
+    = render 'shared/error_messages', object: @inventory_data_upload
+    = f.input :file_for_import, as: :file
+- if @inventory_data_uploads.present?
+  .content-box
+    .table-scroll
+      %table.table.table-fixed
+        %thead
+          %tr
+            %th.col-sm-6 Filename
+            %th.col-sm-3 Status
+            %th.col-sm-3 Information
+        %tbody.scroll-pane
+          - @inventory_data_uploads.each do |file|
+            %tr
+              %td.col-sm-6
+                = file.file_for_import_file_name
+              %td.col-sm-3
+                %strong= file_status(file)
+                = timeago(file.finished_at)
+              %td.col-sm-3
+                = file.status == 'finished' ? "imported: #{file.imported_new} rows; already exist: #{file.already_exist} rows" : ''
+- if @inventories.present?
+  .content-box
+    .table-scroll
+      %table.table.table-fixed
+        %thead
+          %tr
+            %th.col-sm-4 MSKU
+            %th.col-sm-4 Price
+            %th.col-sm-4 Date Purchased
+        %tbody.scroll-pane
+          - @inventories.each do |inventory|
+            %tr
+              %td.col-sm-4
+                = inventory.msku
+              %td.col-sm-4
+                = "$ #{inventory.price}"
+              %td.col-sm-4
+                = inventory.date_purchased.strftime('%d/%m/%Y')
+
+
+= javascript_include_tag 'time'
+
+:javascript
+  $("#inventory_data_upload_file_for_import").fileinput({'showPreview':false});
