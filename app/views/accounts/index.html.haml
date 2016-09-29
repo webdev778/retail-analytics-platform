@@ -1,0 +1,24 @@
+%h4 Amazon MWS ID
+.content-box
+  .content-box-header
+    = link_to 'Add new', new_account_path, class: 'btn btn-primary btn-lg pull-right'
+  .table-box
+    .table-scroll
+      %table.table.table-single.table-fixed
+        %thead
+          %tr
+            %th.col-sm-12 Shops
+        %tbody.scroll-pane
+          - @accounts.each do |account|
+            - if account.marketplace.present?
+              %tr
+                %td.col-sm-12
+                  .col-sm-9
+                    %span= account.marketplace.external_marketplace_id
+                  .col-sm-3.text-right
+                    %a.edit{ href: '#' }
+                      %i.fa.fa-pencil
+                      Edit
+                    %a.remove{ href: '#' }
+                      %i.fa.fa-close
+                      Delete

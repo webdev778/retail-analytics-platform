@@ -3,11 +3,11 @@ module MWS
     class << self
       def connect!(user, marketplace)
         MWS::FulfillmentInboundShipment::Client.new(
-            primary_marketplace_id: marketplace.external_marketplace_id || user.account.marketplace.secret_key,
-            merchant_id: user.account.seller_id,
-            aws_access_key_id: marketplace.aws_access_key_id || user.account.marketplace.aws_access_key_id,
-            aws_secret_access_key: marketplace.secret_key || user.account.marketplace.secret_key,
-            auth_token: user.account.mws_auth_token
+            primary_marketplace_id: marketplace.external_marketplace_id,
+            merchant_id: marketplace.account.seller_id,
+            aws_access_key_id: marketplace.aws_access_key_id ,
+            aws_secret_access_key: marketplace.secret_key,
+            auth_token: marketplace.account.mws_auth_token
         )
         # MWS.orders(
         #     primary_marketplace_id: marketplace.external_marketplace_id,

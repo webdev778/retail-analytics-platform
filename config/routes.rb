@@ -11,8 +11,8 @@ Rails.application.routes.draw do
 
   resources :inventories_data_uploads, except: :index
   resources :dashboard, only: :index
-  resources :inventories, only: %i(index new)
 
+  resources :accounts, only: %i(index new create)
   authenticate :user do
     mount Sidekiq::Web => '/sidekiq'
   end

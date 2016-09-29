@@ -40,6 +40,7 @@
 .form-group:after,
 .container:after,
 .content-box:after,
+.content-box-header:after,
 .button-group:after,
 .ctext:after {
   content: '';
@@ -132,6 +133,8 @@ body * {
 .content-box.disable .btn {
   background: #a2a1a1;
   border-color: #a2a1a1; }
+.content-box-header {
+  margin-bottom: 20px; }
 
 .table-scroll tbody.jspScrollable {
   width: calc(100% + 15px) !important; }
@@ -356,7 +359,6 @@ img {
 .back {
   font-size: 14px;
   color: #5d9cec;
-  line-height: 74px;
   text-decoration: none !important; }
 .back .fa {
   margin-left: 4px; }

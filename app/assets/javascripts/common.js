@@ -68,7 +68,7 @@ function contentBox() {
 	contentBox.find('[type="checkbox"]').prop('checked',false);
 	contentBox.find('.i-checkbox').addClass('checked');
 
-	$('.content-box [type="checkbox"]').change(function (e) {
+	$(document).on('change', '.content-box [type="checkbox"]', function (e) {
 		var that = $(this);
 		var cb = that.data('content');
 

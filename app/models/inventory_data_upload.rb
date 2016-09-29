@@ -12,8 +12,6 @@ class InventoryDataUpload < ApplicationRecord
 
   after_commit :start_import, on: :create, unless: :skip_callbacks
 
-  default_scope { order(created_at: :desc) }
-
   scope :successfully_finished, -> { where.not(finished_at: nil) }
 
   private

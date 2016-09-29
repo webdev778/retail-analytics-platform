@@ -4,12 +4,12 @@ RSpec.describe InventoriesDataUploadsController, type: :controller do
   let(:user) { create(:user) }
   let(:inventory_data_upload) { create(:csv, user: user) }
 
-  describe 'GET #index' do
+  describe 'GET #new' do
     before { inventory_data_upload }
 
     it 'allows authenticated access' do
       sign_in user
-      get :index
+      get :new
       expect(response).to be_success
       expect(assigns(:inventory_data_uploads)).to eq([inventory_data_upload])
     end
