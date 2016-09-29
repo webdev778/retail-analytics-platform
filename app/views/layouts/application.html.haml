@@ -1,32 +1,50 @@
 !!!
 %html
   %head
-    %meta{ content: 'text/html; charset=UTF-8', 'http-equiv': 'Content-Type' }
-    %title RetailAnalyticsPlatform
+    %meta{ content: 'text/html; charset=utf-8', 'http-equiv': 'Content-Type' }
+    %meta{ content: '', name: 'description' }
+    %meta{ content: '', name: 'keywords' }
+    %meta{ content: 'width=device-width', name: 'viewport' }
+    %title Amazon system
+    %link{ href: 'https://fonts.googleapis.com/css?family=Open+Sans:400,600,700', rel: 'stylesheet' }
     = csrf_meta_tags
-    = stylesheet_link_tag  'application', media: 'all', 'data-turbolinks-track': 'reload'
-    = javascript_include_tag 'application', 'data-turbolinks-track': 'reload'
+    = stylesheet_link_tag  'application', media: 'all'
+    = javascript_include_tag 'application'
   %body
-    - if notice.present?
-      .alert.alert-info.alert-dismissible
-        %button.close{ data: { dismiss: 'alert' } } ×
-        = notice
-    - if alert.present?
-      .alert.alert-danger
-        %button.close{ data: { dismiss: 'alert' } } ×
-        = alert
-    -#- if flash.present?
-    -#  .alert.alert-success
-    -#    %button.close{ data: { dismiss: 'alert' } } ×
-    -#    = flash
-
-    - if user_signed_in?
-      %li
-        = link_to 'Upload Inventory Data', new_inventories_data_upload_path
-      %li
-        = link_to 'Logout', destroy_user_session_path, method: :delete
-    - else
-      %li
-        = link_to 'Login', new_user_session_path
-
-    = yield
+    %header.header.container-fluid
+      .header-inner.row
+        .col-sm-3.col-lg-2.text-center
+          %a.header-logo.row{ href: '#' }
+            %img{ alt: '', src: image_path('logo.png') }
+        .contents.col-sm-9.col-lg-10
+          .header-search.hidden-xs
+            %input{ placeholder: 'Search...', type: 'text' }
+            %button{ type: 'submit' }
+              %i.fa.fa-search
+          .navbar-toggle.pull-left
+            %span.icon-container
+              %span.line.line01
+              %span.line.line02
+              %span.line.line03
+              %span.line.line04
+          .header-user
+            .header-user-inner
+              %a{ href: '#' }
+                %p= current_user.email
+                %img{ alt: '', src: 'http://placehold.it/35x35/795a61/795a61' }
+              %ul
+                %li
+                  = link_to '#' do
+                    %i.fa.fa-user
+                    Amazon MWS ID
+                %li
+                  = link_to destroy_user_session_path, method: :delete do
+                    %i.fa.fa-sign-out
+                    Log out
+    .container-fluid
+      .main.row
+        .sidebar.col-sm-3.col-lg-2
+          = render partial: 'layouts/partials/left_menu'
+        .contents.col-xs-12.col-sm-9.col-lg-10
+          = render partial: 'shared/error'
+          = yield

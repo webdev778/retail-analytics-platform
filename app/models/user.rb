@@ -4,8 +4,8 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable, :confirmable
 
-  has_many :inventory_data_uploads
   has_one :account
   has_one :marketplace
-  # has_many :inventories, dependent: :destroy
+  has_many :inventory_data_uploads
+  has_many :inventories, dependent: :destroy
 end

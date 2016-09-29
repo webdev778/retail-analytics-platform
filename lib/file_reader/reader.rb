@@ -18,6 +18,7 @@ module FileReader
 
     def initialize(inventory_data_upload)
       @file_record = inventory_data_upload
+      @current_user = inventory_data_upload.user
       check_type
     end
 
@@ -38,7 +39,7 @@ module FileReader
 
       reader.iterate do |data|
         begin
-          inventory = Inventory.find_or_initialize_by(msku: data[:msku],
+          inventory = @current_user.inventories.find_or_initialize_by(msku: data[:msku],
                                                       price: data[:price],
                                                       date_purchased: data[:date_purchased])
           if inventory.new_record?
