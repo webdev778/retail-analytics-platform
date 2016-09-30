@@ -75,7 +75,7 @@ Rails.application.configure do
   # require 'syslog/logger'
   # config.logger = ActiveSupport::TaggedLogging.new(Syslog::Logger.new 'app-name')
 
-  if ENV["RAILS_LOG_TO_STDOUT"].present?
+  if ENV['RAILS_LOG_TO_STDOUT'].present?
     logger           = ActiveSupport::Logger.new(STDOUT)
     logger.formatter = config.log_formatter
     config.logger = ActiveSupport::TaggedLogging.new(logger)
@@ -83,13 +83,12 @@ Rails.application.configure do
 
   config.action_mailer.default_url_options = { host: 'retailanalyticsplatform.herokuapp.com' }
 
-  ENV["REDISTOGO_URL"] = 'redis://redistogo:741c753ca3b348368d9b825b62ca9407@sculpin.redistogo.com:10074/'
-
   Sidekiq.configure_server do |config|
-    config.redis = { url: ENV["REDISTOGO_URL"]}
+    config.redis = { url: ENV['REDISTOGO_URL'] }
   end
+
   Sidekiq.configure_client do |config|
-    config.redis = { url: ENV["REDISTOGO_URL"]}
+    config.redis = { url: ENV['REDISTOGO_URL'] }
   end
 
 
@@ -105,11 +104,12 @@ Rails.application.configure do
 
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
+
   config.action_mailer.smtp_settings = {
-      :address              => 'smtp.gmail.com',
+      :address              => ENV['smtp_address'],
       :port                 => 587,
-      :user_name            => 'php.writerman@gmail.com',
-      :password             => 'LY3dkBTs',
+      :user_name            => ENV['smtp_username'],
+      :password             => ENV['smtp_password'],
       :authentication       => :plain,
       :enable_starttls_auto => true
   }
