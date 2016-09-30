@@ -81,6 +81,36 @@ Rails.application.configure do
     config.logger = ActiveSupport::TaggedLogging.new(logger)
   end
 
+  config.action_mailer.default_url_options = { host: 'retailanalyticsplatform.herokuapp.com' }
+
+  ENV["REDISTOGO_URL"] = 'redis://redistogo:741c753ca3b348368d9b825b62ca9407@sculpin.redistogo.com:10074/'
+
+  Sidekiq.configure_server do |config|
+    config.redis = { url: ENV["REDISTOGO_URL"]}
+  end
+  Sidekiq.configure_client do |config|
+    config.redis = { url: ENV["REDISTOGO_URL"]}
+  end
+
+
+  config.paperclip_defaults = {
+      storage: :s3,
+      s3_credentials: {
+          bucket: ENV.fetch('S3_BUCKET_NAME'),
+          access_key_id: ENV.fetch('AWS_ACCESS_KEY_ID'),
+          secret_access_key: ENV.fetch('AWS_SECRET_ACCESS_KEY'),
+          s3_region: ENV.fetch('AWS_REGION'),
+      }
+  }
+
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
+  config.action_mailer.smtp_settings = {
+      :address              => 'smtp.gmail.com',
+      :port                 => 587,
+      :user_name            => 'php.writerman@gmail.com',
+      :password             => 'LY3dkBTs',
+      :authentication       => :plain,
+      :enable_starttls_auto => true
+  }
 end

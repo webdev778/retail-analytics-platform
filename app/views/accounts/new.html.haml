@@ -55,45 +55,8 @@
             .col-sm-4.col-lg-5
               .form-group
                 = m.input :secret_key, label: 'Secret Key', required: false, input_html: { class: 'input-lg' }
-            -#= f.simple_fields_for :marketplace do |m|
-            -#  .col-sm-4.col-lg-5
-            -#  .form-group
-            -#    = m.input :external_marketplace_id, label: 'Marketplace ID', required: false, input_html: { class: 'input-lg' }
-      -#  .col-sm-4.col-lg-2.pull-right.btn-group-position
-      -#    %a.btn.btn-lg.btn-primary{ href: '#' } Add
-      -#  .col-sm-4.col-lg-5
-      -#    .form-group
-      -#      %label MWS seller Id
-      -#      %input.form-control.input-lg{:placeholder => "Enter your MWS seller Id", :type => "text"}/
-      -#  .col-sm-4.col-lg-5
-      -#    .form-group
-      -#      %label MWS AuthToken
-      -#      %input.form-control.input-lg{:placeholder => "Enter your MWS AuthToken", :type => "text"}/
-      -#.row
-      -#  .col-sm-4.col-lg-5
-      -#    .form-group
-      -#      %label AWS access key Id
-      -#      %input.form-control.input-lg{:placeholder => "Enter your AWS access key Id", :type => "text"}/
--##cb2.content-box.disable
--#  .form
--#    .form-group
--#      %label.pull-left.i-checkbox
--#        %input{ 'data-content': 'cb2', type: 'checkbox' }
--#        Add to other shop
--#    .content-inner
--#      .row
--#        .col-sm-4.col-lg-2.pull-right.btn-group-position
--#          %a.btn.btn-lg.btn-primary{ href: '#' } Add
--#        .col-sm-4.col-lg-5
--#          .form-group
--#            %label MWS seller Id
--#            %input.form-control.input-lg{:placeholder => "Enter your MWS seller Id", :type => "text"}/
--#        .col-sm-4.col-lg-5
--#          .form-group
--#            %label MWS AuthToken
--#            %input.form-control.input-lg{:placeholder => "Enter your MWS AuthToken", :type => "text"}/
--#      .row
--#        .col-sm-4.col-lg-5
--#          .form-group
--#            %label AWS access key Id
--#            %input.form-control.input-lg{:placeholder => "Enter your AWS access key Id", :type => "text"}/
+        .row
+          = f.simple_fields_for :marketplace do |m|
+            .col-sm-4.col-lg-5
+              .form-group
+                = m.input :external_marketplace_id, label: 'Marketplace ID', required: false, input_html: { class: 'input-lg' }

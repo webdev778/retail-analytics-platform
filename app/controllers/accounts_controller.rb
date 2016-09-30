@@ -1,6 +1,6 @@
 class AccountsController < ApplicationController
   def index
-    @accounts = current_user.accounts
+    @accounts = current_user.accounts.includes(:marketplace)
   end
 
   def new
@@ -24,10 +24,10 @@ class AccountsController < ApplicationController
   private
 
   def account_params
-    params.require(:account).permit(:seller_id, marketplace_attributes: [:external_marketplace_id, :aws_access_key_id, :secret_key]).merge(user: current_user)
+    params.require(:account).permit(:seller_id, :mws_auth_token, marketplace_attributes: [:external_marketplace_id, :aws_access_key_id, :secret_key]).merge(user: current_user)
   end
   #
   def marketplace_params
-    params.require(:account).permit(marketplace_fields: [:marketplace_id, :aws_access_key_id, :secret_key])
+    params.require(:account).permit(marketplace_fields: [:marketplace_id, :aws_access_key_id, :secret_key, :mws_auth_token])
   end
 end

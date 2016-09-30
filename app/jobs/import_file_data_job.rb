@@ -1,4 +1,6 @@
 class ImportFileDataJob < ApplicationJob
+  include FileReader
+
   queue_as :default
 
 

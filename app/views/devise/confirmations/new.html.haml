@@ -8,7 +8,7 @@
           = f.error_notification
           = f.full_error :confirmation_token
           .form-inputs
-            = f.input :email, required: true, autofocus: true
+            = f.input :email, required: true, autofocus: true, required: false, placeholder: 'Enter user email'
           .form-actions
             = f.button :submit, 'Resend confirmation instructions', class: 'btn btn-lg btn-primary btn-block'
         = render 'devise/shared/links'

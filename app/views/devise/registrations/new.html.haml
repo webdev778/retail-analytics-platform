@@ -7,9 +7,9 @@
         = simple_form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f|
           = f.error_notification
           .form
-            = f.input :email, required: true, autofocus: true
-            = f.input :password, required: true, hint: ("#{@minimum_password_length} characters minimum" if @minimum_password_length)
-            = f.input :password_confirmation, required: true
+            = f.input :email, required: true, autofocus: true, required: false, placeholder: 'Enter user email'
+            = f.input :password, required: true, required: false, placeholder: 'Enter password', hint: ("#{@minimum_password_length} characters minimum" if @minimum_password_length)
+            = f.input :password_confirmation, required: true, required: false, placeholder: 'Repeat your password'
           .form-actions
             = f.button :submit, 'Sign up', class: 'btn btn-lg btn-primary btn-block'
         = render 'devise/shared/links'
