@@ -21,7 +21,6 @@ module MWS
         response = connect!(user, marketplace).request_report(report_type)
         response = response.parse
 
-        byebug
         if response['ReportRequestInfo']['ReportRequestId'].present?
           GetReportJob.set(wait: 1.minute).perform_later(user, marketplace, response['ReportRequestInfo']['ReportRequestId'])
         end
@@ -35,7 +34,7 @@ module MWS
         response = connect!(user, marketplace).get_report_request_list(report_request_id_list: [id])
         response = response.parse
         if response['ReportRequestInfo']['ReportProcessingStatus'] == '_DONE_'
-          get_data(user, marketplace, response['ReportRequestInfo']['GeneratedReportId'])
+          get_data(user, marketplace, response['ReportRequestInfo']['GeneratedReportId'], response['ReportRequestInfo']['ReportType'])
         elsif response['ReportRequestInfo']['ReportProcessingStatus'] == '_CANCELLED_'
           get_previous_report(user, marketplace, id, [response['ReportRequestInfo']['ReportType']])
         elsif response['ReportRequestInfo']['ReportProcessingStatus'] == '_DONE_NO_DATA_'
@@ -53,21 +52,20 @@ module MWS
           p previous_done_report['GeneratedReportId']
           p '------------------------------------------------'
           previous_done_report_id = previous_done_report['GeneratedReportId']
-          get_data(user, marketplace, previous_done_report_id)
+          get_data(user, marketplace, previous_done_report_id, report_type)
           Rails.logger.info("Previous report #{previous_done_report_id} was get instead of #{id}")
         else
           Rails.logger.info("Issue with report #{id} no previous report found")
         end
       end
 
-      def get_data(user, marketplace, id)
+      def get_data(user, marketplace, id, report_type)
         response = connect!(user, marketplace).get_report(id)
         response = response.parse
         p '!!!!!!!!!!!!'
         p response.headers
         p '!!!!!!!!!!!!'
-        response
-
+        ReportParser::ParseService.new(response, report_type, marketplace)
       end
     end
 
