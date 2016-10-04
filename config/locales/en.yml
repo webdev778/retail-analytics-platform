@@ -21,3 +21,12 @@
 
 en:
   hello: "Hello world"
+  fulfillment_inbound_shipments:
+    index:
+      title: Fulfillment inbound shipments
+      shipment_id: Shipment ID
+      external_date_created: Date created
+      price: Total cost
+      units_count: Total units
+      units_sold_count: Units sold
+      total_revenue: Total revenue
