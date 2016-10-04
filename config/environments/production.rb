@@ -91,7 +91,6 @@ Rails.application.configure do
     config.redis = { url: ENV['REDISTOGO_URL'] }
   end
 
-
   config.paperclip_defaults = {
       storage: :s3,
       s3_credentials: {

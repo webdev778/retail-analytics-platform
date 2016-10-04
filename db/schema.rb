@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160921083413) do
+ActiveRecord::Schema.define(version: 20161004070601) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -22,6 +22,16 @@ ActiveRecord::Schema.define(version: 20160921083413) do
     t.datetime "created_at",     null: false
     t.datetime "updated_at",     null: false
     t.index ["user_id"], name: "index_accounts_on_user_id", using: :btree
+  end
+
+  create_table "fulfillment_inbound_shipments", force: :cascade do |t|
+    t.integer  "marketplace_id"
+    t.string   "shipment_id"
+    t.datetime "external_date_created"
+    t.decimal  "price",                 precision: 10, scale: 2
+    t.datetime "created_at",                                     null: false
+    t.datetime "updated_at",                                     null: false
+    t.index ["marketplace_id"], name: "index_fulfillment_inbound_shipments_on_marketplace_id", using: :btree
   end
 
   create_table "inventories", force: :cascade do |t|
@@ -61,6 +71,45 @@ ActiveRecord::Schema.define(version: 20160921083413) do
     t.datetime "updated_at",              null: false
     t.index ["account_id"], name: "index_marketplaces_on_account_id", using: :btree
     t.index ["user_id"], name: "index_marketplaces_on_user_id", using: :btree
+  end
+
+  create_table "received_inventories", force: :cascade do |t|
+    t.integer  "marketplace_id"
+    t.datetime "received_date"
+    t.string   "fnsku"
+    t.string   "sku"
+    t.string   "product_name"
+    t.string   "quantity"
+    t.string   "fba_shipment_id"
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+    t.index ["marketplace_id"], name: "index_received_inventories_on_marketplace_id", using: :btree
+  end
+
+  create_table "transactions", force: :cascade do |t|
+    t.integer  "marketplace_id"
+    t.datetime "date_time"
+    t.string   "settlement_id"
+    t.string   "type"
+    t.string   "order_id"
+    t.string   "sku"
+    t.string   "quantity"
+    t.string   "product_sales"
+    t.string   "shipping_credits"
+    t.string   "gift_wrap_credits"
+    t.string   "promotional_rebates"
+    t.string   "selling_fees"
+    t.string   "fba_fees"
+    t.string   "other_transaction_fees"
+    t.string   "other"
+    t.string   "total"
+    t.decimal  "shipping_price",          precision: 10, scale: 2
+    t.decimal  "shipping_tax",            precision: 10, scale: 2
+    t.decimal  "item_promotion_discount", precision: 10, scale: 2
+    t.decimal  "ship_promotion_discount", precision: 10, scale: 2
+    t.datetime "created_at",                                       null: false
+    t.datetime "updated_at",                                       null: false
+    t.index ["marketplace_id"], name: "index_transactions_on_marketplace_id", using: :btree
   end
 
   create_table "users", force: :cascade do |t|
