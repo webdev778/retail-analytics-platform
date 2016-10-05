@@ -1,23 +1,23 @@
-%h1= t '.title'
-
-%table.table
-  %thead
-    %tr
-      %th= t '.shipment_id'
-      %th= t '.external_date_created'
-      %th= t '.price'
-      %th= t '.units_count'
-      %th= t '.units_sold_count'
-      %th= t '.total_revenue'
-
-  %tbody
-    - @fulfillment_inbound_shipments.each do |fulfillment_inbound_shipment|
-      %tr
-        %td= fulfillment_inbound_shipment.shipment_id
-        %td= fulfillment_inbound_shipment.external_date_created
-        %td= fulfillment_inbound_shipment.price
-        %td 100
-        %td 78
-        %td 10,553
+%h4 Shipment List
+.content-box
+  .table-scroll
+    %table.table.table-fixed
+      %thead
+        %tr
+          %th.col-sm-2= t '.shipment_id'
+          %th.col-sm-2= t '.external_date_created'
+          %th.col-sm-2= t '.price'
+          %th.col-sm-2= t '.units_count'
+          %th.col-sm-2= t '.units_sold_count'
+          %th.col-sm-2= t '.total_revenue'
+      %tbody.scroll-pane
+      - @fulfillment_inbound_shipments.each do |fulfillment_inbound_shipment|
+        %tr
+          %td.col-sm-2 = fulfillment_inbound_shipment.shipment_id
+          %td.col-sm-2 = fulfillment_inbound_shipment.external_date_created
+          %td.col-sm-2 = fulfillment_inbound_shipment.price
+          %td.col-sm-2  100
+          %td.col-sm-2  78
+          %td.col-sm-2  10,553
 
 = paginate @fulfillment_inbound_shipments
