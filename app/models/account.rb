@@ -8,4 +8,12 @@ class Account < ApplicationRecord
                         :seller_id
 
   validates_uniqueness_of :seller_id
+
+  validate :check_connection
+
+  private
+
+  def check_connection
+    errors.add(:base, message: 'invalid credentials') unless MWS::ImportService.check_connection(self, self.marketplace)
+  end
 end

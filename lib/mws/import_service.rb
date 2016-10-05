@@ -1,6 +1,29 @@
 module MWS
   class ImportService
     class << self
+      def check_connection(account, marketplace)
+        begin
+        client =  MWS::Sellers::Client.new(
+              primary_marketplace_id: marketplace.external_marketplace_id,
+              merchant_id: account.seller_id,
+              aws_access_key_id: marketplace.aws_access_key_id,
+              aws_secret_access_key: marketplace.secret_key,
+              auth_token: account.mws_auth_token
+            )
+        participation = client.list_marketplace_participations
+        participation = participation.parse
+        marketplace_presence = false
+        participation['ListParticipations']['Participation'].each do |item|
+          marketplace_presence = true if item['MarketplaceId'] == marketplace.external_marketplace_id
+        end
+        rescue => e
+          Rails.logger.info('wrong credentials')
+          marketplace_presence = false
+          false
+        end
+        marketplace_presence
+      end
+
       def connect!(marketplace)
         MWS::Reports::Client.new(
             primary_marketplace_id: marketplace.external_marketplace_id,

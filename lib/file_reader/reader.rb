@@ -48,7 +48,8 @@ module FileReader
           else
             count_of_existing_records += 1
           end
-        rescue
+        rescue => e
+          Rails.logger.info(e)
           next
         end
       end

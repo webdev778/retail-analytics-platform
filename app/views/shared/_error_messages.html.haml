@@ -1,6 +1,19 @@
-- if object.errors.any?
-  %p.alert.alert-error Ooops!
-  %ul
-    - object.errors.each do |msg|
-      %li.error
-        = msg
+-#-#- if object.errors.any?
+-#-#  %p.alert.alert-error Ooops!
+-#-#  %ul
+-#-#    - object.errors.each do |msg|
+-#-#      %li.error
+-#-#        = msg
+-#- if object.errors.any?
+-#  - if object.errors['base'].present?
+-#    .alert.alert-danger
+-#      %button.close{ data: { dismiss: 'alert' } } ×
+-#      - object.errors['base'].each do |item|
+-#        = item[:message]
+-#    -#- else
+-#    -#  - object.errors.each do |msg|
+-#    -#    %li.error
+-#    -#      = msg
+-#      -#= object.errors.full_messages.first[:message]
+-#      -#- object.errors.full_messages.each do |item|
+-#      -#  = item[:message]

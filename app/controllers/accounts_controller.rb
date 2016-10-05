@@ -14,7 +14,7 @@ class AccountsController < ApplicationController
     respond_to do |format|
       if @account.save
         Marketplace.create(account_params['marketplace_attributes'].merge(user: current_user, account: @account))
-        format.html { redirect_to accounts_path, notice: 'Survey was successfully created.' }
+        format.html { redirect_to accounts_path, notice: 'Account was successfully added.' }
       else
         format.html { render :new }
       end
