@@ -3,7 +3,7 @@ require 'rails_helper'
 describe FileReader::Reader do
 
   context 'prepare_msku' do
-    let(:msku) { ' 08_18_2016_102  '}
+    let(:msku) { ' 08_18_2016_102  ' }
     subject { FileReader::Reader.prepare_msku(msku) }
 
     it 'should return msku without spaces' do

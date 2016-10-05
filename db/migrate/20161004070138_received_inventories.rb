@@ -6,7 +6,7 @@ class ReceivedInventories < ActiveRecord::Migration[5.0]
       t.string :fnsku
       t.string :sku
       t.string :product_name
-      t.string :quantity
+      t.integer :quantity
       t.string :fba_shipment_id
 
       t.timestamps

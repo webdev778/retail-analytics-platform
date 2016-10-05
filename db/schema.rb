@@ -79,7 +79,7 @@ ActiveRecord::Schema.define(version: 20161004070601) do
     t.string   "fnsku"
     t.string   "sku"
     t.string   "product_name"
-    t.string   "quantity"
+    t.integer  "quantity"
     t.string   "fba_shipment_id"
     t.datetime "created_at",      null: false
     t.datetime "updated_at",      null: false
