@@ -103,6 +103,14 @@ function navbarToggle() {
 	});
 }
 
+function closeFlash() {
+	window.setTimeout(function() {
+		$(".alert").fadeTo(1500, 0).slideUp(500, function(){
+			$(this).remove();
+		});
+	}, 5000);
+}
+
 $(document).ready(function(){
 	chechboxButton();
 	tableScroll();
@@ -110,6 +118,7 @@ $(document).ready(function(){
 	navbarToggle();
 	tableResponsive();
 	contentBox();
+	closeFlash();
 });
 
 $(window).resize(function(){
