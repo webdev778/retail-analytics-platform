@@ -16,9 +16,9 @@
                   .col-sm-9
                     %span= account.marketplace.external_marketplace_id
                   .col-sm-3.text-right
-                    %a.edit{ href: '#' }
-                      %i.fa.fa-pencil
-                      Edit
-                    %a.remove{ href: '#' }
+                    -#%a.edit{ href: '#' }
+                    -#  %i.fa.fa-pencil
+                    -#  Edit
+                    = link_to account_path(account), class: 'remove', data: { confirm: 'Are you sure?', method: :delete } do
                       %i.fa.fa-close
                       Delete

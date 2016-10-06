@@ -14,11 +14,17 @@ class AccountsController < ApplicationController
     respond_to do |format|
       if @account.save
         MWS::ImportService.initial_import(@account.marketplace)
-        format.html { redirect_to accounts_path, notice: 'Account was successfully added.' }
+        format.html { redirect_to accounts_path, notice: 'Account was successfully added' }
       else
         format.html { render :new }
       end
     end
+  end
+
+  def destroy
+    @account = Account.find(params[:id])
+    @account.destroy
+    redirect_to accounts_path, notice: 'Your marketplace account and all imported data was successfully deleted'
   end
 
   private

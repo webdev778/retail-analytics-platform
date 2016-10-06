@@ -15,7 +15,7 @@ Rails.application.routes.draw do
 
   resources :dashboard, only: :index
 
-  resources :accounts, only: %i(index new create)
+  resources :accounts, only: %i(index new create destroy)
   authenticate :user do
     mount Sidekiq::Web => '/sidekiq'
   end

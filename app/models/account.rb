@@ -1,6 +1,6 @@
 class Account < ApplicationRecord
   belongs_to :user
-  has_one :marketplace
+  has_one :marketplace, dependent: :destroy
 
   accepts_nested_attributes_for :marketplace
 
