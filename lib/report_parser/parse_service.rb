@@ -23,6 +23,7 @@ module ReportParser
       @data.each do |line|
         ReceivedInventory.create(received_inventory_params(line, @marketplace))
       end
+      @marketplace.update_attribute(:get_received_inventory_finished, Time.now)
     end
 
     private

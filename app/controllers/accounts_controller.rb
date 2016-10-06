@@ -13,7 +13,7 @@ class AccountsController < ApplicationController
 
     respond_to do |format|
       if @account.save
-        Marketplace.create(account_params['marketplace_attributes'].merge(user: current_user, account: @account))
+        MWS::ImportService.initial_import(@account.marketplace)
         format.html { redirect_to accounts_path, notice: 'Account was successfully added.' }
       else
         format.html { render :new }
@@ -24,10 +24,8 @@ class AccountsController < ApplicationController
   private
 
   def account_params
-    params.require(:account).permit(:seller_id, :mws_auth_token, marketplace_attributes: [:external_marketplace_id, :aws_access_key_id, :secret_key]).merge(user: current_user)
-  end
-  #
-  def marketplace_params
-    params.require(:account).permit(marketplace_fields: [:marketplace_id, :aws_access_key_id, :secret_key, :mws_auth_token])
+    parameters = params.require(:account).permit(:seller_id, :mws_auth_token, marketplace_attributes: [:external_marketplace_id, :aws_access_key_id, :secret_key]).merge(user: current_user)
+    parameters[:marketplace_attributes] = parameters[:marketplace_attributes].merge(user: current_user)
+    parameters
   end
 end

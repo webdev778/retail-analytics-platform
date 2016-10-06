@@ -65,6 +65,9 @@ gem 'roo'
 
 gem 'sidekiq'
 
+gem 'populator'
+gem 'faker'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platform: :mri
@@ -75,11 +78,11 @@ group :development, :test do
   gem 'selenium-webdriver'
   gem 'rails-controller-testing'
   gem 'factory_girl_rails'
-  gem 'faker'
   gem 'rubocop', require: false
   gem 'bullet', group: :development
   gem 'better_errors', group: :development
   gem 'binding_of_caller', group: :development
+
 end
 
 group :test do

@@ -1,0 +1,21 @@
+%h4 Received Inventory
+.content-box
+  .test
+    %table.table.table-fixed.simple
+      %thead
+        %tr
+          %th Received Date
+          %th FNSKU
+          %th SKU
+          %th Product Name
+          %th Quantity
+          %th FBA Shipment Id
+      %tbody.scroll-pane
+      - @received_inventories.each do |inventory|
+        %tr
+          %td= inventory.received_date.strftime('%d/%m/%Y')
+          %td= inventory.fnsku
+          %td= inventory.sku
+          %td= inventory.product_name
+          %td= inventory.quantity
+          %td= inventory.fba_shipment_id

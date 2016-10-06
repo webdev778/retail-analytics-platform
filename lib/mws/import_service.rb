@@ -43,8 +43,8 @@ module MWS
 
         response = connect!(marketplace).request_report(report_type)
         response = response.parse
-
         if response['ReportRequestInfo']['ReportRequestId'].present?
+          Rails.logger.info("!!!Report request - #{response['ReportRequestInfo']['ReportRequestId']}!!!")
           GetReportJob.set(wait: 1.minute).perform_later(marketplace, response['ReportRequestInfo']['ReportRequestId'])
         end
       end
@@ -53,11 +53,12 @@ module MWS
         ReportsJob.perform_later(marketplace, '_GET_FBA_FULFILLMENT_INVENTORY_RECEIPTS_DATA_')
       end
 
-      def get_report_request_list(marketplace, id)
+      def get_report_status(marketplace, id)
         response = connect!(marketplace).get_report_request_list(report_request_id_list: [id])
         response = response.parse
         report_status = response['ReportRequestInfo']['ReportProcessingStatus']
         report_type = response['ReportRequestInfo']['ReportType']
+        Rails.logger.info("!!!Report #{id} status - #{report_status} - #{report_type}!!!")
         if report_status == '_DONE_'
           get_data(marketplace, response['ReportRequestInfo']['GeneratedReportId'], report_type)
         elsif report_status == '_CANCELLED_'
@@ -73,9 +74,6 @@ module MWS
         response = connect!(marketplace).get_report_request_list(report_type_list: report_type, report_processing_status_list: '_DONE_')
         if response.parse['ReportRequestInfo'].first.present?
           previous_done_report = response.parse['ReportRequestInfo'].first
-          p '------------------------------------------------'
-          p previous_done_report['GeneratedReportId']
-          p '------------------------------------------------'
           previous_done_report_id = previous_done_report['GeneratedReportId']
           get_data(marketplace, previous_done_report_id, report_type)
           Rails.logger.info("Previous report #{previous_done_report_id} was get instead of #{id}")
@@ -87,9 +85,6 @@ module MWS
       def get_data(marketplace, id, report_type)
         response = connect!(marketplace).get_report(id)
         response = response.parse
-        p '!!!!!!!!!!!!'
-        p response.headers
-        p '!!!!!!!!!!!!'
         ReportParser::ParseService.new(response, report_type, marketplace)
       end
     end

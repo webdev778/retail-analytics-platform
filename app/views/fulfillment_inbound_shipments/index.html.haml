@@ -13,9 +13,9 @@
       %tbody.scroll-pane
       - @fulfillment_inbound_shipments.each do |fulfillment_inbound_shipment|
         %tr
-          %td.col-sm-2 = fulfillment_inbound_shipment.shipment_id
-          %td.col-sm-2 = fulfillment_inbound_shipment.external_date_created
-          %td.col-sm-2 = fulfillment_inbound_shipment.price
+          %td.col-sm-2= fulfillment_inbound_shipment.shipment_id
+          %td.col-sm-2= fulfillment_inbound_shipment.external_date_created.strftime('%d/%m/%Y')
+          %td.col-sm-2= "$ #{fulfillment_inbound_shipment.price}"
           %td.col-sm-2  100
           %td.col-sm-2  78
           %td.col-sm-2  10,553

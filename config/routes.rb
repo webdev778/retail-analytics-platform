@@ -11,6 +11,8 @@ Rails.application.routes.draw do
 
   resources :inventories_data_uploads, except: :index
   resources :fulfillment_inbound_shipments, only: %i(index)
+  resources :inventories, only: %i(index)
+
   resources :dashboard, only: :index
 
   resources :accounts, only: %i(index new create)
