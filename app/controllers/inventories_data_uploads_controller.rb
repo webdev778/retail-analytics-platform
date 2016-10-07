@@ -5,7 +5,7 @@ class InventoriesDataUploadsController < ApplicationController
   def new
     @inventory_data_upload = InventoryDataUpload.new
     @inventory_data_uploads = current_user.inventory_data_uploads.order(created_at: :desc)
-    @inventories = current_user.inventories
+    @inventories = current_user.inventories.page params[:page]
   end
 
   def create

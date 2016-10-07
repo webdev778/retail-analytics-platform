@@ -45,7 +45,7 @@
                 = "$ #{inventory.price}"
               %td.col-sm-4
                 = inventory.date_purchased.strftime('%d/%m/%Y')
-
+      = paginate @inventories
 
 = javascript_include_tag 'time'
 
