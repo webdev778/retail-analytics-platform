@@ -3,7 +3,7 @@ module FileReader
     include ApplicationHelper
     class << self
       def prepare_msku(msku)
-        msku.delete(' ').to_s
+        msku.to_s.delete(' ').to_s
       end
 
       def prepare_price(price)

@@ -2,6 +2,7 @@ module FileReader
   class TxtReader
     def initialize(file)
       @file = CSV.read(file.file_for_import.path, headers: true, header_converters: :symbol)
+      @upload_record = file
     end
 
     def iterate
@@ -22,6 +23,12 @@ module FileReader
           yield result
         end
         Rails.logger.info 'TXT import finished!'
+      else
+        Rails.logger.info 'TXT import error!'
+        @upload_record.update_attributes(finished_at: Time.zone.now,
+                                         status: 'error',
+                                         description: 'wrong column headers. Should be "MSKU", "Price", "Date Purchased"',
+                                         skip_callbacks: true)
       end
     end
   end

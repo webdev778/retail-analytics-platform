@@ -6,7 +6,7 @@
 - if @inventory_data_uploads.present?
   .content-box
     .table-scroll
-      %table.table.table-fixed
+      %table.table.table-fixed.simple
         %thead
           %tr
             %th.col-sm-6 Filename
@@ -21,7 +21,12 @@
                 %strong= file_status(file)
                 = timeago(file.finished_at)
               %td.col-sm-3
-                = file.status == 'finished' ? "imported: #{file.imported_new} rows; already exist: #{file.already_exist} rows" : '-'
+                - if file.status == 'finished'
+                  = "imported: #{file.imported_new} rows; already exist: #{file.already_exist} rows"
+                - if file.status == 'error'
+                  = file.description
+                - unless %w(finished error).include?(file.status)
+                  \-
 - if @inventories.present?
   .content-box
     .table-scroll

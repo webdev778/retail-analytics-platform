@@ -212,6 +212,9 @@ body * {
   color: #ff6161;
   margin-left: 16px; }
 
+.table > thead > tr > th{
+  border-bottom: 0; }
+
 @media (max-width: 1024px) {
   .table-fixed thead th {
     display: none; }

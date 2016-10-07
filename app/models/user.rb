@@ -8,4 +8,8 @@ class User < ApplicationRecord
   has_many :accounts, dependent: :destroy
   has_many :inventory_data_uploads, dependent: :destroy
   has_many :inventories, dependent: :destroy
+
+  def has_marketplace?
+    marketplaces.present?
+  end
 end
