@@ -25,9 +25,9 @@ function tableScroll() {
 		};
 
 		var customHeight = 400;
-
-		if ($('.table-scroll tbody.scroll-pane').height() > customHeight) {
-			$('.table-scroll tbody.scroll-pane').height(customHeight)
+console.log($(this).height());
+		if ($(this).height() > customHeight) {
+			$(this).height(customHeight)
 			$(this).jScrollPane(settings);
 			var api = $(this).data('jsp');
 			var throttleTimeout;

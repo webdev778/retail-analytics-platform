@@ -216,26 +216,34 @@ body * {
   border-bottom: 0; }
 
 @media (max-width: 1024px) {
-  .table-fixed thead th {
-    display: none; }
+  .table-fixed thead th,
+  .table-fixed:not(.simple) th {
+    display: none;
+  }
   .table-fixed tbody tr td {
     display: block;
     width: 100%;
     border: 0;
     text-align: left;
     padding: 8px 16px !important;
-    white-space: normal; }
+    white-space: normal;
+    float: left;
+  }
   .table-fixed tbody tr td .td-inner {
     float: left;
-    width: 60%; }
+    width: 60%;
+  }
   .table-fixed tbody tr td .td-inner * {
-    text-align: left; }
+    text-align: left;
+  }
   .table-fixed tbody tr td:before {
     content: attr(data-th);
     display: block;
     float: left;
     width: 40%;
-    text-align: left; } }
+    text-align: left;
+  }
+}
 
 /* fonts */
 .clear {
