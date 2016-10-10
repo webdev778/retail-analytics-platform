@@ -38,21 +38,16 @@ module FileReader
       end
 
       reader.iterate do |data|
-        begin
-          inventory = @current_user.inventories.find_or_initialize_by(msku: data[:msku],
-                                                      price: data[:price],
-                                                      date_purchased: data[:date_purchased])
-          if inventory.new_record?
-            inventory.save!
-            count_of_new_records += 1
-          else
-            count_of_existing_records += 1
-          end
-        rescue => e
-          Rails.logger.info(e)
-          next
+        inventory_params = data.slice(:msku, :price, :date_purchased)
+        inventory = @current_user.inventories.find_by(inventory_params)
+        if inventory
+          count_of_existing_records += 1
+        else
+          @current_user.inventories.create(inventory_params)
+          count_of_new_records += 1
         end
       end
+
       @file_record.update_attributes(finished_at: Time.zone.now,
                                      imported_new: count_of_new_records,
                                      already_exist: count_of_existing_records,

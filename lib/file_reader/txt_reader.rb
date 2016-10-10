@@ -8,7 +8,7 @@ module FileReader
     def iterate
       # [:msku_price_date_purchased]
       # ["MSKU\tPrice\tDate Purchased"]
-      if @file.headers == [:msku_price_date_purchased]
+      if @file.headers == [:msku_price_date_purchased] || [:sellersku_price_per_unit_date_purchased]
         @file.each do |line|
           # split_string = []
           split_string = line.to_s.split("\t").each_with_object([]) { |row, array| array << row }

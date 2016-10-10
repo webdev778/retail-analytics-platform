@@ -8,8 +8,8 @@ module FileReader
     def iterate
       if @file.headers == (['MSKU', 'Price', 'Date Purchased'] || ['SellerSKU', 'Price Per Unit', 'Date Purchased'])
         @file.each do |line|
-          msku = Reader.prepare_msku(line['MSKU'])
-          price = Reader.prepare_price(line['Price'])
+          msku = Reader.prepare_msku(line['MSKU'] || line['SellerSKU'])
+          price = Reader.prepare_price(line['Price'] || line['Price Per Unit'])
           date_purchased = Reader.prepare_date_purchased(line['Date Purchased'])
           result = { msku: msku,
                      price: price,
