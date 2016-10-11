@@ -14,6 +14,7 @@ Rails.application.routes.draw do
   resources :inventories, only: %i(index)
 
   resources :dashboard, only: :index
+  get 'total', to: 'dashboard#total', as: :dashboard_total
 
   resources :accounts, only: %i(index new create destroy)
   authenticate :user do
