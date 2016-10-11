@@ -74,6 +74,7 @@ GEM
     capybara-webkit (1.11.1)
       capybara (>= 2.3.0, < 2.8.0)
       json
+    chartkick (2.1.1)
     childprocess (0.5.9)
       ffi (~> 1.0, >= 1.0.11)
     climate_control (0.0.3)
@@ -119,6 +120,8 @@ GEM
       railties (>= 3.2, < 5.1)
     globalid (0.3.7)
       activesupport (>= 4.1.0)
+    groupdate (3.0.2)
+      activesupport (>= 3)
     hamlit (2.7.0)
       temple (~> 0.7.6)
       thor
@@ -128,6 +131,7 @@ GEM
       activesupport (>= 4.0.1)
       hamlit (>= 1.2.0)
       railties (>= 4.0.1)
+    hash-deep-merge (0.1.1)
     i18n (0.7.0)
     jbuilder (2.6.0)
       activesupport (>= 3.0.0, < 5.1)
@@ -143,6 +147,8 @@ GEM
     kaminari (0.17.0)
       actionpack (>= 3.0.0)
       activesupport (>= 3.0.0)
+    lazy_high_charts (1.5.6)
+      hash-deep-merge
     listen (3.0.8)
       rb-fsevent (~> 0.9, >= 0.9.4)
       rb-inotify (~> 0.9, >= 0.9.7)
@@ -332,6 +338,7 @@ DEPENDENCIES
   cancancan
   capybara
   capybara-webkit
+  chartkick
   coffee-rails (~> 4.2)
   composite_primary_keys
   database_cleaner
@@ -340,11 +347,13 @@ DEPENDENCIES
   faker
   figaro
   font-awesome-rails
+  groupdate
   hamlit
   hamlit-rails
   jbuilder (~> 2.5)
   jquery-rails
   kaminari
+  lazy_high_charts
   listen (~> 3.0.5)
   paperclip
   peddler

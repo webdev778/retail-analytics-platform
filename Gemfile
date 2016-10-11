@@ -40,6 +40,8 @@ gem 'coffee-rails', '~> 4.2'
 
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
+# Highcharts
+gem 'lazy_high_charts'
 # Turbolinks makes navigating your web application faster. Read more: https://github.com/turbolinks/turbolinks
 # gem 'turbolinks', '~> 5'
 # gem 'jquery-turbolinks'
@@ -67,6 +69,10 @@ gem 'sidekiq'
 
 gem 'populator'
 gem 'faker'
+
+# The simplest way to group by date
+gem 'groupdate'
+gem 'chartkick'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

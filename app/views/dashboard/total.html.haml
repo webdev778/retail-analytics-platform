@@ -1,0 +1,50 @@
+- content_for :javascripts do
+  = javascript_include_tag 'dashboard/total'
+
+%h4 Total
+
+.row
+  .col-lg-6.ctext
+    .table-box
+      .table-scroll
+        %table.table.table-fixed
+          %thead
+            %tr
+              %th.col-sm-9.text-center Data
+              %th.col-sm-3.text-center Value
+          %tbody.scroll-pane
+            %tr
+              %td.col-sm-9 Inventory Value
+              %td.col-sm-3.text-center N/A
+            %tr
+              %td.col-sm-9 Average ROI
+              %td.col-sm-3.text-center N/A
+            %tr
+              %td.col-sm-9 Sell Through Rate
+              %td.col-sm-3.text-center N/A
+            %tr
+              %td.col-sm-9 TVMInventory Age
+              %td.col-sm-3.text-center N/A
+            %tr
+              %td.col-sm-9 Not in Buy Box
+              %td.col-sm-3.text-center N/A
+            %tr
+              %td.col-sm-9 Return Rate
+              %td.col-sm-3.text-center N/A
+            %tr
+              %td.col-sm-9 Average Amazon Payout %
+              %td.col-sm-3.text-center N/A
+            %tr
+              %td.col-sm-9 Inventory Turnover
+              %td.col-sm-3.text-center N/A
+            %tr
+              %td.col-sm-9 Monthly Inventory Growth Rate
+              %td.col-sm-3.text-center N/A
+            %tr
+              %td.col-sm-9 Monthly Payouts / Inventory Purchase Buget
+              %td.col-sm-3.text-center N/A
+  .col-lg-6.ctext
+    %h3.text-center ROI & Sell Through Over Age
+    = high_chart('roi', @roi_chart)
+    %h3.text-center Sales & Inv Turnover Over Time
+    .text-center No data

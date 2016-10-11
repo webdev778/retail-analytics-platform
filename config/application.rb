@@ -8,7 +8,7 @@ Bundler.require(*Rails.groups)
 
 module RetailAnalyticsPlatform
   class Application < Rails::Application
-    config.autoload_paths += %W(#{config.root}/lib)
+    config.autoload_paths += %W(#{config.root}/lib #{config.root}/services)
     config.eager_load_paths += %W(
       #{config.root}/lib/file_reader
       #{config.root}/lib/mws

@@ -17,4 +17,3 @@
 //= require bower
 //= require common
 //= require jquery.timeago
-//= require_tree .
