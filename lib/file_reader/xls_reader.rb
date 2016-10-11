@@ -9,7 +9,6 @@ module FileReader
       if @file.row(1) == ['MSKU', 'Price', 'Date Purchased'] || ['SellerSKU', 'Price Per Unit', 'Date Purchased']
         @file.each_with_index do |line, index|
           unless index.zero?
-            # byebug
             msku = Reader.prepare_msku(line[0])
             price = line[1]
             date_purchased = line[2]
