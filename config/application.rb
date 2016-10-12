@@ -13,6 +13,7 @@ module RetailAnalyticsPlatform
       #{config.root}/lib/file_reader
       #{config.root}/lib/mws
       #{config.root}/lib/report_parser
+      #{config.root}/lib/data_processing
     )
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers

@@ -1,5 +1,4 @@
 class InventoriesDataUploadsController < ApplicationController
-
   after_action :file_records_cleaning, only: :create
 
   def new

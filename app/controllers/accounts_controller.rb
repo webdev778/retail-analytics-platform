@@ -30,7 +30,8 @@ class AccountsController < ApplicationController
   private
 
   def account_params
-    parameters = params.require(:account).permit(:seller_id, :mws_auth_token, marketplace_attributes: [:external_marketplace_id, :aws_access_key_id, :secret_key]).merge(user: current_user)
+    marketplace_attributes = [:external_marketplace_id, :aws_access_key_id, :secret_key]
+    parameters = params.require(:account).permit(:seller_id, :mws_auth_token, marketplace_attributes: marketplace_attributes).merge(user: current_user)
     parameters[:marketplace_attributes] = parameters[:marketplace_attributes].merge(user: current_user)
     parameters
   end

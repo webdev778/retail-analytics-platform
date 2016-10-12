@@ -9,7 +9,7 @@ class User < ApplicationRecord
   has_many :inventory_data_uploads, dependent: :destroy
   has_many :inventories, dependent: :destroy
 
-  def has_marketplace?
+  def marketplace_connected?
     marketplaces.present?
   end
 end

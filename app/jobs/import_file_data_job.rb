@@ -12,10 +12,8 @@ class ImportFileDataJob < ApplicationJob
 
   after_perform do |job|
     record = job.arguments.first
-    p '-------------------------------------------------------------'
-    p record
-    p '-------------------------------------------------------------'
+
     record.update_attributes(status: 'finished',
-                                          skip_callbacks: true) unless record.status == 'error'
+                             skip_callbacks: true) unless record.status == 'error'
   end
 end

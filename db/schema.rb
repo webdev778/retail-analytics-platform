@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161005141102) do
+ActiveRecord::Schema.define(version: 20161011124208) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -82,8 +82,10 @@ ActiveRecord::Schema.define(version: 20161005141102) do
     t.string   "product_name"
     t.integer  "quantity"
     t.string   "fba_shipment_id"
-    t.datetime "created_at",      null: false
-    t.datetime "updated_at",      null: false
+    t.datetime "created_at",                               null: false
+    t.datetime "updated_at",                               null: false
+    t.decimal  "price_per_unit",  precision: 10, scale: 2
+    t.decimal  "price_total",     precision: 10, scale: 2
     t.index ["marketplace_id"], name: "index_received_inventories_on_marketplace_id", using: :btree
   end
 
