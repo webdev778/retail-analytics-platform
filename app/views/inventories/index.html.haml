@@ -13,7 +13,7 @@
       %tbody.scroll-pane
       - @received_inventories.each do |inventory|
         %tr
-          %td= inventory.received_date.strftime('%d/%m/%Y')
+          %td= format_datetime(inventory.received_date)
           %td= inventory.fnsku
           %td= inventory.sku
           %td= inventory.product_name

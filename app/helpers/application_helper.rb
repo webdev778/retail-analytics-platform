@@ -26,4 +26,8 @@ module ApplicationHelper
     end
     nil
   end
+
+  def format_datetime(date)
+    date.present? ? date.strftime('%d/%m/%Y') : '-'
+  end
 end
