@@ -8,12 +8,13 @@ Bundler.require(*Rails.groups)
 
 module RetailAnalyticsPlatform
   class Application < Rails::Application
-    config.autoload_paths += %W(#{config.root}/lib)
+    config.autoload_paths += %W(#{config.root}/lib #{config.root}/services)
     config.eager_load_paths += %W(
       #{config.root}/lib/file_reader
       #{config.root}/lib/mws
       #{config.root}/lib/report_parser
       #{config.root}/lib/data_processing
+      #{config.root}/services
     )
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
