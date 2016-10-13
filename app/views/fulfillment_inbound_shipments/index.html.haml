@@ -16,7 +16,7 @@
           %td.col-sm-2= fulfillment_inbound_shipment.shipment_id
           %td.col-sm-2= format_datetime(fulfillment_inbound_shipment.external_date_created)
           %td.col-sm-2= "$ #{fulfillment_inbound_shipment.price}"
-          %td.col-sm-2  -
+          %td.col-sm-2= fulfillment_inbound_shipment.total_received_units
           %td.col-sm-2  -
           %td.col-sm-2  -
 
