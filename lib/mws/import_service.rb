@@ -43,6 +43,8 @@ module MWS
 
         # _GET_AMAZON_FULFILLED_SHIPMENTS_DATA_ ???
 
+        # _GET_V2_SETTLEMENT_REPORT_DATA_FLAT_FILE_V2_
+
         response = connect!(marketplace).request_report(report_type)
         response = response.parse
         if response['ReportRequestInfo']['ReportRequestId'].present?
@@ -64,7 +66,7 @@ module MWS
         if report_status == '_DONE_'
           get_data(marketplace, response['ReportRequestInfo']['GeneratedReportId'], report_type)
         elsif report_status == '_CANCELLED_'
-          get_previous_report(marketplace, id, report_type)
+          get_previous_report(marketplace, report_type, id)
         elsif report_status == '_DONE_NO_DATA_'
           request_report(marketplace, report_type)
         else
@@ -72,7 +74,7 @@ module MWS
         end
       end
 
-      def get_previous_report(marketplace, id, report_type)
+      def get_previous_report(marketplace, report_type, id = nil)
         response = connect!(marketplace).get_report_request_list(report_type_list: report_type, report_processing_status_list: '_DONE_')
         if response.parse['ReportRequestInfo'].first.present?
           previous_done_report = response.parse['ReportRequestInfo'].first
@@ -88,6 +90,34 @@ module MWS
         response = connect!(marketplace).get_report(id)
         response = response.parse
         ReportParser::ParseService.new(response, report_type, marketplace)
+      end
+
+      def get_settlement_reports_info(marketplace)
+        response = connect!(marketplace).get_report_request_list(report_type_list: '_GET_V2_SETTLEMENT_REPORT_DATA_FLAT_FILE_V2_', report_processing_status_list: '_DONE_')
+        response = response.parse
+        response['ReportRequestInfo'].each do |item|
+          Report.find_or_create_by(report_params(item, marketplace))
+        end
+      end
+
+      def get_settlement_report_data(report)
+        marketplace = report.marketplace
+        response = connect!(marketplace).get_report(report.generated_report_id)
+        response = response.parse
+        ReportParser::ParseService.new(response, report.report_type, marketplace)
+      end
+
+      private
+
+      def report_params(params, marketplace)
+        {
+          marketplace: marketplace,
+          user: marketplace.user,
+          generated_report_id: params['GeneratedReportId'],
+          start_date: params['StartDate'],
+          end_date: params['EndDate'],
+          report_type: params['ReportType']
+        }
       end
     end
 

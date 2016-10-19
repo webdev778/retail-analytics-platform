@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161012134329) do
+ActiveRecord::Schema.define(version: 20161019082137) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -93,6 +93,20 @@ ActiveRecord::Schema.define(version: 20161012134329) do
     t.integer  "remain_units"
     t.integer  "cost_remain"
     t.index ["marketplace_id"], name: "index_received_inventories_on_marketplace_id", using: :btree
+  end
+
+  create_table "reports", force: :cascade do |t|
+    t.integer  "user_id"
+    t.integer  "marketplace_id"
+    t.string   "generated_report_id"
+    t.datetime "start_date"
+    t.datetime "end_date"
+    t.integer  "report_type"
+    t.boolean  "processed"
+    t.datetime "created_at",          null: false
+    t.datetime "updated_at",          null: false
+    t.index ["marketplace_id"], name: "index_reports_on_marketplace_id", using: :btree
+    t.index ["user_id"], name: "index_reports_on_user_id", using: :btree
   end
 
   create_table "transactions", force: :cascade do |t|
