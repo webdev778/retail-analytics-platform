@@ -52,7 +52,6 @@ module FileReader
           end
         end
       end
-
       @file_record.update_attributes(finished_at: Time.zone.now,
                                      imported_new: count_of_new_records,
                                      already_exist: count_of_existing_records,

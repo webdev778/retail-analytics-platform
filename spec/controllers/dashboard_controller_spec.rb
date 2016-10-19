@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require 'rails_helper'
 
 RSpec.describe DashboardController, type: :controller do
@@ -11,6 +12,14 @@ RSpec.describe DashboardController, type: :controller do
     it 'allows authenticated access' do
       sign_in
       get :index
+      expect(response).to be_success
+    end
+  end
+
+  describe 'GET #total' do
+    it 'dashboard total' do
+      sign_in
+      get :total
       expect(response).to be_success
     end
   end

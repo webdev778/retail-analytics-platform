@@ -4,7 +4,7 @@ module ApplicationHelper
   end
 
   def file_status(file)
-    file.status ? file.status : 'will be proceed in few minutes'
+    file.status.presence || 'will be proceed in few minutes'
   end
 
   def bootstrap_class_for(flash_type)
