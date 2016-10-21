@@ -74,6 +74,8 @@ gem 'faker'
 gem 'groupdate'
 gem 'chartkick'
 
+gem 'typhoeus'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platform: :mri
@@ -88,7 +90,8 @@ group :development, :test do
   gem 'bullet', group: :development
   gem 'better_errors', group: :development
   gem 'binding_of_caller', group: :development
-
+  gem 'webmock'
+  gem 'vcr'
 end
 
 group :test do

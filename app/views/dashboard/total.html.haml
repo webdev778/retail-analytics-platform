@@ -15,7 +15,7 @@
           %tbody.scroll-pane
             %tr
               %td.col-sm-9 Inventory Value
-              %td.col-sm-3.text-center N/A
+              %td.col-sm-3.text-center= @total_data.cost_remain
             %tr
               %td.col-sm-9 Average ROI
               %td.col-sm-3.text-center N/A
@@ -45,6 +45,6 @@
               %td.col-sm-3.text-center N/A
   .col-lg-6.ctext
     %h3.text-center ROI & Sell Through Over Age
-    = high_chart('roi', @roi_chart)
+    = high_chart('roi_and_sell_through', @roi_and_sell_through_chart)
     %h3.text-center Sales & Inv Turnover Over Time
-    .text-center No data
+    = high_chart('sales_and_inv', @sales_and_inv_chart)

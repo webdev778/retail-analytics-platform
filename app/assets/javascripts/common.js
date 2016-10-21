@@ -25,7 +25,7 @@ function tableScroll() {
 		};
 
 		var customHeight = 400;
-console.log($(this).height());
+
 		if ($(this).height() > customHeight) {
 			$(this).height(customHeight)
 			$(this).jScrollPane(settings);

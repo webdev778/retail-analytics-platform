@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require 'rails_helper'
 
 RSpec.describe FulfillmentInboundShipmentsController, type: :controller do
@@ -12,5 +13,4 @@ RSpec.describe FulfillmentInboundShipmentsController, type: :controller do
       expect(assigns(:fulfillment_inbound_shipments)).to eq([fulfillment_inbound_shipment])
     end
   end
-
 end

@@ -12,7 +12,7 @@ module FileReader
 
       def prepare_date_purchased(date)
         date = date.delete("\n").to_s
-        Date.strptime(date.delete(' '), '%m/%d/%Y')
+        date.present? ? Date.strptime(date.delete(' '), '%m/%d/%Y') : nil
       end
     end
 
@@ -39,15 +39,19 @@ module FileReader
 
       reader.iterate do |data|
         inventory_params = data.slice(:msku, :price, :date_purchased)
-        inventory = @current_user.inventories.find_by(inventory_params)
-        if inventory
+        price = BigDecimal.new(data[:price].to_s).truncate(2)
+        inventory = @current_user.inventories.where(msku: data[:msku], date_purchased: data[:date_purchased], price: price )
+        if inventory.present?
           count_of_existing_records += 1
         else
-          @current_user.inventories.create(inventory_params)
-          count_of_new_records += 1
+          record = @current_user.inventories.new(inventory_params)
+          if record.save
+            count_of_new_records += 1
+          else
+            count_of_existing_records += 1
+          end
         end
       end
-
       @file_record.update_attributes(finished_at: Time.zone.now,
                                      imported_new: count_of_new_records,
                                      already_exist: count_of_existing_records,

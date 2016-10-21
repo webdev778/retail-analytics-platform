@@ -14,8 +14,10 @@ module ReportParser
       case @report_type
       when '_GET_FBA_FULFILLMENT_INVENTORY_RECEIPTS_DATA_'
         received_inventory
+      when '_GET_V2_SETTLEMENT_REPORT_DATA_FLAT_FILE_V2_'
+        settlement_report
       else
-        p 'undefined report type !!!!'
+        Rails.logger.info('undefined report type')
       end
     end
 
@@ -24,6 +26,14 @@ module ReportParser
         ReceivedInventory.create(received_inventory_params(line, @marketplace))
       end
       @marketplace.update_attribute(:get_received_inventory_finished, Time.now)
+      ProcessDataJob.perform_later(@marketplace.user)
+    end
+
+    def settlement_report
+      byebug
+      # @data.each do |line|
+      #   # byebug
+      # end
     end
 
     private

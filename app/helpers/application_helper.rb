@@ -4,10 +4,10 @@ module ApplicationHelper
   end
 
   def file_status(file)
-    file.status ? file.status : 'will be proceed in few minutes'
+    file.status.presence || 'will be proceed in few minutes'
   end
 
-  def bootstrap_class_for flash_type
+  def bootstrap_class_for(flash_type)
     classes_list = { success: 'alert-success',
                      error: 'alert-danger',
                      alert: 'alert-warning',
@@ -20,10 +20,14 @@ module ApplicationHelper
     # alert notice fade in
     flash.each do |msg_type, message|
       concat(content_tag(:div, message, class: "alert #{bootstrap_class_for(msg_type)} fade in") do
-        concat content_tag(:button, '×', class: "close", data: { dismiss: 'alert' })
+        concat content_tag(:button, '×', class: 'close', data: { dismiss: 'alert' })
         concat message
       end)
     end
     nil
+  end
+
+  def format_datetime(date)
+    date.present? ? date.strftime('%d/%m/%Y') : '-'
   end
 end

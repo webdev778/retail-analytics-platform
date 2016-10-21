@@ -30,3 +30,13 @@ en:
       units_count: Total units
       units_sold_count: Units sold
       total_revenue: Total revenue
+  charts:
+    sales_and_inventory_turnover:
+      title: Sales & Inventory Turnover over Time
+      sales: Sales Turnover
+      inv: Inventory Turnover
+    roi_and_sell_through:
+      title: ROI & Sell Through Over Age
+      roi: ROI Over Age
+      sell_through: Sell Through Over Age
+

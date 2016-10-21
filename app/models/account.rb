@@ -14,6 +14,6 @@ class Account < ApplicationRecord
   private
 
   def check_connection
-    errors.add(:base, message: 'invalid credentials') unless MWS::ImportService.check_connection(self, self.marketplace)
+    errors.add(:base, message: 'invalid credentials') unless MWS::ImportService.check_connection(self, marketplace)
   end
 end

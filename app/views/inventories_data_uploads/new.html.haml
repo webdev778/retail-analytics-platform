@@ -42,9 +42,9 @@
               %td.col-sm-4
                 = inventory.msku
               %td.col-sm-4
-                = "$ #{inventory.price}"
+                == $ #{inventory.price}
               %td.col-sm-4
-                = inventory.date_purchased.strftime('%d/%m/%Y')
+                = format_datetime(inventory.date_purchased)
       = paginate @inventories
 
 = javascript_include_tag 'time'
