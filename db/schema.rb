@@ -31,6 +31,7 @@ ActiveRecord::Schema.define(version: 20161021131247) do
     t.decimal  "price",                 precision: 10, scale: 2
     t.datetime "created_at",                                     null: false
     t.datetime "updated_at",                                     null: false
+    t.integer  "total_received_units"
     t.index ["marketplace_id"], name: "index_fulfillment_inbound_shipments_on_marketplace_id", using: :btree
   end
 
