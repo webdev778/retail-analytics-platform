@@ -35,4 +35,8 @@ en:
       title: Sales & Inventory Turnover over Time
       sales: Sales Turnover
       inv: Inventory Turnover
+    roi_and_sell_through:
+      title: ROI & Sell Through Over Age
+      roi: ROI Over Age
+      sell_through: Sell Through Over Age
 

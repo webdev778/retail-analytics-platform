@@ -30,6 +30,34 @@ class TotalChartsService
     end
   end
 
+  def roi_and_sell_through
+    charts_data = roi_and_sell_through_data
+
+    LazyHighCharts::HighChart.new('graph') do |f|
+      f.title(text: I18n.t('charts.roi_and_sell_through.title'))
+      f.xAxis(
+          type: :category,
+          title: '',
+          labels: { rotation: -45, align: 'right' }
+      )
+      f.series(name: I18n.t('charts.roi_and_sell_through.roi'), yAxis: 0,
+               data: charts_data[:roi], color: '#e8803b', lineWidth: 5)
+      f.series(name: I18n.t('charts.roi_and_sell_through.sell_through'), yAxis: 0,
+               data: charts_data[:sell_through], color: '#5797d4', lineWidth: 5)
+      f.plotOptions line: { marker: { enabled: false } }
+      f.yAxis [
+                  {
+                      min: 0,
+                      max: 100,
+                      tickInterval: 20,
+                      labels: { format: '{value:,.0f} %' }
+                  }
+              ]
+      f.legend(borderColor: nil)
+      f.chart(type: 'line')
+    end
+  end
+
   private
 
   def sales_and_inventory_data
@@ -50,6 +78,21 @@ class TotalChartsService
   def avg_cost_remain_for_30_days
     ReceivedInventory.select('AVG(cost_remain) cost_remain')
         .where('received_date > received_date - interval \'30\' day')
+  end
+
+  def roi_and_sell_through_data
+    data = ReceivedInventory.select("DATE_PART('day', COALESCE(sold_date, now()) - received_date) age")
+               .select('SUM(revenue - fees - cost_sold)/SUM(cost_sold) roi')
+               .select('SUM(sold_units)/SUM(quantity) sell_through')
+               .group(:age)
+               .order('1')
+    roi_data = []
+    sell_through_data = []
+    data.each do |grouped|
+      roi_data.push [grouped.age, grouped.roi.to_f]
+      sell_through_data.push [grouped.age, grouped.sell_through.to_f]
+    end
+    { roi: roi_data, sell_through: sell_through_data }
   end
 
 end
