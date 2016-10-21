@@ -26,6 +26,7 @@ class TotalChartsService
                   }
               ]
       f.legend(borderColor: nil)
+      f.tooltip pointFormat: '{series.name}: <b>{point.y:,.2f}</b>'
       f.chart(type: 'line')
     end
   end
@@ -54,6 +55,7 @@ class TotalChartsService
                   }
               ]
       f.legend(borderColor: nil)
+      f.tooltip pointFormat: '{series.name}: <b>{point.y:,.2f}</b>'
       f.chart(type: 'line')
     end
   end
@@ -78,12 +80,14 @@ class TotalChartsService
   def avg_cost_remain_for_30_days
     ReceivedInventory.select('AVG(cost_remain) cost_remain')
         .where('received_date > received_date - interval \'30\' day')
+        .active
   end
 
   def roi_and_sell_through_data
     data = ReceivedInventory.select("DATE_PART('day', COALESCE(sold_date, now()) - received_date) age")
-               .select('SUM(revenue - fees - cost_sold)/SUM(cost_sold) roi')
-               .select('SUM(sold_units)/SUM(quantity) sell_through')
+               .select('SUM(revenue - fees - cost_sold)/NULLIF(SUM(cost_sold), 0)*100 roi')
+               .select('SUM(sold_units::float)/SUM(quantity::float)*100 sell_through')
+               .active
                .group(:age)
                .order('1')
     roi_data = []
