@@ -66,27 +66,21 @@ class TotalChartsService
     data = Transaction.group_by_day(:date_time)
                .select('MIN(date_time) date_time')
                .select('SUM(total) total')
-               .select("SUM(total)/(#{avg_cost_remain_for_30_days.to_sql}) turnover")
+               .select_sales_turnover
                .order('MIN(date_time)')
     sales_series_data = []
     turnover_series_data = []
     data.each do |grouped|
       sales_series_data.push [grouped.date_time.to_datetime.to_i * 1000, grouped.total.to_f]
-      turnover_series_data.push [grouped.date_time.to_datetime.to_i * 1000, grouped.turnover.to_f]
+      turnover_series_data.push [grouped.date_time.to_datetime.to_i * 1000, grouped.sales_turnover.to_f]
     end
     { sales_series_data: sales_series_data, turnover_series_data: turnover_series_data }
   end
 
-  def avg_cost_remain_for_30_days
-    ReceivedInventory.select('AVG(cost_remain) cost_remain')
-        .where('received_date > received_date - interval \'30\' day')
-        .active
-  end
-
   def roi_and_sell_through_data
     data = ReceivedInventory.select("DATE_PART('day', COALESCE(sold_date, now()) - received_date) age")
-               .select('SUM(revenue - fees - cost_sold)/NULLIF(SUM(cost_sold), 0)*100 roi')
-               .select('SUM(sold_units::float)/SUM(quantity::float)*100 sell_through')
+               .select_roi
+               .select_sell_through
                .active
                .group(:age)
                .order('1')

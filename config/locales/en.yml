@@ -21,6 +21,7 @@
 
 en:
   hello: "Hello world"
+  not_available: N/A
   fulfillment_inbound_shipments:
     index:
       title: Fulfillment inbound shipments
