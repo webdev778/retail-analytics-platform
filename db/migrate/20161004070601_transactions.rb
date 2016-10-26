@@ -2,13 +2,14 @@ class Transactions < ActiveRecord::Migration[5.0]
   def change
     create_table :transactions do |t|
       t.belongs_to :marketplace, index: true
+      t.belongs_to :report, index: true
 
       t.datetime :date_time
       t.string :settlement_id
-      t.string :type
-      t.string :order_id
+      t.string :transaction_type
+      t.string :external_order_id
       t.string :sku
-      t.string :quantity
+      t.integer :quantity
       t.string :product_sales
       t.string :shipping_credits
       t.string :gift_wrap_credits

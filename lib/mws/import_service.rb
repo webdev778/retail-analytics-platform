@@ -43,6 +43,8 @@ module MWS
 
         # _GET_AMAZON_FULFILLED_SHIPMENTS_DATA_ ???
 
+        # _GET_V2_SETTLEMENT_REPORT_DATA_FLAT_FILE_V2_
+
         response = connect!(marketplace).request_report(report_type)
         response = response.parse
         if response['ReportRequestInfo']['ReportRequestId'].present?
@@ -52,7 +54,7 @@ module MWS
       end
 
       def initial_import(marketplace)
-        ReportsJob.perform_later(marketplace, '_GET_FBA_FULFILLMENT_INVENTORY_RECEIPTS_DATA_')
+        ReportsJob.perform_later(marketplace, '_GET_FBA_FULFILLMENT_INVENTORY_RECEIPTS_DATA_', true)
       end
 
       def get_report_status(marketplace, id)
@@ -64,7 +66,7 @@ module MWS
         if report_status == '_DONE_'
           get_data(marketplace, response['ReportRequestInfo']['GeneratedReportId'], report_type)
         elsif report_status == '_CANCELLED_'
-          get_previous_report(marketplace, id, report_type)
+          get_previous_report(marketplace, report_type, id)
         elsif report_status == '_DONE_NO_DATA_'
           request_report(marketplace, report_type)
         else
@@ -72,7 +74,7 @@ module MWS
         end
       end
 
-      def get_previous_report(marketplace, id, report_type)
+      def get_previous_report(marketplace, report_type, id = nil)
         response = connect!(marketplace).get_report_request_list(report_type_list: report_type, report_processing_status_list: '_DONE_')
         if response.parse['ReportRequestInfo'].first.present?
           previous_done_report = response.parse['ReportRequestInfo'].first
@@ -89,42 +91,40 @@ module MWS
         response = response.parse
         ReportParser::ParseService.new(response, report_type, marketplace)
       end
+
+      def get_settlement_reports_info(marketplace)
+        response = connect!(marketplace).get_report_request_list(report_type_list: '_GET_V2_SETTLEMENT_REPORT_DATA_FLAT_FILE_V2_', report_processing_status_list: '_DONE_')
+        response = response.parse
+        response['ReportRequestInfo'].each do |item|
+          Report.find_or_create_by(report_params(item, marketplace))
+        end
+        SettlementReportJob.set(wait: 5.minutes).perform_later(marketplace.user)
+      end
+
+      def get_settlement_report_data(report)
+        marketplace = report.marketplace
+        response = connect!(marketplace).get_report(report.generated_report_id)
+        response = response.parse
+        ReportParser::ParseService.new(response, report.report_type, marketplace, report)
+        report.update_attributes(get_data: Time.zone.now)
+      end
+
+      private
+
+      def report_params(params, marketplace)
+        {
+          marketplace: marketplace,
+          user: marketplace.user,
+          generated_report_id: params['GeneratedReportId'],
+          start_date: params['StartDate'],
+          end_date: params['EndDate'],
+          report_type: params['ReportType']
+        }
+      end
     end
 
     def initialize(marketplace)
       @reports_client = MWS::ImportService.connect!(marketplace)
     end
-
-    # private
-    # def status_check
-    #   #return {"Status"=>"GREEN", "Timestamp"=>"2016-09-21T12:50:49.979Z"}
-    #   @marketplace.get_service_status.parse
-    # end
-
-    # def get_fulfillment_inbound_shipments_list
-    #   # client.list_inbound_shipments({shipment_status_list: 'closed'})
-    #   # statuses = %w(working shipped in_transit delivered checked_in receiving closed cancelled)
-    #   statuses = 'working'
-    #   response = @marketplace.list_inbound_shipments({ shipment_status_list: statuses })
-    #   response = response.parse
-    #   response_complete = []
-    #   response_complete << response
-    #   while response["NextToken"].present? do
-    #     response =  @marketplace.list_inbound_shipments_by_next_token(response["NextToken"])
-    #     response = response.parse
-    #     response_complete << response
-    #   end
-    #   response_complete
-    #   response_complete.each do |response|
-    #     response['ShipmentData']['member'].each do |response_part|
-    #       p '------------------------------------------------'
-    #       p response_part
-    #       p response_part['ShipmentId']
-    #       p response_part.try(:[], 'EstimatedBoxContentsFee')
-    #       p response_part['ShipmentName']
-    #       p '------------------------------------------------'
-    #     end
-    #   end
-    # end
   end
 end

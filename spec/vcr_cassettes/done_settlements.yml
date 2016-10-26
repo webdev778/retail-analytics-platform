@@ -1,0 +1,136 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: https://mws.amazonservices.com/
+    body:
+      encoding: UTF-8
+      string: AWSAccessKeyId=AKIAJA3HRHJWHH2CEBAQ&Action=GetReportRequestList&ReportProcessingStatusList.Status.1=_DONE_&ReportTypeList.Type.1=_GET_V2_SETTLEMENT_REPORT_DATA_FLAT_FILE_V2_&SellerId=A1HRWKXDFQTX7Z&SignatureMethod=HmacSHA256&SignatureVersion=2&Timestamp=2016-10-24T07%3A48%3A44Z&Version=2009-01-01&Signature=W2G89wkgebJVH3j6T4IaqIgkNJoCGOhAJK186SmEXYg%3D
+    headers:
+      User-Agent:
+      - Jeff/1.5.1 (Language=Ruby; pc)
+      Content-Type:
+      - application/x-www-form-urlencoded
+  response:
+    status:
+      code: 200
+      message: ''
+    headers:
+      Server:
+      - Server
+      Date:
+      - Mon, 24 Oct 2016 07:48:44 GMT
+      Content-Type:
+      - text/xml
+      Content-Length:
+      - '4227'
+      Connection:
+      - keep-alive
+      X-Mws-Quota-Max:
+      - '80.0'
+      X-Mws-Quota-Remaining:
+      - '79.0'
+      X-Mws-Quota-Resetson:
+      - '2016-10-24T07:52:00.000Z'
+      X-Amz-Date:
+      - Mon, 24 Oct 2016 07:48:44 GMT
+      Vary:
+      - Accept-Encoding,User-Agent
+      X-Amzn-Authorization:
+      - AAA SignedHeaders=X-Amz-Date, identity=com.amazon.aaa.FrpAndromedaReportsPlugin.AndromedaControlService.amzn1.aaa.id.qhz3ylg755gkejyk5sh44qm3wy.Default/1,
+        Signed=true, Encrypted=false, Signature=fH5hxixjZeegpLy+yJimRC+c9Drj9+O7HPkqzKDYFkU=,
+        Algorithm=HmacSHA256
+      X-Mws-Request-Id:
+      - cb262701-7d0f-4be4-a2e7-c69e217b1c81
+      X-Mws-Timestamp:
+      - '2016-10-24T07:48:44.828Z'
+      X-Mws-Response-Context:
+      - qXFM7JV+n8gGfpSYdVRxkXjP5JTf1aNlTGPny/yil6Hbus3Vm4f0CXRLZNqCeY7qztZw+jlM6ZWf
+        aRHhZcrF+Q==
+    body:
+      encoding: ASCII-8BIT
+      string: |
+        <?xml version="1.0"?>
+        <GetReportRequestListResponse xmlns="http://mws.amazonaws.com/doc/2009-01-01/">
+          <GetReportRequestListResult>
+            <HasNext>false</HasNext>
+            <ReportRequestInfo>
+              <ReportType>_GET_V2_SETTLEMENT_REPORT_DATA_FLAT_FILE_V2_</ReportType>
+              <ReportProcessingStatus>_DONE_</ReportProcessingStatus>
+              <EndDate>2016-10-17T13:55:07+00:00</EndDate>
+              <Scheduled>false</Scheduled>
+              <ReportRequestId>164913017091</ReportRequestId>
+              <StartedProcessingDate>2016-10-17T14:21:35+00:00</StartedProcessingDate>
+              <SubmittedDate>2016-10-17T14:21:35+00:00</SubmittedDate>
+              <StartDate>2016-10-03T13:56:18+00:00</StartDate>
+              <CompletedDate>2016-10-17T14:21:35+00:00</CompletedDate>
+              <GeneratedReportId>3123308276017091</GeneratedReportId>
+            </ReportRequestInfo>
+            <ReportRequestInfo>
+              <ReportType>_GET_V2_SETTLEMENT_REPORT_DATA_FLAT_FILE_V2_</ReportType>
+              <ReportProcessingStatus>_DONE_</ReportProcessingStatus>
+              <EndDate>2016-10-03T13:56:18+00:00</EndDate>
+              <Scheduled>false</Scheduled>
+              <ReportRequestId>163313017078</ReportRequestId>
+              <StartedProcessingDate>2016-10-04T10:55:38+00:00</StartedProcessingDate>
+              <SubmittedDate>2016-10-04T10:55:38+00:00</SubmittedDate>
+              <StartDate>2016-09-19T13:55:59+00:00</StartDate>
+              <CompletedDate>2016-10-04T10:55:38+00:00</CompletedDate>
+              <GeneratedReportId>3016874043017078</GeneratedReportId>
+            </ReportRequestInfo>
+            <ReportRequestInfo>
+              <ReportType>_GET_V2_SETTLEMENT_REPORT_DATA_FLAT_FILE_V2_</ReportType>
+              <ReportProcessingStatus>_DONE_</ReportProcessingStatus>
+              <EndDate>2016-09-19T13:55:59+00:00</EndDate>
+              <Scheduled>false</Scheduled>
+              <ReportRequestId>161460017063</ReportRequestId>
+              <StartedProcessingDate>2016-09-19T14:21:32+00:00</StartedProcessingDate>
+              <SubmittedDate>2016-09-19T14:21:32+00:00</SubmittedDate>
+              <StartDate>2016-09-05T13:55:56+00:00</StartDate>
+              <CompletedDate>2016-09-19T14:21:32+00:00</CompletedDate>
+              <GeneratedReportId>2887660707017063</GeneratedReportId>
+            </ReportRequestInfo>
+            <ReportRequestInfo>
+              <ReportType>_GET_V2_SETTLEMENT_REPORT_DATA_FLAT_FILE_V2_</ReportType>
+              <ReportProcessingStatus>_DONE_</ReportProcessingStatus>
+              <EndDate>2016-09-05T13:55:56+00:00</EndDate>
+              <Scheduled>false</Scheduled>
+              <ReportRequestId>159780017049</ReportRequestId>
+              <StartedProcessingDate>2016-09-05T14:17:52+00:00</StartedProcessingDate>
+              <SubmittedDate>2016-09-05T14:17:52+00:00</SubmittedDate>
+              <StartDate>2016-08-22T13:55:58+00:00</StartDate>
+              <CompletedDate>2016-09-05T14:17:52+00:00</CompletedDate>
+              <GeneratedReportId>2771948847017049</GeneratedReportId>
+            </ReportRequestInfo>
+            <ReportRequestInfo>
+              <ReportType>_GET_V2_SETTLEMENT_REPORT_DATA_FLAT_FILE_V2_</ReportType>
+              <ReportProcessingStatus>_DONE_</ReportProcessingStatus>
+              <EndDate>2016-08-22T13:55:58+00:00</EndDate>
+              <Scheduled>false</Scheduled>
+              <ReportRequestId>158237017035</ReportRequestId>
+              <StartedProcessingDate>2016-08-22T14:21:50+00:00</StartedProcessingDate>
+              <SubmittedDate>2016-08-22T14:21:50+00:00</SubmittedDate>
+              <StartDate>2016-08-08T13:55:58+00:00</StartDate>
+              <CompletedDate>2016-08-22T14:21:50+00:00</CompletedDate>
+              <GeneratedReportId>2650479163017035</GeneratedReportId>
+            </ReportRequestInfo>
+            <ReportRequestInfo>
+              <ReportType>_GET_V2_SETTLEMENT_REPORT_DATA_FLAT_FILE_V2_</ReportType>
+              <ReportProcessingStatus>_DONE_</ReportProcessingStatus>
+              <EndDate>2016-08-08T13:55:58+00:00</EndDate>
+              <Scheduled>false</Scheduled>
+              <ReportRequestId>156541017021</ReportRequestId>
+              <StartedProcessingDate>2016-08-08T14:22:30+00:00</StartedProcessingDate>
+              <SubmittedDate>2016-08-08T14:22:30+00:00</SubmittedDate>
+              <StartDate>2016-07-25T13:53:58+00:00</StartDate>
+              <CompletedDate>2016-08-08T14:22:30+00:00</CompletedDate>
+              <GeneratedReportId>2537185607017021</GeneratedReportId>
+            </ReportRequestInfo>
+          </GetReportRequestListResult>
+          <ResponseMetadata>
+            <RequestId>cb262701-7d0f-4be4-a2e7-c69e217b1c81</RequestId>
+          </ResponseMetadata>
+        </GetReportRequestListResponse>
+    http_version: 
+  recorded_at: Mon, 24 Oct 2016 07:48:45 GMT
+recorded_with: VCR 3.0.3

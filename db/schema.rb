@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161012134329) do
+ActiveRecord::Schema.define(version: 20161026091246) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -83,26 +83,42 @@ ActiveRecord::Schema.define(version: 20161012134329) do
     t.string   "product_name"
     t.integer  "quantity"
     t.string   "fba_shipment_id"
-    t.datetime "created_at",                               null: false
-    t.datetime "updated_at",                               null: false
+    t.datetime "created_at",                                           null: false
+    t.datetime "updated_at",                                           null: false
     t.decimal  "price_per_unit",  precision: 10, scale: 2
     t.decimal  "price_total",     precision: 10, scale: 2
     t.datetime "sold_date"
-    t.integer  "sold_units"
+    t.integer  "sold_units",                               default: 0
     t.decimal  "cost_sold",       precision: 10, scale: 2
-    t.integer  "remain_units"
-    t.integer  "cost_remain"
+    t.integer  "remain_units",                             default: 0
+    t.decimal  "cost_remain",     precision: 10, scale: 2
     t.index ["marketplace_id"], name: "index_received_inventories_on_marketplace_id", using: :btree
+  end
+
+  create_table "reports", force: :cascade do |t|
+    t.integer  "user_id"
+    t.integer  "marketplace_id"
+    t.string   "generated_report_id"
+    t.datetime "start_date"
+    t.datetime "end_date"
+    t.integer  "report_type"
+    t.datetime "get_data"
+    t.datetime "processed"
+    t.datetime "created_at",          null: false
+    t.datetime "updated_at",          null: false
+    t.index ["marketplace_id"], name: "index_reports_on_marketplace_id", using: :btree
+    t.index ["user_id"], name: "index_reports_on_user_id", using: :btree
   end
 
   create_table "transactions", force: :cascade do |t|
     t.integer  "marketplace_id"
+    t.integer  "report_id"
     t.datetime "date_time"
     t.string   "settlement_id"
-    t.string   "type"
-    t.string   "order_id"
+    t.string   "transaction_type"
+    t.string   "external_order_id"
     t.string   "sku"
-    t.string   "quantity"
+    t.integer  "quantity"
     t.string   "product_sales"
     t.string   "shipping_credits"
     t.string   "gift_wrap_credits"
@@ -118,7 +134,9 @@ ActiveRecord::Schema.define(version: 20161012134329) do
     t.decimal  "ship_promotion_discount", precision: 10, scale: 2
     t.datetime "created_at",                                       null: false
     t.datetime "updated_at",                                       null: false
+    t.integer  "unprocessed_quantity"
     t.index ["marketplace_id"], name: "index_transactions_on_marketplace_id", using: :btree
+    t.index ["report_id"], name: "index_transactions_on_report_id", using: :btree
   end
 
   create_table "users", force: :cascade do |t|
