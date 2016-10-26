@@ -3,7 +3,15 @@ class ReceivedInventory < ApplicationRecord
 
   scope :active, -> { where('quantity > 0') }
   scope :select_roi, -> { select('SUM(revenue - fees - cost_sold)/NULLIF(SUM(cost_sold), 0)*100 roi') }
+  scope :select_prev_roi, -> do
+    select('SUM(SUM(revenue) - SUM(fees) - SUM(cost_sold)) OVER (ORDER BY MAX(received_date))/
+            NULLIF(SUM(SUM(cost_sold)) OVER (ORDER BY MAX(received_date)), 0)*100 roi')
+  end
   scope :select_sell_through, -> { select('SUM(sold_units::float)/SUM(quantity::float)*100 sell_through') }
+  scope :select_prev_sell_through, -> do
+    select('SUM(SUM(sold_units::float)) OVER (ORDER BY MAX(received_date))/
+            SUM(SUM(quantity::float)) OVER (ORDER BY MAX(received_date))*100 sell_through')
+  end
   scope :avg_cost_remain_for_30_days, -> do
     select('AVG(cost_remain) cost_remain')
         .where('received_date > NOW() - interval \'30\' day')

@@ -79,8 +79,8 @@ class TotalChartsService
 
   def roi_and_sell_through_data
     data = ReceivedInventory.select("DATE_PART('day', COALESCE(sold_date, now()) - received_date) age")
-               .select_roi
-               .select_sell_through
+               .select_prev_roi
+               .select_prev_sell_through
                .active
                .group(:age)
                .order('1')
