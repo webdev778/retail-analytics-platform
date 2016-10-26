@@ -59,13 +59,9 @@ module DataProcessing
         if item
           item_total_quantity = item.remain_units
           difference = item_total_quantity - left_in_transaction
-          # byebug
-          p '-----------------------'
-          tmp = left_in_transaction unless difference < 0
+
           left_in_transaction = difference < 0 ? difference.abs : 0
-          p left_in_transaction
-          p '-----------------------'
-          # left_in_transaction = 0 if dif_2
+
           if difference < 0
             # left_in_transaction is bigger that in current received inventory
             # we have one more received inventories
@@ -81,10 +77,6 @@ module DataProcessing
             item.update_attributes(sold_units: item.sold_units + sold_now,
                                   remain_units: difference)
           end
-          # if still left
-          # if left and no received inventories
-          # if all processed
-          p 'finished'
         else
           # no more received inventories
           # but left_in_transaction is still present
