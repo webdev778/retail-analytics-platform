@@ -19,7 +19,7 @@
             %td.col-sm-2= "$ #{fulfillment_inbound_shipment.price}"
             %td.col-sm-2= fulfillment_inbound_shipment.total_received_units
             %td.col-sm-2= fulfillment_inbound_shipment.total_sold
-            %td.col-sm-2  -
+            %td.col-sm-2= fulfillment_inbound_shipment.total_revenue
 
     = paginate @fulfillment_inbound_shipments
   - else
