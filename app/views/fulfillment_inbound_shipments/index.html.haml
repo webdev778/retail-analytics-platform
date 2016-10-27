@@ -1,23 +1,26 @@
 %h4 Shipment List
 .content-box
-  .table-scroll
-    %table.table.table-fixed
-      %thead
-        %tr
-          %th.col-sm-2= t '.shipment_id'
-          %th.col-sm-2= t '.external_date_created'
-          %th.col-sm-2= t '.price'
-          %th.col-sm-2= t '.units_count'
-          %th.col-sm-2= t '.units_sold_count'
-          %th.col-sm-2= t '.total_revenue'
-      %tbody.scroll-pane
-      - @fulfillment_inbound_shipments.each do |fulfillment_inbound_shipment|
-        %tr
-          %td.col-sm-2= fulfillment_inbound_shipment.shipment_id
-          %td.col-sm-2= format_datetime(fulfillment_inbound_shipment.external_date_created)
-          %td.col-sm-2= "$ #{fulfillment_inbound_shipment.price}"
-          %td.col-sm-2= fulfillment_inbound_shipment.total_received_units
-          %td.col-sm-2  -
-          %td.col-sm-2  -
+  - if @fulfillment_inbound_shipments.present?
+    .table-scroll
+      %table.table.table-fixed
+        %thead
+          %tr
+            %th.col-sm-2= t '.shipment_id'
+            %th.col-sm-2= t '.external_date_created'
+            %th.col-sm-2= t '.price'
+            %th.col-sm-2= t '.units_count'
+            %th.col-sm-2= t '.units_sold_count'
+            %th.col-sm-2= t '.total_revenue'
+        %tbody.scroll-pane
+        - @fulfillment_inbound_shipments.each do |fulfillment_inbound_shipment|
+          %tr
+            %td.col-sm-2= fulfillment_inbound_shipment.shipment_id
+            %td.col-sm-2= format_datetime(fulfillment_inbound_shipment.external_date_created)
+            %td.col-sm-2= "$ #{fulfillment_inbound_shipment.price}"
+            %td.col-sm-2= fulfillment_inbound_shipment.total_received_units
+            %td.col-sm-2= fulfillment_inbound_shipment.total_sold
+            %td.col-sm-2  -
 
-  = paginate @fulfillment_inbound_shipments
+    = paginate @fulfillment_inbound_shipments
+  - else
+    %p= "Before data will be available here you should import inventory_data file #{ link_to 'on this page', new_inventories_data_upload_path }."

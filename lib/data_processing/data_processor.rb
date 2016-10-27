@@ -23,13 +23,16 @@ module DataProcessing
           request = ActiveRecord::Base.connection.execute("SELECT"\
                                                           "   SUM(quantity) AS total_quantity,"\
                                                           "   SUM(price_total) AS total_price,"\
+                                                          "   SUM(sold_units) AS total_sold,"\
                                                           "   MIN(received_date) AS date"\
                                                           " FROM received_inventories WHERE fba_shipment_id = '#{item}'")
           shipment_items_quantity = request.field_values('total_quantity').first
           shipment_total_cost = request.field_values('total_price').first
+          shipment_total_sold = request.field_values('total_sold').first
           shipment_minimal_date = request.field_values('date').first
           shipment_details = { shipment: item,
                                quantity: shipment_items_quantity,
+                               sold: shipment_total_sold,
                                cost: shipment_total_cost,
                                date: shipment_minimal_date }
           FulfillmentInboundShipment.create(fulfillment_inbound_shipment_params(shipment_details, current_user))
@@ -97,6 +100,7 @@ module DataProcessing
           shipment_id: shipment_id,
           price: shipment_details[:cost],
           total_received_units: shipment_details[:quantity],
+          total_sold: shipment_details[:sold],
           external_date_created: shipment_details[:date]
         }
       end

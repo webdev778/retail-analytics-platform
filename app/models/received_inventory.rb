@@ -1,6 +1,8 @@
 class ReceivedInventory < ApplicationRecord
   belongs_to :marketplace
 
+  validates_uniqueness_of :fnsku, scope: [:sku, :product_name, :quantity, :fba_shipment_id, :received_date]
+
   scope :positive_quantity, -> { where('quantity > 0') }
   scope :sold, -> { where('quantity = sold_units') }
   scope :with_unsold, -> { where('quantity > sold_units AND quantity > 0') }
