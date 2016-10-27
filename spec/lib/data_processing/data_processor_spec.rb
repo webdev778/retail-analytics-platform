@@ -31,6 +31,13 @@ describe DataProcessing::DataProcessor do
            sku: '123')
   end
 
+  before do
+    Timecop.freeze(Time.local(1990))
+  end
+
+  after do
+    Timecop.return
+  end
 
   context 'received_inventories quantity more that in transactions' do
     let(:transaction) do
@@ -62,7 +69,11 @@ describe DataProcessing::DataProcessor do
       report.reload
 
       expect(received_inventory.sold_units).to eq 1
+      expect(received_inventory.remain_units).to eq 0
+      expect(received_inventory.sold_date).to eq transaction.date_time
       expect(received_inventory_2.sold_units).to eq 1
+      expect(received_inventory_2.remain_units).to eq 3
+      expect(received_inventory_2.sold_date).to eq nil
       expect(report.processed).to_not be_nil
     end
   end
@@ -98,7 +109,11 @@ describe DataProcessing::DataProcessor do
       transaction.reload
 
       expect(received_inventory.sold_units).to eq 1
+      expect(received_inventory.remain_units).to eq 0
+      expect(received_inventory.sold_date).to eq transaction.date_time
       expect(received_inventory_2.sold_units).to eq 4
+      expect(received_inventory_2.remain_units).to eq 0
+      expect(received_inventory_2.sold_date).to eq transaction.date_time
       expect(report.processed).to_not be_nil
       expect(transaction.unprocessed_quantity).to eq 1
     end
@@ -135,7 +150,11 @@ describe DataProcessing::DataProcessor do
       transaction.reload
 
       expect(received_inventory.sold_units).to eq 1
+      expect(received_inventory.remain_units).to eq 0
+      expect(received_inventory.sold_date).to eq transaction.date_time
       expect(received_inventory_2.sold_units).to eq 4
+      expect(received_inventory_2.remain_units).to eq 0
+      expect(received_inventory_2.sold_date).to eq transaction.date_time
       expect(report.processed).to_not be_nil
       expect(transaction.unprocessed_quantity).to eq nil
     end
@@ -183,7 +202,11 @@ describe DataProcessing::DataProcessor do
       transaction.reload
 
       expect(received_inventory.sold_units).to eq 1
+      expect(received_inventory.remain_units).to eq 0
+      expect(received_inventory.sold_date).to eq transaction.date_time
       expect(received_inventory_3.sold_units).to eq 4
+      expect(received_inventory_3.remain_units).to eq 0
+      expect(received_inventory.sold_date).to eq transaction.date_time
       expect(report.processed).to_not be_nil
       expect(transaction.unprocessed_quantity).to eq 1
     end
@@ -233,8 +256,14 @@ describe DataProcessing::DataProcessor do
       transaction.reload
 
       expect(received_inventory.sold_units).to eq 1
+      expect(received_inventory.remain_units).to eq 0
+      expect(received_inventory.sold_date).to eq transaction.date_time
       expect(received_inventory_2.sold_units).to eq 4
+      expect(received_inventory_2.remain_units).to eq 0
+      expect(received_inventory_2.sold_date).to eq transaction.date_time
       expect(received_inventory_3.sold_units).to eq 1
+      expect(received_inventory_3.remain_units).to eq 3
+      expect(received_inventory_3.sold_date).to eq nil
       expect(received_inventory_3.remain_units).to eq 3
       expect(report.processed).to_not be_nil
       expect(transaction.unprocessed_quantity).to eq nil
@@ -298,10 +327,13 @@ describe DataProcessing::DataProcessor do
 
       expect(received_inventory.sold_units).to eq 7
       expect(received_inventory.remain_units).to eq 3
+      expect(received_inventory.sold_date).to eq nil
       expect(received_inventory_2.remain_units).to eq 4
       expect(received_inventory_2.sold_units).to eq 0
+      expect(received_inventory_2.sold_date).to eq nil
       expect(received_inventory_3.sold_units).to eq 1
       expect(received_inventory_3.remain_units).to eq 3
+      expect(received_inventory_3.sold_date).to eq nil
       expect(report.processed).to_not be_nil
       expect(transaction.unprocessed_quantity).to eq nil
     end

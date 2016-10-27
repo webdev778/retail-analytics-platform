@@ -74,8 +74,10 @@ module DataProcessing
             sold_now = item.remain_units - difference
             # difference > 0
             # quantity of received inventory is bigger that left in transaction
+            date = difference == 0 ? transaction.date_time : nil
             item.update_attributes(sold_units: item.sold_units + sold_now,
-                                  remain_units: difference)
+                                   remain_units: difference,
+                                   sold_date: date)
           end
         else
           # no more received inventories
