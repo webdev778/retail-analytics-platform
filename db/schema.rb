@@ -29,10 +29,11 @@ ActiveRecord::Schema.define(version: 20161027132357) do
     t.string   "shipment_id"
     t.datetime "external_date_created"
     t.decimal  "price",                 precision: 10, scale: 2
-    t.datetime "created_at",                                                 null: false
-    t.datetime "updated_at",                                                 null: false
+    t.datetime "created_at",                                                     null: false
+    t.datetime "updated_at",                                                     null: false
     t.integer  "total_received_units"
     t.integer  "total_sold",                                     default: 0
+    t.decimal  "total_revenue",         precision: 10, scale: 2, default: "0.0"
     t.index ["marketplace_id"], name: "index_fulfillment_inbound_shipments_on_marketplace_id", using: :btree
   end
 

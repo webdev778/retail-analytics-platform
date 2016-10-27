@@ -24,16 +24,19 @@ module DataProcessing
                                                           "   SUM(quantity) AS total_quantity,"\
                                                           "   SUM(price_total) AS total_price,"\
                                                           "   SUM(sold_units) AS total_sold,"\
-                                                          "   MIN(received_date) AS date"\
+                                                          "   MIN(received_date) AS date,"\
+                                                          "   SUM(revenue) AS total_revenue"\
                                                           " FROM received_inventories WHERE fba_shipment_id = '#{item}'")
           shipment_items_quantity = request.field_values('total_quantity').first
           shipment_total_cost = request.field_values('total_price').first
           shipment_total_sold = request.field_values('total_sold').first
+          shipment_total_revenue = request.field_values('total_revenue').first
           shipment_minimal_date = request.field_values('date').first
           shipment_details = { shipment: item,
                                quantity: shipment_items_quantity,
                                sold: shipment_total_sold,
                                cost: shipment_total_cost,
+                               revenue: shipment_total_revenue,
                                date: shipment_minimal_date }
           FulfillmentInboundShipment.create(fulfillment_inbound_shipment_params(shipment_details, current_user))
         end
@@ -71,7 +74,8 @@ module DataProcessing
             # need find one more received_inventory
             item.update_attributes(sold_units: item.quantity,
                                    remain_units: 0,
-                                   sold_date: transaction.date_time)
+                                   sold_date: transaction.date_time,
+                                   revenue: transaction.total)
             received_inventory_sold_processing(marketplace, transaction, left_in_transaction)
           else
             sold_now = item.remain_units - difference
@@ -80,7 +84,8 @@ module DataProcessing
             date = difference == 0 ? transaction.date_time : nil
             item.update_attributes(sold_units: item.sold_units + sold_now,
                                    remain_units: difference,
-                                   sold_date: date)
+                                   sold_date: date,
+                                   revenue: transaction.total)
           end
         else
           # no more received inventories
@@ -101,6 +106,7 @@ module DataProcessing
           price: shipment_details[:cost],
           total_received_units: shipment_details[:quantity],
           total_sold: shipment_details[:sold],
+          total_revenue: shipment_details[:revenue],
           external_date_created: shipment_details[:date]
         }
       end
