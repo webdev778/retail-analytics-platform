@@ -6,8 +6,6 @@ class ReportsJob < ApplicationJob
   end
 
   after_perform do |job|
-    if job.arguments.last
-      MWS::ImportService.get_settlement_reports_info(job.arguments.first)
-    end
+    MWS::ImportService.get_settlement_reports_info(job.arguments.first) if job.arguments.last
   end
 end
