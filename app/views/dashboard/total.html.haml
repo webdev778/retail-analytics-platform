@@ -15,13 +15,13 @@
           %tbody.scroll-pane
             %tr
               %td.col-sm-9 Inventory Value
-              %td.col-sm-3.text-center= @total_data.cost_remain
+              %td.col-sm-3.text-center= format_currency @total_inventory_data&.cost_remain
             %tr
               %td.col-sm-9 Average ROI
-              %td.col-sm-3.text-center N/A
+              %td.col-sm-3.text-center= format_decimal @total_inventory_data&.roi
             %tr
               %td.col-sm-9 Sell Through Rate
-              %td.col-sm-3.text-center N/A
+              %td.col-sm-3.text-center= format_decimal @total_inventory_data&.sell_through
             %tr
               %td.col-sm-9 TVMInventory Age
               %td.col-sm-3.text-center N/A
@@ -36,15 +36,17 @@
               %td.col-sm-3.text-center N/A
             %tr
               %td.col-sm-9 Inventory Turnover
-              %td.col-sm-3.text-center N/A
+              %td.col-sm-3.text-center
+                = "Sales #{format_decimal @total_transactions_data&.sales_turnover},"
+                = "COGS #{format_decimal @total_inventory_data&.cogs_turnover}"
             %tr
               %td.col-sm-9 Monthly Inventory Growth Rate
-              %td.col-sm-3.text-center N/A
+              %td.col-sm-3.text-center= format_decimal @total_inventory_data&.monthly_growth_rate
             %tr
               %td.col-sm-9 Monthly Payouts / Inventory Purchase Buget
               %td.col-sm-3.text-center N/A
   .col-lg-6.ctext
     %h3.text-center ROI & Sell Through Over Age
-    = high_chart('roi', @roi_chart)
+    = high_chart('roi_and_sell_through', @roi_and_sell_through_chart)
     %h3.text-center Sales & Inv Turnover Over Time
-    .text-center No data
+    = high_chart('sales_and_inv', @sales_and_inv_chart)

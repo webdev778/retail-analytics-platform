@@ -30,4 +30,14 @@ module ApplicationHelper
   def format_datetime(date)
     date.present? ? date.strftime('%d/%m/%Y') : '-'
   end
+
+  def format_currency(number)
+    return t 'not_available' if number.nil?
+    number_to_currency number, unit: '', separator: ',', delimiter: ' '
+  end
+
+  def format_decimal(number)
+    return t 'not_available' if number.nil?
+    number_with_precision number, precision: 2, separator: ',', delimiter: ' '
+  end
 end
