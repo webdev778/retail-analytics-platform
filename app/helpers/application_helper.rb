@@ -40,4 +40,8 @@ module ApplicationHelper
     return t 'not_available' if number.nil?
     number_with_precision number, precision: 2, separator: ',', delimiter: ' '
   end
+
+  def value_or_dash(value)
+    value.present? ? value : '-'
+  end
 end

@@ -14,16 +14,16 @@ class Transactions < ActiveRecord::Migration[5.0]
       t.string :shipping_credits
       t.string :gift_wrap_credits
       t.string :promotional_rebates
-      t.string :selling_fees
-      t.string :fba_fees
-      t.string :other_transaction_fees
+      t.decimal :selling_fees, precision: 10, scale: 2, default: 0
+      t.decimal :fba_fees, precision: 10, scale: 2, default: 0
+      t.decimal :other_transaction_fees, precision: 10, scale: 2, default: 0
       t.string :other
       t.string :total
 
-      t.decimal :shipping_price, precision: 10, scale: 2
-      t.decimal :shipping_tax, precision: 10, scale: 2
-      t.decimal :item_promotion_discount, precision: 10, scale: 2
-      t.decimal :ship_promotion_discount, precision: 10, scale: 2
+      t.decimal :shipping_price, precision: 10, scale: 2, default: 0
+      t.decimal :shipping_tax, precision: 10, scale: 2, default: 0
+      t.decimal :item_promotion_discount, precision: 10, scale: 2, default: 0
+      t.decimal :ship_promotion_discount, precision: 10, scale: 2, default: 0
 
       t.timestamps
     end

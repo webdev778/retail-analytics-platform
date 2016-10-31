@@ -9,7 +9,10 @@ module DataProcessing
 
           if item.quantity.positive?
             total_price = inventory.price * item.quantity
-            item.update_attributes(price_per_unit: inventory.price, price_total: total_price, cost_remain: total_price)
+            item.update_attributes(price_per_unit: inventory.price,
+                                   price_total: total_price,
+                                   cost_remain: inventory.price * item.remain_units,
+                                   cost_sold: inventory.price * item.sold_units)
           else
             item.update_attribute(:price_per_unit, inventory.price)
           end
@@ -17,7 +20,7 @@ module DataProcessing
       end
 
       def fulfillment_inbound_filling(received_inventories_priced, current_user)
-        shipments_without_price = ReceivedInventory.where(price_total: nil).distinct.pluck(:fba_shipment_id)
+        shipments_without_price = ReceivedInventory.where(price_total: 0).distinct.pluck(:fba_shipment_id)
         shipment_ids_all_items_priced = received_inventories_priced.where.not(fba_shipment_id: shipments_without_price).distinct.pluck(:fba_shipment_id)
         shipment_ids_all_items_priced.each do |item|
           request = ActiveRecord::Base.connection.execute("SELECT"\
@@ -68,24 +71,34 @@ module DataProcessing
 
           left_in_transaction = difference < 0 ? difference.abs : 0
 
+          total_fees = transaction.selling_fees + transaction.fba_fees + transaction.other_transaction_fees + item.fees
+
           if difference < 0
             # left_in_transaction is bigger that in current received inventory
             # we have one more received inventories
             # need find one more received_inventory
+
             item.update_attributes(sold_units: item.quantity,
+                                   cost_sold: item.quantity * item.price_per_unit,
                                    remain_units: 0,
+                                   cost_remain: 0,
                                    sold_date: transaction.date_time,
-                                   revenue: transaction.total)
+                                   revenue: item.revenue + transaction.total,
+                                   fees: total_fees)
             received_inventory_sold_processing(marketplace, transaction, left_in_transaction)
           else
             sold_now = item.remain_units - difference
             # difference > 0
             # quantity of received inventory is bigger that left in transaction
             date = difference == 0 ? transaction.date_time : nil
-            item.update_attributes(sold_units: item.sold_units + sold_now,
+            total_sold = item.sold_units + sold_now
+            item.update_attributes(sold_units: total_sold,
+                                   cost_sold: total_sold * item.price_per_unit,
                                    remain_units: difference,
+                                   cost_remain: difference * item.price_per_unit,
                                    sold_date: date,
-                                   revenue: transaction.total)
+                                   revenue: item.revenue + transaction.total,
+                                   fees: total_fees)
           end
         else
           # no more received inventories

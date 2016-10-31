@@ -66,7 +66,7 @@ module MWS
         if report_status == '_DONE_'
           get_data(marketplace, response['ReportRequestInfo']['GeneratedReportId'], report_type)
         elsif report_status == '_CANCELLED_'
-          get_previous_report(marketplace, report_type, id)
+          get_previous_report(marketplace, report_type, true)
         elsif report_status == '_DONE_NO_DATA_'
           request_report(marketplace, report_type)
         else
@@ -74,16 +74,31 @@ module MWS
         end
       end
 
-      def get_previous_report(marketplace, report_type, id = nil)
+      def get_previous_report(marketplace, report_type, initial = nil)
         response = connect!(marketplace).get_report_request_list(report_type_list: report_type, report_processing_status_list: '_DONE_')
-        if response.parse['ReportRequestInfo'].first.present?
-          previous_done_report = response.parse['ReportRequestInfo'].first
-          previous_done_report_id = previous_done_report['GeneratedReportId']
-          get_data(marketplace, previous_done_report_id, report_type)
-          Rails.logger.info("Previous report #{previous_done_report_id} was get instead of #{id}")
-        else
-          Rails.logger.info("Issue with report #{id} no previous report found")
+        reports = []
+        response.parse['ReportRequestInfo'].each do |report|
+          reports << report if report['StartDate'] <= 3.month.ago
         end
+        if reports.present?
+          report = reports.sort_by { |item| item[:StartDate] }.first
+          get_data(marketplace, report['GeneratedReportId'], report_type)
+        else
+          ReportsJob.set(wait: 1.hour).perform_later(marketplace, report_type)
+          # queue in 1 hour new report request
+        end
+        # if response.parse['ReportRequestInfo'].present?
+        #   # response.parse['ReportRequestInfo'].each do |report|
+        #     # report['StartDate']
+        #   # end
+        #   # previous_done_report = response.parse['ReportRequestInfo'].first
+        #   # previous_done_report_id = previous_done_report['GeneratedReportId']
+        #   get_data(marketplace, previous_done_report_id, report_type)
+        #   Rails.logger.info("Previous report #{previous_done_report_id} was get instead of #{id}")
+        # else
+        #   # queue new report request in few hours
+        #   Rails.logger.info("Issue with report #{id} no previous report found")
+        # end
       end
 
       def get_data(marketplace, id, report_type)

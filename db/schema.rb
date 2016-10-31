@@ -28,7 +28,7 @@ ActiveRecord::Schema.define(version: 20161027132357) do
     t.integer  "marketplace_id"
     t.string   "shipment_id"
     t.datetime "external_date_created"
-    t.decimal  "price",                 precision: 10, scale: 2
+    t.decimal  "price",                 precision: 10, scale: 2, default: "0.0"
     t.datetime "created_at",                                                     null: false
     t.datetime "updated_at",                                                     null: false
     t.integer  "total_received_units"
@@ -40,10 +40,10 @@ ActiveRecord::Schema.define(version: 20161027132357) do
   create_table "inventories", force: :cascade do |t|
     t.integer  "user_id"
     t.string   "msku"
-    t.decimal  "price",          precision: 10, scale: 2
+    t.decimal  "price",          precision: 10, scale: 2, default: "0.0"
     t.date     "date_purchased"
-    t.datetime "created_at",                              null: false
-    t.datetime "updated_at",                              null: false
+    t.datetime "created_at",                                              null: false
+    t.datetime "updated_at",                                              null: false
     t.index ["user_id"], name: "index_inventories_on_user_id", using: :btree
   end
 
@@ -85,17 +85,17 @@ ActiveRecord::Schema.define(version: 20161027132357) do
     t.string   "product_name"
     t.integer  "quantity"
     t.string   "fba_shipment_id"
-    t.datetime "created_at",                                           null: false
-    t.datetime "updated_at",                                           null: false
-    t.decimal  "price_per_unit",  precision: 10, scale: 2
-    t.decimal  "price_total",     precision: 10, scale: 2
+    t.datetime "created_at",                                               null: false
+    t.datetime "updated_at",                                               null: false
+    t.decimal  "price_per_unit",  precision: 10, scale: 2, default: "0.0"
+    t.decimal  "price_total",     precision: 10, scale: 2, default: "0.0"
     t.datetime "sold_date"
     t.integer  "sold_units",                               default: 0
-    t.decimal  "cost_sold",       precision: 10, scale: 2
+    t.decimal  "cost_sold",       precision: 10, scale: 2, default: "0.0"
     t.integer  "remain_units",                             default: 0
-    t.decimal  "cost_remain",     precision: 10, scale: 2
-    t.decimal  "revenue",         precision: 10, scale: 2
-    t.decimal  "fees",            precision: 10, scale: 2
+    t.decimal  "cost_remain",     precision: 10, scale: 2, default: "0.0"
+    t.decimal  "revenue",         precision: 10, scale: 2, default: "0.0"
+    t.decimal  "fees",            precision: 10, scale: 2, default: "0.0"
     t.index ["marketplace_id"], name: "index_received_inventories_on_marketplace_id", using: :btree
   end
 
@@ -127,17 +127,17 @@ ActiveRecord::Schema.define(version: 20161027132357) do
     t.string   "shipping_credits"
     t.string   "gift_wrap_credits"
     t.string   "promotional_rebates"
-    t.string   "selling_fees"
-    t.string   "fba_fees"
-    t.string   "other_transaction_fees"
+    t.decimal  "selling_fees",            precision: 10, scale: 2, default: "0.0"
+    t.decimal  "fba_fees",                precision: 10, scale: 2, default: "0.0"
+    t.decimal  "other_transaction_fees",  precision: 10, scale: 2, default: "0.0"
     t.string   "other"
-    t.decimal  "total",                   precision: 10, scale: 2
-    t.decimal  "shipping_price",          precision: 10, scale: 2
-    t.decimal  "shipping_tax",            precision: 10, scale: 2
-    t.decimal  "item_promotion_discount", precision: 10, scale: 2
-    t.decimal  "ship_promotion_discount", precision: 10, scale: 2
-    t.datetime "created_at",                                       null: false
-    t.datetime "updated_at",                                       null: false
+    t.decimal  "total",                   precision: 10, scale: 2, default: "0.0"
+    t.decimal  "shipping_price",          precision: 10, scale: 2, default: "0.0"
+    t.decimal  "shipping_tax",            precision: 10, scale: 2, default: "0.0"
+    t.decimal  "item_promotion_discount", precision: 10, scale: 2, default: "0.0"
+    t.decimal  "ship_promotion_discount", precision: 10, scale: 2, default: "0.0"
+    t.datetime "created_at",                                                       null: false
+    t.datetime "updated_at",                                                       null: false
     t.integer  "unprocessed_quantity"
     t.index ["marketplace_id"], name: "index_transactions_on_marketplace_id", using: :btree
     t.index ["report_id"], name: "index_transactions_on_report_id", using: :btree

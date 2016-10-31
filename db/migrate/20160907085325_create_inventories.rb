@@ -3,7 +3,7 @@ class CreateInventories < ActiveRecord::Migration[5.0]
     create_table :inventories do |t|
       t.belongs_to :user, index: true
       t.string :msku
-      t.decimal :price, precision: 10, scale: 2
+      t.decimal :price, precision: 10, scale: 2, default: 0
       t.date :date_purchased
 
       t.timestamps null: false

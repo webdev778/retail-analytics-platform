@@ -4,7 +4,7 @@ class FulfillmentInboundShipments < ActiveRecord::Migration[5.0]
       t.belongs_to :marketplace, index: true
       t.string :shipment_id
       t.datetime :external_date_created
-      t.decimal :price, precision: 10, scale: 2
+      t.decimal :price, precision: 10, scale: 2, default: 0
 
       t.timestamps
     end
