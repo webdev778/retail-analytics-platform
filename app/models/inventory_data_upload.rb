@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 class InventoryDataUpload < ApplicationRecord
   has_attached_file :file_for_import
 

@@ -1,9 +1,12 @@
+# frozen_string_literal: true
 module DataProcessing
   class DataProcessor
     class << self
       def prices_processing(received_inventories)
         received_inventories.each do |item|
-          inventory = Inventory.where('msku = ? AND (date_purchased <= ? OR date_purchased IS NULL)', item.sku, item.received_date).first
+          inventory = Inventory
+                      .where('msku = ? AND (date_purchased <= ? OR date_purchased IS NULL)', item.sku, item.received_date)
+                      .first
 
           next unless inventory.present?
 
@@ -20,15 +23,20 @@ module DataProcessing
       end
 
       def fulfillment_inbound_filling(received_inventories_priced, current_user)
-        shipments_without_price = ReceivedInventory.where(price_total: 0).distinct.pluck(:fba_shipment_id)
-        shipment_ids_all_items_priced = received_inventories_priced.where.not(fba_shipment_id: shipments_without_price).distinct.pluck(:fba_shipment_id)
+        shipments_without_price = ReceivedInventory.where(price_total: 0)
+                                                   .distinct
+                                                   .pluck(:fba_shipment_id)
+        shipment_ids_all_items_priced = received_inventories_priced
+                                        .where.not(fba_shipment_id: shipments_without_price)
+                                        .distinct
+                                        .pluck(:fba_shipment_id)
         shipment_ids_all_items_priced.each do |item|
-          request = ActiveRecord::Base.connection.execute("SELECT"\
-                                                          "   SUM(quantity) AS total_quantity,"\
-                                                          "   SUM(price_total) AS total_price,"\
-                                                          "   SUM(sold_units) AS total_sold,"\
-                                                          "   MIN(received_date) AS date,"\
-                                                          "   SUM(revenue) AS total_revenue"\
+          request = ActiveRecord::Base.connection.execute('SELECT'\
+                                                          '   SUM(quantity) AS total_quantity,'\
+                                                          '   SUM(price_total) AS total_price,'\
+                                                          '   SUM(sold_units) AS total_sold,'\
+                                                          '   MIN(received_date) AS date,'\
+                                                          '   SUM(revenue) AS total_revenue'\
                                                           " FROM received_inventories WHERE fba_shipment_id = '#{item}'")
           shipment_items_quantity = request.field_values('total_quantity').first
           shipment_total_cost = request.field_values('total_price').first
@@ -52,28 +60,58 @@ module DataProcessing
           marketplace = transaction.marketplace
 
           received_inventory_sold_processing(marketplace, transaction)
+        end
 
+        transactions_refund = report.transactions.type_refund
+
+        transactions_refund.each do |transaction|
+          marketplace = transaction.marketplace
+          received_inventory_refund_processing(marketplace, transaction) unless transaction.quantity.nil?
         end
         report.update_attribute(:processed, Time.zone.now)
       end
 
       private
 
+      def received_inventory_refund_processing(marketplace, transaction, left_for_return = nil)
+        left_for_return ||= transaction.quantity
+        received_inventory_for_processing = marketplace.received_inventories.positive_quantity
+                                                       .where('returned_units < quantity')
+                                                       .where('received_date < ?', transaction.date_time)
+                                                       .order(received_date: :asc)
+        item = received_inventory_for_processing.first
+
+        if item
+          difference = item.quantity - left_for_return
+          if difference.negative?
+            left_for_return = difference.abs
+            item.update_attributes(returned_units: left_for_return + difference)
+            received_inventory_refund_processing(marketplace, transaction, left_for_return)
+          else
+            item.update_attributes(returned_units: left_for_return)
+          end
+        else
+          transaction.update_attribute(:unprocessed_quantity, left_for_return)
+        end
+      end
+
       def received_inventory_sold_processing(marketplace, transaction, left_in_transaction = nil)
         left_in_transaction ||= transaction.quantity
 
-        received_unsold_inventory = marketplace.received_inventories.with_unsold.order(received_date: :asc)
+        received_unsold_inventory = marketplace.received_inventories
+                                               .with_unsold
+                                               .order(received_date: :asc)
         item = received_unsold_inventory.first
 
         if item
           item_total_quantity = item.remain_units
           difference = item_total_quantity - left_in_transaction
 
-          left_in_transaction = difference < 0 ? difference.abs : 0
+          left_in_transaction = difference.negative? ? difference.abs : 0
 
           total_fees = transaction.selling_fees + transaction.fba_fees + transaction.other_transaction_fees + item.fees
 
-          if difference < 0
+          if difference.negative?
             # left_in_transaction is bigger that in current received inventory
             # we have one more received inventories
             # need find one more received_inventory
@@ -90,7 +128,7 @@ module DataProcessing
             sold_now = item.remain_units - difference
             # difference > 0
             # quantity of received inventory is bigger that left in transaction
-            date = difference == 0 ? transaction.date_time : nil
+            date = difference.zero? ? transaction.date_time : nil
             total_sold = item.sold_units + sold_now
             item.update_attributes(sold_units: total_sold,
                                    cost_sold: total_sold * item.price_per_unit,
@@ -105,12 +143,14 @@ module DataProcessing
           # but left_in_transaction is still present
           transaction.update_attribute(:unprocessed_quantity, left_in_transaction)
         end
-
       end
 
       def fulfillment_inbound_shipment_params(shipment_details, current_user)
         shipment_id = shipment_details[:shipment]
-        marketplace_id = ReceivedInventory.where(fba_shipment_id: shipment_id, marketplace: current_user.marketplaces).distinct.pluck(:marketplace_id).first
+        marketplace_id = ReceivedInventory.where(fba_shipment_id: shipment_id,
+                                                 marketplace: current_user.marketplaces)
+                                          .distinct.pluck(:marketplace_id)
+                                          .first
         marketplace = Marketplace.find(marketplace_id)
 
         {

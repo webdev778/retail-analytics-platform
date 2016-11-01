@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 class AccountsController < ApplicationController
   def index
     @accounts = current_user.accounts.includes(:marketplace)

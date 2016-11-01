@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module ReportParser
   class ParseService
     def initialize(data, report_type, marketplace, report = nil)
@@ -9,9 +10,7 @@ module ReportParser
     end
 
     def check_report_type
-      p '.................'
-      p @report_type
-      p '.................'
+      Rails.logger.info(@report_type)
       case @report_type
       when '_GET_FBA_FULFILLMENT_INVENTORY_RECEIPTS_DATA_'
         received_inventory

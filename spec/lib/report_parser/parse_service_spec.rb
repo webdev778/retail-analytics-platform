@@ -2,23 +2,27 @@
 require 'rails_helper'
 
 describe ReportParser::ParseService do
-
   let(:user) { create(:user) }
 
   let(:account_skip_validation) { build(:account, user: user, seller_id: '').save(validate: false) }
-  let(:marketplace) { create(:marketplace, account: Account.first, external_marketplace_id: '', aws_access_key_id: '', secret_key:''  ) }
+  let(:marketplace) do
+    create(:marketplace,
+           account: Account.first,
+           external_marketplace_id: '',
+           aws_access_key_id: '',
+           secret_key: '')
+  end
 
-  before {
+  before do
     account_skip_validation
     marketplace
-  }
+  end
 
-  subject {
+  subject do
     # ReportParser::ParseService.new()
-  }
+  end
 
   xit '' do
-    byebug
     VCR.use_cassette('fba_fullfillment_inventory_receipts_data') do
       subject
     end
@@ -27,6 +31,5 @@ describe ReportParser::ParseService do
     # ReportParser::ParseService.new(response, report_type, marketplace)
     # _GET_FBA_FULFILLMENT_INVENTORY_RECEIPTS_DATA_
     # 3115181039017090
-
   end
 end

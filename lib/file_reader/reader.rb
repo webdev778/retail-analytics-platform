@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module FileReader
   class Reader
     include ApplicationHelper
@@ -40,7 +41,10 @@ module FileReader
       reader.iterate do |data|
         inventory_params = data.slice(:msku, :price, :date_purchased)
         price = BigDecimal.new(data[:price].to_s).truncate(2)
-        inventory = @current_user.inventories.where(msku: data[:msku], date_purchased: data[:date_purchased], price: price )
+        inventory = @current_user.inventories
+                                 .where(msku: data[:msku],
+                                        date_purchased: data[:date_purchased],
+                                        price: price)
         if inventory.present?
           count_of_existing_records += 1
         else

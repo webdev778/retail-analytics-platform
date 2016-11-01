@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 class InventoriesDataUploadsController < ApplicationController
   after_action :file_records_cleaning, only: :create
 

@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 class ReceivedInventory < ApplicationRecord
   belongs_to :marketplace
 
@@ -19,16 +20,16 @@ class ReceivedInventory < ApplicationRecord
   end
   scope :avg_cost_remain_for_30_days, -> do
     select('AVG(cost_remain) cost_remain')
-        .where('received_date > NOW() - interval \'30\' day')
-        .active
+      .where('received_date > NOW() - interval \'30\' day')
+      .active
   end
   scope :select_cogs_turnover, -> do
     select("SUM(cost_sold)/(#{ReceivedInventory.except(:select).avg_cost_remain_for_30_days.to_sql}) cogs_turnover")
   end
   scope :inventory_cost_30_days_old, -> do
     select('COALESCE(SUM(price_total), 0) inventory_cost_30_days_old')
-        .where('received_date < NOW() - interval \'30\' day')
-        .active
+      .where('received_date < NOW() - interval \'30\' day')
+      .active
   end
   scope :select_monthly_growth_rate, -> do
     old_inventory_cost = ReceivedInventory.except(:select).inventory_cost_30_days_old.to_sql

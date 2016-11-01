@@ -42,7 +42,6 @@ module MWS
         # '_GET_AMAZON_FULFILLED_SHIPMENTS_DATA_'
 
         # _GET_AMAZON_FULFILLED_SHIPMENTS_DATA_ ???
-
         # _GET_V2_SETTLEMENT_REPORT_DATA_FLAT_FILE_V2_
 
         response = connect!(marketplace).request_report(report_type)
@@ -74,8 +73,9 @@ module MWS
         end
       end
 
-      def get_previous_report(marketplace, report_type, initial = nil)
-        response = connect!(marketplace).get_report_request_list(report_type_list: report_type, report_processing_status_list: '_DONE_')
+      def get_previous_report(marketplace, report_type, _initial = nil)
+        response = connect!(marketplace).get_report_request_list(report_type_list: report_type,
+                                                                 report_processing_status_list: '_DONE_')
         reports = []
         response.parse['ReportRequestInfo'].each do |report|
           reports << report if report['StartDate'] <= 3.month.ago
@@ -84,8 +84,8 @@ module MWS
           report = reports.sort_by { |item| item[:StartDate] }.first
           get_data(marketplace, report['GeneratedReportId'], report_type)
         else
-          ReportsJob.set(wait: 1.hour).perform_later(marketplace, report_type)
           # queue in 1 hour new report request
+          ReportsJob.set(wait: 1.hour).perform_later(marketplace, report_type)
         end
         # if response.parse['ReportRequestInfo'].present?
         #   # response.parse['ReportRequestInfo'].each do |report|
@@ -108,7 +108,8 @@ module MWS
       end
 
       def get_settlement_reports_info(marketplace)
-        response = connect!(marketplace).get_report_request_list(report_type_list: '_GET_V2_SETTLEMENT_REPORT_DATA_FLAT_FILE_V2_', report_processing_status_list: '_DONE_')
+        response = connect!(marketplace).get_report_request_list(report_type_list: '_GET_V2_SETTLEMENT_REPORT_DATA_FLAT_FILE_V2_',
+                                                                 report_processing_status_list: '_DONE_')
         response = response.parse
         response['ReportRequestInfo'].each do |item|
           Report.find_or_create_by(report_params(item, marketplace))
