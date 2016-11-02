@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161101082324) do
+ActiveRecord::Schema.define(version: 20161102100749) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -34,6 +34,7 @@ ActiveRecord::Schema.define(version: 20161101082324) do
     t.integer  "total_received_units"
     t.integer  "total_sold",                                     default: 0
     t.decimal  "total_revenue",         precision: 10, scale: 2, default: "0.0"
+    t.datetime "breakeven_date"
     t.index ["marketplace_id"], name: "index_fulfillment_inbound_shipments_on_marketplace_id", using: :btree
   end
 
