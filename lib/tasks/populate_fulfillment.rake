@@ -34,7 +34,6 @@ namespace :db do
           shipping_tax: 0,
           item_promotion_discount: 0,
           ship_promotion_discount: 0,
-          other: 0,
           total: Faker::Number.between(10, 50)
         }
       end

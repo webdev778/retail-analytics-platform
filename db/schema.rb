@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161101082324) do
+ActiveRecord::Schema.define(version: 20161103143348) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -124,14 +124,13 @@ ActiveRecord::Schema.define(version: 20161101082324) do
     t.string   "external_order_id"
     t.string   "sku"
     t.integer  "quantity"
-    t.string   "product_sales"
-    t.string   "shipping_credits"
-    t.string   "gift_wrap_credits"
-    t.string   "promotional_rebates"
+    t.decimal  "product_sales",           precision: 10, scale: 2, default: "0.0"
+    t.decimal  "shipping_credits",        precision: 10, scale: 2, default: "0.0"
+    t.decimal  "gift_wrap_credits",       precision: 10, scale: 2, default: "0.0"
+    t.decimal  "promotional_rebates",     precision: 10, scale: 2, default: "0.0"
     t.decimal  "selling_fees",            precision: 10, scale: 2, default: "0.0"
     t.decimal  "fba_fees",                precision: 10, scale: 2, default: "0.0"
     t.decimal  "other_transaction_fees",  precision: 10, scale: 2, default: "0.0"
-    t.string   "other"
     t.decimal  "total",                   precision: 10, scale: 2, default: "0.0"
     t.decimal  "shipping_price",          precision: 10, scale: 2, default: "0.0"
     t.decimal  "shipping_tax",            precision: 10, scale: 2, default: "0.0"

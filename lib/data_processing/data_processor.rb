@@ -77,7 +77,7 @@ module DataProcessing
         left_for_return ||= transaction.quantity
         received_inventory_for_processing = marketplace.received_inventories.positive_quantity
                                                        .where('returned_units < quantity')
-                                                       .where('received_date < ?', transaction.date_time)
+                                                       .where('received_date <= ?', transaction.date_time)
                                                        .order(received_date: :asc)
         item = received_inventory_for_processing.first
 
@@ -100,6 +100,7 @@ module DataProcessing
 
         received_unsold_inventory = marketplace.received_inventories
                                                .with_unsold
+                                               .where('received_date <= ?',transaction.date_time)
                                                .order(received_date: :asc)
         item = received_unsold_inventory.first
 
@@ -121,7 +122,7 @@ module DataProcessing
                                    remain_units: 0,
                                    cost_remain: 0,
                                    sold_date: transaction.date_time,
-                                   revenue: item.revenue + transaction.total,
+                                   revenue: item.revenue + transaction.product_sales,
                                    fees: total_fees)
             received_inventory_sold_processing(marketplace, transaction, left_in_transaction)
           else
@@ -135,7 +136,7 @@ module DataProcessing
                                    remain_units: difference,
                                    cost_remain: difference * item.price_per_unit,
                                    sold_date: date,
-                                   revenue: item.revenue + transaction.total,
+                                   revenue: item.revenue + transaction.product_sales,
                                    fees: total_fees)
           end
         else

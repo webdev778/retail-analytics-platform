@@ -34,7 +34,6 @@ module ReportParser
             order[:selling_fees] = work_with_value(order, item, 'selling_fees')
             order[:fba_fees] = work_with_value(order, item, 'fba_fees')
             order[:other_transaction_fees] = work_with_value(order, item, 'other_transaction_fees')
-            order[:other] = work_with_value(order, item, 'other')
             order[:total] = work_with_value(order, item, 'total')
           end
         end
@@ -55,15 +54,14 @@ module ReportParser
     end
 
     def settlement_report_params(file_line)
-      used_amount_description = %w(Principal Shipping GiftWrap SalesTaxServiceFee FBAPerUnitFulfillmentFee)
-      product_sales_amount = amount_processing(file_line, 'Principal', 'amount')
-      shipping_credits_amount = amount_processing(file_line, 'Shipping', 'amount')
-      gift_wrap_credits_amount = amount_processing(file_line, 'GiftWrap', 'amount')
-      sales_tax_service_fee = amount_processing(file_line, 'SalesTaxServiceFee', 'amount')
-      fba_fees_amount = amount_processing(file_line, 'FBAPerUnitFulfillmentFee', 'amount')
-      other_transaction_fees_amount = used_amount_description.include?(file_line['amount-description'] && file_line['amount-type'] == 'ItemFees') ? nil : file_line['amount']
-      other_amount = used_amount_description.include?(file_line['amount-description'] && file_line['amount-type'] == 'ItemPrice') ? nil : file_line['amount']
+      product_sales_amount = file_line['amount-type'] == 'ItemPrice' ? file_line['amount'] : 0
+      shipping_credits_amount = find_value(file_line, 'Shipping')
+      gift_wrap_credits_amount = find_value(file_line, 'GiftWrap')
+      sales_tax_service_fee = find_value(file_line, 'SalesTaxServiceFee')
+      fba_fees_amount = find_value(file_line, 'FBA', 'include')
+      other_transaction_fees_amount = find_value(file_line, 'FBA', 'exclude') if file_line['amount-type'] == 'ItemFees'
 
+      other_transaction_fees_amount ||= 0
       {
         report: @report,
         date_time: file_line['posted-date-time'],
@@ -80,15 +78,19 @@ module ReportParser
         selling_fees: sales_tax_service_fee,
         fba_fees: fba_fees_amount,
         other_transaction_fees: other_transaction_fees_amount,
-        other: other_amount,
         total: file_line['amount']
       }
     end
 
-    def amount_processing(filled_object, key, hash_key)
-      hash_key = hash_key.to_sym
-
-      filled_object[hash_key] == key ? filled_object['amount'] : nil
+    def find_value(filled_object, value_of_key, include_check = nil)
+      case include_check
+      when 'include'
+        filled_object['amount-description'] =~ /^FBA/ ? filled_object['amount'].to_f.abs : 0
+      when 'exclude'
+        filled_object['amount-description'] =~ /^FBA/ ? 0 : filled_object['amount'].to_f.abs
+      else
+        filled_object['amount-description'] == value_of_key ? filled_object['amount'].to_f.abs : 0
+      end
     end
   end
 end

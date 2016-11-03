@@ -338,4 +338,73 @@ describe DataProcessing::DataProcessor do
       expect(transaction.unprocessed_quantity).to eq nil
     end
   end
+
+  context 'transaction 5 only last received inventory was received before transaction date' do
+    let(:transaction) do
+      create(:transaction,
+             marketplace: marketplace,
+             report: report,
+             date_time: 5.day.ago,
+             transaction_type: 'Order',
+             quantity: 5,
+             sku: '123')
+    end
+
+    let(:received_inventory) do
+      create(:received_inventory,
+             marketplace: marketplace,
+             quantity: 10,
+             remain_units: 8,
+             sold_units: 2,
+             product_name: 'first',
+             received_date: 4.days.ago,
+             sku: '123')
+    end
+
+    let(:received_inventory_3) do
+      create(:received_inventory,
+             marketplace: marketplace,
+             quantity: 4,
+             sold_units: 1,
+             remain_units: 3,
+             product_name: 'third',
+             received_date: 5.days.ago,
+             sku: '123')
+    end
+
+    before do
+      account
+      transaction
+      # 5
+      received_inventory
+      # quantity: 8,
+      received_inventory_2
+      # 4
+      received_inventory_3
+      # 3
+    end
+
+    subject { DataProcessing::DataProcessor.transaction_processing(report) }
+
+    it 'should process report' do
+      subject
+      received_inventory.reload
+      received_inventory_2.reload
+      received_inventory_3.reload
+      report.reload
+      transaction.reload
+
+      expect(received_inventory.sold_units).to eq 2
+      expect(received_inventory.remain_units).to eq 8
+      expect(received_inventory.sold_date).to eq nil
+      expect(received_inventory_2.remain_units).to eq 4
+      expect(received_inventory_2.sold_units).to eq 0
+      expect(received_inventory_2.sold_date).to eq nil
+      expect(received_inventory_3.sold_units).to eq 4
+      expect(received_inventory_3.remain_units).to eq 0
+      expect(received_inventory_3.sold_date).to eq received_inventory_3.received_date
+      expect(report.processed).to eq Time.zone.now
+      expect(transaction.unprocessed_quantity).to eq 2
+    end
+  end
 end
