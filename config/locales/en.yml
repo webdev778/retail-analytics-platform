@@ -31,6 +31,10 @@ en:
       units_count: Total units
       units_sold_count: Units sold
       total_revenue: Total revenue
+    show:
+      shipment: Shipment
+      unit_stats: Unit stats
+      cash_summary: Cash Summary
   charts:
     sales_and_inventory_turnover:
       title: Sales & Inventory Turnover over Time

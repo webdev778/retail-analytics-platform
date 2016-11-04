@@ -34,6 +34,7 @@ ActiveRecord::Schema.define(version: 20161103143348) do
     t.integer  "total_received_units"
     t.integer  "total_sold",                                     default: 0
     t.decimal  "total_revenue",         precision: 10, scale: 2, default: "0.0"
+    t.datetime "breakeven_date"
     t.index ["marketplace_id"], name: "index_fulfillment_inbound_shipments_on_marketplace_id", using: :btree
   end
 

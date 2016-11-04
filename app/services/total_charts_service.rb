@@ -7,8 +7,8 @@ class TotalChartsService
       f.xAxis(
           type: :datetime,
           title: '',
-          labels: { format: '{value:%d %b %Y}', rotation: -45, align: 'right' },
-          tickInterval: 24 * 3600 * 1000
+          labels: { format: '{value:%b %Y}', rotation: -45, align: 'right' },
+          tickInterval: 24 * 3600 * 30 * 1000
       )
       f.series(name: I18n.t('charts.sales_and_inventory_turnover.sales'), yAxis: 0,
                data: charts_data[:sales_series_data], color: '#e8803b', lineWidth: 5)
@@ -66,7 +66,7 @@ class TotalChartsService
     data = Transaction.group_by_day(:date_time)
                .select('MIN(date_time) date_time')
                .select('SUM(total) total')
-               .select_sales_turnover
+               .select_sales_turnover_for_30_days
                .order('MIN(date_time)')
     sales_series_data = []
     turnover_series_data = []

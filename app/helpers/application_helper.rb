@@ -44,4 +44,9 @@ module ApplicationHelper
   def value_or_dash(value)
     value.present? ? value : '-'
   end
+
+  def format_integer(number)
+    return t 'not_available' if number.nil?
+    number_with_precision number, precision: 0, delimiter: ' '
+  end
 end
