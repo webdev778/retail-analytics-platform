@@ -78,7 +78,8 @@ module ReportParser
         selling_fees: sales_tax_service_fee,
         fba_fees: fba_fees_amount,
         other_transaction_fees: other_transaction_fees_amount,
-        total: file_line['amount']
+        total: file_line['amount'],
+        unprocessed_quantity: file_line['quantity-purchased']
       }
     end
 

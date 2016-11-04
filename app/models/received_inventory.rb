@@ -20,7 +20,7 @@ class ReceivedInventory < ApplicationRecord
     select('SUM(SUM(revenue) - SUM(fees) - SUM(cost_sold)) OVER (ORDER BY MAX(received_date))/
             NULLIF(SUM(SUM(cost_sold)) OVER (ORDER BY MAX(received_date)), 0)*100 roi')
   end
-  scope :select_sell_through, -> { select('SUM(sold_units::float)/SUM(quantity::float)*100 sell_through') }
+  scope :select_sell_through, -> { select('SUM(sold_units::float)/NULLIF(SUM(quantity::float), 0)*100 sell_through') }
   scope :select_prev_sell_through, -> do
     select('SUM(SUM(sold_units::float)) OVER (ORDER BY MAX(received_date))/
             SUM(SUM(quantity::float)) OVER (ORDER BY MAX(received_date))*100 sell_through')
@@ -31,7 +31,7 @@ class ReceivedInventory < ApplicationRecord
       .active
   end
   scope :select_cogs_turnover_for_30_days, -> do
-    select("SUM(cost_sold)/(#{ReceivedInventory.except(:select).avg_cost_remain_for_30_days.to_sql}) cogs_turnover")
+    select("SUM(cost_sold)/NULLIF((#{ReceivedInventory.except(:select).avg_cost_remain_for_30_days.to_sql}), 0) cogs_turnover")
   end
   scope :select_sells_turnover, -> do
     select('SUM(revenue)/SUM(price_total) sells_turnover')

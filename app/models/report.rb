@@ -11,8 +11,8 @@ class Report < ApplicationRecord
 
   scope :settlement_reports, -> { where(report_type: '_GET_V2_SETTLEMENT_REPORT_DATA_FLAT_FILE_V2_') }
 
-  scope :unprocessed, -> { where(processed: nil) }
-  scope :processed, -> { where.not(processed: nil) }
+  scope :unprocessed, -> { joins(:transactions).where('transactions.unprocessed_quantity > 0' ).distinct(:reports) }
+  scope :processed, -> { joins(:transactions).where('transactions.unprocessed_quantity = 0' ).distinct(:reports) }
 
   scope :not_imported, -> { where(get_data: nil) }
   scope :imported, -> { where.not(get_data: nil) }

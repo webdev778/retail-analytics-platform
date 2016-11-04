@@ -156,7 +156,7 @@ describe DataProcessing::DataProcessor do
       expect(received_inventory_2.remain_units).to eq 0
       expect(received_inventory_2.sold_date).to eq transaction.date_time
       expect(report.processed).to eq Time.zone.now
-      expect(transaction.unprocessed_quantity).to eq nil
+      expect(transaction.unprocessed_quantity).to eq 0
     end
   end
 
@@ -266,7 +266,7 @@ describe DataProcessing::DataProcessor do
       expect(received_inventory_3.sold_date).to eq nil
       expect(received_inventory_3.remain_units).to eq 3
       expect(report.processed).to eq Time.zone.now
-      expect(transaction.unprocessed_quantity).to eq nil
+      expect(transaction.unprocessed_quantity).to eq 0
     end
   end
 
@@ -335,7 +335,7 @@ describe DataProcessing::DataProcessor do
       expect(received_inventory_3.remain_units).to eq 3
       expect(received_inventory_3.sold_date).to eq nil
       expect(report.processed).to eq Time.zone.now
-      expect(transaction.unprocessed_quantity).to eq nil
+      expect(transaction.unprocessed_quantity).to eq 0
     end
   end
 

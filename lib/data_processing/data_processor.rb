@@ -74,7 +74,9 @@ module DataProcessing
       private
 
       def received_inventory_refund_processing(marketplace, transaction, left_for_return = nil)
-        left_for_return ||= transaction.quantity
+        quantity = transaction.unprocessed_quantity > 0 ? transaction.unprocessed_quantity : transaction.quantity
+        left_for_return ||= quantity
+
         received_inventory_for_processing = marketplace.received_inventories.positive_quantity
                                                        .where('returned_units < quantity')
                                                        .where('received_date <= ?', transaction.date_time)
@@ -96,7 +98,8 @@ module DataProcessing
       end
 
       def received_inventory_sold_processing(marketplace, transaction, left_in_transaction = nil)
-        left_in_transaction ||= transaction.quantity
+        quantity = transaction.unprocessed_quantity > 0 ? transaction.unprocessed_quantity : transaction.quantity
+        left_in_transaction ||= quantity
 
         received_unsold_inventory = marketplace.received_inventories
                                                .with_unsold
