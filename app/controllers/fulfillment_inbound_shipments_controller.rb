@@ -4,11 +4,14 @@ class FulfillmentInboundShipmentsController < ApplicationController
 
   # GET /fulfillment_inbound_shipments
   def index
-    @fulfillment_inbound_shipments = FulfillmentInboundShipment.page params[:page]
+    @fulfillment_inbound_shipments = FulfillmentInboundShipment.for_user(current_user).page params[:page]
   end
 
   def show
-    @shipment = FulfillmentInboundShipment.select('*').select_days_to_breakeven.find params[:id]
+    @shipment = FulfillmentInboundShipment.select('*')
+                    .select_days_to_breakeven
+                    .for_user(current_user)
+                    .find params[:id]
 
     @summary = @shipment.received_inventories
         .select('SUM(quantity) quantity')

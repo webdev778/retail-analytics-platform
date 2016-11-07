@@ -3,7 +3,9 @@ require 'rails_helper'
 
 RSpec.describe FulfillmentInboundShipmentsController, type: :controller do
   let(:user) { create(:user) }
-  let(:fulfillment_inbound_shipment) { create(:fulfillment_inbound_shipment) }
+  let!(:account) { build(:account, user: user).save(validate: false) }
+  let!(:marketplace) { create(:marketplace, user: user, account: Account.first) }
+  let(:fulfillment_inbound_shipment) { create(:fulfillment_inbound_shipment, marketplace: marketplace) }
 
   describe 'GET #index' do
     it 'assigns all fulfillment_inbound_shipments as @fulfillment_inbound_shipments' do

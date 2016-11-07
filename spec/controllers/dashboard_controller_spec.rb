@@ -2,6 +2,8 @@
 require 'rails_helper'
 
 RSpec.describe DashboardController, type: :controller do
+  let(:user) { create(:user) }
+
   describe 'GET #index' do
     it 'blocks unauthenticated access' do
       sign_in nil
@@ -10,7 +12,7 @@ RSpec.describe DashboardController, type: :controller do
     end
 
     it 'allows authenticated access' do
-      sign_in
+      sign_in user
       get :index
       expect(response).to be_success
     end
@@ -18,7 +20,7 @@ RSpec.describe DashboardController, type: :controller do
 
   describe 'GET #total' do
     it 'dashboard total' do
-      sign_in
+      sign_in user
       get :total
       expect(response).to be_success
     end

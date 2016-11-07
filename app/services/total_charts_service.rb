@@ -1,6 +1,6 @@
 class TotalChartsService
-  def sales_and_inventory_turnover
-    charts_data = sales_and_inventory_data
+  def sales_and_inventory_turnover(user)
+    charts_data = sales_and_inventory_data user
 
     LazyHighCharts::HighChart.new('graph') do |f|
       f.title(text: I18n.t('charts.sales_and_inventory_turnover.title'))
@@ -31,8 +31,8 @@ class TotalChartsService
     end
   end
 
-  def roi_and_sell_through
-    charts_data = roi_and_sell_through_data
+  def roi_and_sell_through(user)
+    charts_data = roi_and_sell_through_data user
 
     LazyHighCharts::HighChart.new('graph') do |f|
       f.title(text: I18n.t('charts.roi_and_sell_through.title'))
@@ -62,12 +62,13 @@ class TotalChartsService
 
   private
 
-  def sales_and_inventory_data
+  def sales_and_inventory_data(user)
     data = Transaction.group_by_day(:date_time)
                .select('MIN(date_time) date_time')
                .select('SUM(total) total')
                .select_sales_turnover_for_30_days
                .order('MIN(date_time)')
+               .for_user(user)
     sales_series_data = []
     turnover_series_data = []
     data.each do |grouped|
@@ -77,11 +78,12 @@ class TotalChartsService
     { sales_series_data: sales_series_data, turnover_series_data: turnover_series_data }
   end
 
-  def roi_and_sell_through_data
+  def roi_and_sell_through_data(user)
     data = ReceivedInventory.select("DATE_PART('day', COALESCE(sold_date, now()) - received_date) age")
                .select_prev_roi
                .select_prev_sell_through
                .active
+               .for_user(user)
                .group(:age)
                .order('1')
     roi_data = []
