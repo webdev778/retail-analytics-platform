@@ -19,7 +19,11 @@ describe DataProcessing::DataProcessor do
            remain_units: 1,
            product_name: 'first',
            received_date: 4.days.ago,
-           sku: '123')
+           sku: '123',
+           fba_shipment_id: 'f123',
+           revenue: '30.12',
+           fees: '10.1',
+           cost_sold: '15.4')
   end
   let(:received_inventory_2) do
     create(:received_inventory,
@@ -28,7 +32,11 @@ describe DataProcessing::DataProcessor do
            remain_units: 4,
            product_name: 'second',
            received_date: 3.days.ago,
-           sku: '123')
+           sku: '123',
+           fba_shipment_id: 'f123',
+           revenue: '10.10',
+           fees: '1.1',
+           cost_sold: '2.2')
   end
 
   before do
@@ -405,6 +413,42 @@ describe DataProcessing::DataProcessor do
       expect(received_inventory_3.sold_date).to eq received_inventory_3.received_date
       expect(report.processed).to eq Time.zone.now
       expect(transaction.unprocessed_quantity).to eq 2
+    end
+  end
+
+  context 'breakeven_date check' do
+    before do
+      account
+      transaction
+      received_inventory
+      received_inventory_2
+      fulfillment_inbound_shipment
+    end
+
+    let(:transaction) do
+      create(:transaction,
+             marketplace: marketplace,
+             report: report,
+             date_time: 5.day.ago,
+             transaction_type: 'Order',
+             quantity: 5,
+             sku: '123')
+    end
+
+    let(:fulfillment_inbound_shipment) do
+      create(:fulfillment_inbound_shipment,
+             marketplace: marketplace,
+             shipment_id: 'f123',
+             price: '10.0')
+    end
+
+    subject { DataProcessing::DataProcessor.transaction_processing(report) }
+
+    it 'should have date from transaction' do
+      subject
+      fulfillment_inbound_shipment.reload
+
+      expect(fulfillment_inbound_shipment.breakeven_date).to eq transaction.date_time
     end
   end
 end

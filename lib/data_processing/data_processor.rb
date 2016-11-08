@@ -55,11 +55,12 @@ module DataProcessing
 
       def transaction_processing(report)
         transactions = report.transactions.type_order
-
         transactions.each do |transaction|
           marketplace = transaction.marketplace
 
           received_inventory_sold_processing(marketplace, transaction)
+
+          breakeven_date_processing(marketplace, transaction)
         end
 
         transactions_refund = report.transactions.type_refund
@@ -73,13 +74,37 @@ module DataProcessing
 
       private
 
+      def breakeven_date_processing(marketplace, transaction)
+        shipments_ids = marketplace.received_inventories.where(sku: transaction.sku).distinct.pluck(:fba_shipment_id)
+        shipments_ids.each do |id|
+          shipments = marketplace.fulfillment_inbound_shipments.where(shipment_id: id)
+          shipments.each do |item|
+            request = ActiveRecord::Base.connection.execute('SELECT'\
+                                                          ' SUM(revenue) AS total_revenue,'\
+                                                          ' SUM(fees) AS total_fees,'\
+                                                          ' SUM(cost_sold) AS total_sold'\
+                                                          ' FROM received_inventories'\
+                                                          " WHERE marketplace_id = '#{marketplace.id}' AND fba_shipment_id = '#{item.shipment_id}'")
+
+            revenue = request.field_values('total_revenue').first
+            fees = request.field_values('total_fees').first
+            cost_sold = request.field_values('total_sold').first
+
+            total_profit = revenue.to_f - fees.to_f - cost_sold.to_f
+
+            item.update_attribute(:breakeven_date, transaction.date_time) if total_profit >= item.price.to_f
+          end
+        end
+      end
+
       def received_inventory_refund_processing(marketplace, transaction, left_for_return = nil)
-        quantity = transaction.unprocessed_quantity > 0 ? transaction.unprocessed_quantity : transaction.quantity
+        quantity = transaction.unprocessed_quantity.positive? ? transaction.unprocessed_quantity : transaction.quantity
         left_for_return ||= quantity
 
         received_inventory_for_processing = marketplace.received_inventories.positive_quantity
                                                        .where('returned_units < quantity')
                                                        .where('received_date <= ?', transaction.date_time)
+                                                       .where(sku: transaction.sku)
                                                        .order(received_date: :asc)
         item = received_inventory_for_processing.first
 
@@ -92,18 +117,16 @@ module DataProcessing
           else
             item.update_attributes(returned_units: left_for_return)
           end
-        else
-          transaction.update_attribute(:unprocessed_quantity, left_for_return)
         end
       end
 
       def received_inventory_sold_processing(marketplace, transaction, left_in_transaction = nil)
-        quantity = transaction.unprocessed_quantity > 0 ? transaction.unprocessed_quantity : transaction.quantity
+        quantity = transaction.unprocessed_quantity.positive? ? transaction.unprocessed_quantity : transaction.quantity
         left_in_transaction ||= quantity
-
         received_unsold_inventory = marketplace.received_inventories
                                                .with_unsold
-                                               .where('received_date <= ?',transaction.date_time)
+                                               .where('received_date <= ?', transaction.date_time)
+                                               .where(sku: transaction.sku)
                                                .order(received_date: :asc)
         item = received_unsold_inventory.first
 
@@ -119,7 +142,6 @@ module DataProcessing
             # left_in_transaction is bigger that in current received inventory
             # we have one more received inventories
             # need find one more received_inventory
-
             item.update_attributes(sold_units: item.quantity,
                                    cost_sold: item.quantity * item.price_per_unit,
                                    remain_units: 0,
@@ -129,10 +151,11 @@ module DataProcessing
                                    fees: total_fees)
             received_inventory_sold_processing(marketplace, transaction, left_in_transaction)
           else
-            sold_now = item.remain_units - difference
+
             # difference > 0
             # quantity of received inventory is bigger that left in transaction
             date = difference.zero? ? transaction.date_time : nil
+            sold_now = item.remain_units - difference
             total_sold = item.sold_units + sold_now
             item.update_attributes(sold_units: total_sold,
                                    cost_sold: total_sold * item.price_per_unit,
@@ -141,6 +164,7 @@ module DataProcessing
                                    sold_date: date,
                                    revenue: item.revenue + transaction.product_sales,
                                    fees: total_fees)
+            transaction.update_attribute(:unprocessed_quantity, 0)
           end
         else
           # no more received inventories

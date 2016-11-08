@@ -2,7 +2,8 @@
 class ReceivedInventory < ApplicationRecord
   belongs_to :marketplace
 
-  validates_uniqueness_of :fnsku, scope: [:sku, :product_name, :quantity, :fba_shipment_id, :received_date]
+  # validates_uniqueness_of :fnsku, scope: [:sku, :product_name, :quantity, :fba_shipment_id, :received_date]
+  # from amazon we can get inventory with all same data but we should save it
 
   scope :positive_quantity, -> { where('quantity > 0') }
   scope :sold, -> { where('quantity = sold_units') }
