@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 class FulfillmentInboundShipment < ApplicationRecord
-  belongs_to :marketplace
+  include Marketplacable
+
   has_many :received_inventories, primary_key: :shipment_id, foreign_key: :fba_shipment_id
 
   scope :select_days_to_breakeven, -> do

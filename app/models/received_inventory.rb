@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 class ReceivedInventory < ApplicationRecord
-  belongs_to :marketplace
+  include Marketplacable
 
   # validates_uniqueness_of :fnsku, scope: [:sku, :product_name, :quantity, :fba_shipment_id, :received_date]
   # from amazon we can get inventory with all same data but we should save it
