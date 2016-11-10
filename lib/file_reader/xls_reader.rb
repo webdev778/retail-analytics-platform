@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module FileReader
   class XlsReader
     def initialize(file)
@@ -6,7 +7,7 @@ module FileReader
     end
 
     def iterate
-      if @file.row(1) == ['MSKU', 'Price', 'Date Purchased'] || ['SellerSKU', 'Price Per Unit', 'Date Purchased']
+      if @file.row(1) == ['MSKU', 'Price', 'Date Purchased'] || @file.row(1) == ['SellerSKU', 'Price Per Unit', 'Date Purchased']
         @file.each_with_index do |line, index|
           next if index.zero?
           msku = Reader.prepare_msku(line[0])
