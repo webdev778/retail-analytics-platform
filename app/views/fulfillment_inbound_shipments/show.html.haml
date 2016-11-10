@@ -17,7 +17,7 @@
             %td.col-sm-5.text-center= format_integer @summary&.quantity
           %tr
             %td.col-sm-7 Inventory Purchase Cost
-            %td.col-sm-5.text-center= format_currency nil
+            %td.col-sm-5.text-center= format_currency @summary&.cost_remain
           %tr
             %td.col-sm-7 Shipping Cost
             %td.col-sm-5.text-center= format_currency nil
@@ -32,7 +32,10 @@
             %td.col-sm-5.text-center= format_currency @summary&.price_total
           %tr
             %td.col-sm-7 Returns ($/%)
-            %td.col-sm-5.text-center= format_integer nil
+            %td.col-sm-5.text-center
+              = 0 # todo show returned_cost
+              \/
+              = format_integer @summary&.return_rate
           %tr
             %td.col-sm-7 Units Sold
             %td.col-sm-5.text-center= format_integer @summary.sold_units
@@ -50,7 +53,7 @@
             %td.col-sm-5.text-center= format_integer @summary.profit
           %tr
             %td.col-sm-7 ROI
-            %td.col-sm-5.text-center= format_integer @summary.roi
+            %td.col-sm-5.text-center= format_decimal @summary.roi, percentages: true
 
   .col-lg-7
     .content-box
@@ -86,7 +89,7 @@
             %td.col-sm-4.text-center= format_currency @summary&.profit
           %tr
             %td.col-sm-8 Shipment ROI
-            %td.col-sm-4.text-center= format_currency @summary&.roi
+            %td.col-sm-4.text-center= format_decimal @summary&.roi, percentages: true
           %tr
             %td.col-sm-8 Breakeven Date
             %td.col-sm-4.text-center= format_datetime @shipment&.breakeven_date

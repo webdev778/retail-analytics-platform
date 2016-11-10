@@ -14,6 +14,7 @@ class ReceivedInventory < ApplicationRecord
   scope :select_avg_purchase, -> { select('SUM(price_total)/SUM(quantity::float) avg_purchase') }
   scope :select_avg_revenue, -> { select('SUM(revenue)/SUM(quantity::float) avg_revenue') }
   scope :select_avg_profit, -> { select('SUM(revenue - fees - cost_sold)/SUM(quantity::float) avg_profit') }
+  scope :select_return_rate, -> { select('SUM(quantity)/NULLIF(SUM(returned_units), 0)*100 return_rate') }
   scope :select_avg_inventory_age, -> do
     select('AVG(DATE_PART(\'day\', sold_date - received_date)) avg_inventory_age')
   end

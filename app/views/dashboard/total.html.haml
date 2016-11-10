@@ -18,10 +18,10 @@
               %td.col-sm-4.text-center= format_currency @total_inventory_data&.cost_remain
             %tr
               %td.col-sm-8 Average ROI
-              %td.col-sm-4.text-center= format_decimal @total_inventory_data&.roi
+              %td.col-sm-4.text-center= format_decimal @total_inventory_data&.roi, percentages: true
             %tr
               %td.col-sm-8 Sell Through Rate
-              %td.col-sm-4.text-center= format_decimal @total_inventory_data&.sell_through
+              %td.col-sm-4.text-center= format_decimal @total_inventory_data&.sell_through, percentages: true
             %tr
               %td.col-sm-8 TVMInventory Age
               %td.col-sm-4.text-center N/A

@@ -33,20 +33,28 @@ module ApplicationHelper
 
   def format_currency(number)
     return t 'not_available' if number.nil?
-    number_to_currency number, unit: '', separator: ',', delimiter: ' '
+    number_to_currency number, unit: '$ ', separator: '.', delimiter: ' '
   end
 
-  def format_decimal(number)
+  def format_decimal(number, params = {})
     return t 'not_available' if number.nil?
-    number_with_precision number, precision: 2, separator: ',', delimiter: ' '
+    number = number_with_precision number, precision: 2, separator: ',', delimiter: ' '
+    if params[:percentages].present?
+      number = "#{number} %"
+    end
+    number
   end
 
   def value_or_dash(value)
     value.present? ? value : '-'
   end
 
-  def format_integer(number)
+  def format_integer(number, params = {})
     return t 'not_available' if number.nil?
-    number_with_precision number, precision: 0, delimiter: ' '
+    number = number_with_precision number, precision: 0, delimiter: ' '
+    if params[:percentages].present?
+      number = "#{number} %"
+    end
+    number
   end
 end
