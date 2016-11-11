@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module FileReader
   class CsvReader
     def initialize(file)
@@ -6,7 +7,7 @@ module FileReader
     end
 
     def iterate
-      if @file.headers == (['MSKU', 'Price', 'Date Purchased'] || ['SellerSKU', 'Price Per Unit', 'Date Purchased'])
+      if @file.headers == ['MSKU', 'Price', 'Date Purchased'] || @file.headers == ['SellerSKU', 'Price Per Unit', 'Date Purchased']
         @file.each do |line|
           msku = Reader.prepare_msku(line['MSKU'] || line['SellerSKU'])
           price = Reader.prepare_price(line['Price'] || line['Price Per Unit'])
