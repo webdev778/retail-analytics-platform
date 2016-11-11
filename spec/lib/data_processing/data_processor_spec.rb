@@ -451,4 +451,44 @@ describe DataProcessing::DataProcessor do
       expect(fulfillment_inbound_shipment.breakeven_date).to eq transaction.date_time
     end
   end
+
+  context 'breakeven_date_processing_after_file_upload' do
+
+    context 'breakeven_date check' do
+      before do
+        account
+        transaction
+        received_inventory
+        received_inventory_2
+        fulfillment_inbound_shipment
+      end
+
+
+      let(:transaction) do
+        create(:transaction,
+               marketplace: marketplace,
+               report: report,
+               date_time: 5.day.ago,
+               transaction_type: 'Order',
+               quantity: 5,
+               sku: '123')
+      end
+
+      let(:fulfillment_inbound_shipment) do
+        create(:fulfillment_inbound_shipment,
+               marketplace: marketplace,
+               shipment_id: 'f123',
+               price: '10.0')
+      end
+
+      subject { DataProcessing::DataProcessor.breakeven_date_processing_after_file_upload(marketplace) }
+
+      it 'should have date from transaction' do
+        subject
+        fulfillment_inbound_shipment.reload
+
+        expect(fulfillment_inbound_shipment.breakeven_date).to eq transaction.date_time
+      end
+    end
+  end
 end
