@@ -31,13 +31,14 @@ module DataProcessing
                                         .distinct
                                         .pluck(:fba_shipment_id)
         shipment_ids_all_items_priced.each do |item|
-          request = ActiveRecord::Base.connection.execute('SELECT'\
-                                                          '   SUM(quantity) AS total_quantity,'\
-                                                          '   SUM(price_total) AS total_price,'\
-                                                          '   SUM(sold_units) AS total_sold,'\
-                                                          '   MIN(received_date) AS date,'\
-                                                          '   SUM(revenue) AS total_revenue'\
-                                                          " FROM received_inventories WHERE fba_shipment_id = '#{item}'")
+          request = ActiveRecord::Base.connection.execute('SELECT '\
+                                                             'SUM(quantity) AS total_quantity, '\
+                                                             'SUM(price_total) AS total_price, '\
+                                                             'SUM(sold_units) AS total_sold, '\
+                                                             'MIN(received_date) AS date, '\
+                                                             'SUM(revenue) AS total_revenue '\
+                                                            'FROM received_inventories '\
+                                                             "WHERE fba_shipment_id = '#{item}'")
           shipment_items_quantity = request.field_values('total_quantity').first
           shipment_total_cost = request.field_values('total_price').first
           shipment_total_sold = request.field_values('total_sold').first
@@ -72,6 +73,69 @@ module DataProcessing
         report.update_attribute(:processed, Time.zone.now)
       end
 
+      def breakeven_date_processing_after_file_upload(marketplace)
+        # shipments = FulfillmentInboundShipment.where(breakeven_date: nil)
+        # ReceivedInventory.where(fba_shipment_id: shipments.pluck(:shipment_id))
+        shipments_with_inventory = FulfillmentInboundShipment.joins('LEFT JOIN received_inventories ON fulfillment_inbound_shipments.shipment_id = received_inventories.fba_shipment_id').select('fulfillment_inbound_shipments.*, received_inventories.*').where('fulfillment_inbound_shipments.marketplace_id = ?', marketplace.id)
+        skus = shipments_with_inventory.distinct(:sku).pluck(:sku, :shipment_id)
+        result = {}
+        skus.each do |item|
+          if result.key?(item.second)
+            #     add value
+            result[item.second].push item.first
+          else
+            #   add key with value into result
+            result[item.second] = [item.first]
+          end
+        end
+
+        result.each do |fba_with_skus|
+          # tr = Transaction.where(sku: fba_with_skus.second).order(:date_time)
+          skus = fba_with_skus.second
+          shipment_id = fba_with_skus.first
+          request = ActiveRecord::Base.connection.execute('SELECT '\
+                                                                'SUM(revenue) AS total_revenue, '\
+                                                                'SUM(fees) AS total_fees '\
+                                                               'FROM received_inventories '\
+                                                              "WHERE marketplace_id = '#{marketplace.id}' "\
+                                                               "AND fba_shipment_id = '#{shipment_id}' "\
+                                                               "AND sku IN ('#{skus.join("','")}')")
+          revenue = request.field_values('total_revenue').first
+          fees = request.field_values('total_fees').first
+
+          total_profit = revenue.to_f - fees.to_f
+
+          shipment = FulfillmentInboundShipment.find_by(shipment_id: shipment_id)
+
+          find_right_transaction(shipment, skus, marketplace) if total_profit >= shipment.price.to_f
+        end
+      end
+
+      def find_right_transaction(shipment, skus_in_shipment, marketplace, quantity_of_transactions = 1)
+
+        transactions = Transaction.where(sku: skus_in_shipment).order(:date_time).take(quantity_of_transactions)
+        skus = transactions.pluck(:sku)
+
+        request = ActiveRecord::Base.connection.execute('SELECT '\
+                                                                'SUM(revenue) AS total_revenue, '\
+                                                                'SUM(fees) AS total_fees '\
+                                                               'FROM received_inventories '\
+                                                              "WHERE marketplace_id = '#{marketplace.id}' "\
+                                                               "AND fba_shipment_id = '#{shipment.shipment_id}' "\
+                                                               "AND sku IN ('#{skus.join("','")}')")
+
+        revenue = request.field_values('total_revenue').first
+        fees = request.field_values('total_fees').first
+
+        total_profit = revenue.to_f - fees.to_f
+
+        if total_profit >= shipment.price.to_f
+          shipment.update_attribute(:breakeven_date, transactions.last.date_time)
+        else
+          find_right_transaction(shipment, skus_in_shipment, marketplace, quantity_of_transactions + 1)
+        end
+      end
+
       private
 
       def breakeven_date_processing(marketplace, transaction)
@@ -79,19 +143,28 @@ module DataProcessing
         shipments_ids.each do |id|
           shipments = marketplace.fulfillment_inbound_shipments.where(shipment_id: id)
           shipments.each do |item|
-            request = ActiveRecord::Base.connection.execute('SELECT'\
-                                                          ' SUM(revenue) AS total_revenue,'\
-                                                          ' SUM(fees) AS total_fees,'\
-                                                          ' SUM(cost_sold) AS total_sold'\
-                                                          ' FROM received_inventories'\
-                                                          " WHERE marketplace_id = '#{marketplace.id}' AND fba_shipment_id = '#{item.shipment_id}'")
+            # SUM((revenue - fees - cost_sold) + cost_sold) >= SUM(price_total)
+            # ('SELECT '\
+            #                                                     'SUM(revenue) AS total_revenue, '\
+            #                                                     'SUM(fees) AS total_fees, '\
+            #                                                     'SUM(cost_sold) AS total_sold '\
+            #                                                    'FROM received_inventories '\
+            #                                                   "WHERE marketplace_id = '#{marketplace.id}' "\
+            #                                                    "AND fba_shipment_id = '#{item.shipment_id}'")
+            # SUM(revenue - fees)
+            request = ActiveRecord::Base.connection.execute('SELECT '\
+                                                                'SUM(revenue) AS total_revenue, '\
+                                                                'SUM(fees) AS total_fees '\
+                                                               'FROM received_inventories '\
+                                                              "WHERE marketplace_id = '#{marketplace.id}' "\
+                                                               "AND fba_shipment_id = '#{item.shipment_id}'")
 
             revenue = request.field_values('total_revenue').first
             fees = request.field_values('total_fees').first
-            cost_sold = request.field_values('total_sold').first
+            # cost_sold = request.field_values('total_sold').first
 
-            total_profit = revenue.to_f - fees.to_f - cost_sold.to_f
-
+            # total_profit = revenue.to_f - fees.to_f - cost_sold.to_f
+            total_profit = revenue.to_f - fees.to_f
             item.update_attribute(:breakeven_date, transaction.date_time) if total_profit >= item.price.to_f
           end
         end
@@ -112,10 +185,13 @@ module DataProcessing
           difference = item.quantity - left_for_return
           if difference.negative?
             left_for_return = difference.abs
-            item.update_attributes(returned_units: left_for_return + difference)
+            returned_quantity = left_for_return + difference
+            item.update_attributes(returned_units: returned_quantity,
+                                   returned_cost: item.price_per_unit * returned_quantity)
             received_inventory_refund_processing(marketplace, transaction, left_for_return)
           else
-            item.update_attributes(returned_units: left_for_return)
+            item.update_attributes(returned_units: left_for_return,
+                                   returned_cost: item.price_per_unit * left_for_return)
           end
         end
       end
