@@ -15,4 +15,13 @@ RSpec.describe FulfillmentInboundShipmentsController, type: :controller do
       expect(assigns(:fulfillment_inbound_shipments)).to eq([fulfillment_inbound_shipment])
     end
   end
+
+  describe 'GET #show' do
+    it 'assigns shipments' do
+      sign_in user
+
+      get :show, params: { id: fulfillment_inbound_shipment.id }
+      expect(assigns(:shipment)).to eq fulfillment_inbound_shipment
+    end
+  end
 end

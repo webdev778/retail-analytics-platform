@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161104122529) do
+ActiveRecord::Schema.define(version: 20161110141227) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -98,6 +98,7 @@ ActiveRecord::Schema.define(version: 20161104122529) do
     t.decimal  "revenue",         precision: 10, scale: 2, default: "0.0"
     t.decimal  "fees",            precision: 10, scale: 2, default: "0.0"
     t.integer  "returned_units",                           default: 0
+    t.decimal  "returned_cost",   precision: 10, scale: 2, default: "0.0"
     t.index ["marketplace_id"], name: "index_received_inventories_on_marketplace_id", using: :btree
   end
 
