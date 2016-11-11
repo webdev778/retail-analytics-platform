@@ -20,6 +20,7 @@ class FulfillmentInboundShipmentsController < ApplicationController
         .select('SUM(fees) fees')
         .select('SUM(cost_remain) cost_remain')
         .select('SUM(remain_units) remain_units')
+        .select('SUM(returned_cost) returned_cost')
         .select_return_rate
         .select_roi
         .select_profit
