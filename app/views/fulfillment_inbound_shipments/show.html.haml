@@ -33,7 +33,7 @@
           %tr
             %td.col-sm-7 Returns ($/%)
             %td.col-sm-5.text-center
-              = 0 # todo show returned_cost
+              = format_currency @summary&.returned_cost
               \/
               = format_integer @summary&.return_rate
           %tr
