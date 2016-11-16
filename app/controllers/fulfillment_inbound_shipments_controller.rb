@@ -12,26 +12,26 @@ class FulfillmentInboundShipmentsController < ApplicationController
                                           .find params[:id]
 
     @summary = @shipment.received_inventories
-        .select('SUM(quantity) quantity')
-        .select('SUM(cost_sold) cost_sold')
-        .select('SUM(price_total) price_total')
-        .select('SUM(sold_units) sold_units')
-        .select('SUM(revenue) revenue')
-        .select('SUM(fees) fees')
-        .select('SUM(cost_remain) cost_remain')
-        .select('SUM(remain_units) remain_units')
-        .select('SUM(returned_cost) returned_cost')
-        .select_return_rate
-        .select_roi
-        .select_profit
-        .select_avg_purchase
-        .select_avg_revenue
-        .select_avg_profit
-        .select_avg_inventory_age
-        .select_sell_through
-        .select_sells_turnover
-        .select_cogs_turnover
-        .active
-        .take
+                        .select('SUM(quantity) quantity')
+                        .select('SUM(cost_sold) cost_sold')
+                        .select('SUM(price_total) price_total')
+                        .select('SUM(sold_units) sold_units')
+                        .select('SUM(revenue) revenue')
+                        .select('SUM(fees) fees')
+                        .select('SUM(cost_remain) cost_remain')
+                        .select('SUM(remain_units) remain_units')
+                        .select('SUM(returned_cost) returned_cost')
+                        .select_return_rate
+                        .select_roi
+                        .select_profit
+                        .select_avg_purchase
+                        .select_avg_revenue
+                        .select_avg_profit
+                        .select_avg_inventory_age
+                        .select_sell_through
+                        .select_sells_turnover
+                        .select_cogs_turnover
+                        .active
+                        .take
   end
 end

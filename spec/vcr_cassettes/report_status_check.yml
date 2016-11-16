@@ -1,0 +1,144 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: https://mws.amazonservices.com/
+    body:
+      encoding: UTF-8
+      string: AWSAccessKeyId=AKIAJA3HRHJWHH2CEBAQ&Action=GetReportRequestList&ReportRequestIdList.Id.1=168374017120&SellerId=A1HRWKXDFQTX7Z&SignatureMethod=HmacSHA256&SignatureVersion=2&Timestamp=2016-11-15T10%3A09%3A13Z&Version=2009-01-01&Signature=LYUs3Pe6WFfSsyJ%2FYw6W2loIinKGptAB4C3R11SXB%2Fk%3D
+    headers:
+      User-Agent:
+      - Jeff/1.5.1 (Language=Ruby; pc)
+      Content-Type:
+      - application/x-www-form-urlencoded
+  response:
+    status:
+      code: 200
+      message: ''
+    headers:
+      Server:
+      - Server
+      Date:
+      - Tue, 15 Nov 2016 10:09:14 GMT
+      Content-Type:
+      - text/xml
+      Content-Length:
+      - '929'
+      Connection:
+      - keep-alive
+      X-Mws-Quota-Max:
+      - '80.0'
+      X-Mws-Quota-Remaining:
+      - '79.0'
+      X-Mws-Quota-Resetson:
+      - '2016-11-15T10:52:00.000Z'
+      X-Amz-Date:
+      - Tue, 15 Nov 2016 10:09:14 GMT
+      X-Amzn-Authorization:
+      - AAA SignedHeaders=X-Amz-Date, identity=com.amazon.aaa.FrpAndromedaReportsPlugin.AndromedaControlService.amzn1.aaa.id.qhz3ylg755gkejyk5sh44qm3wy.Default/1,
+        Signed=true, Encrypted=false, Signature=4lRNWDoiSW3fwHh8Pdb4ZSBESHiJKzLkt+GxgNlk4zU=,
+        Algorithm=HmacSHA256
+      X-Mws-Request-Id:
+      - 2cdef7c5-0297-4d8d-b512-0418298d0072
+      X-Mws-Timestamp:
+      - '2016-11-15T10:09:14.600Z'
+      X-Mws-Response-Context:
+      - 1sr37ZgQe2ijR2n4yrXH3wThB+SOylrlDF1EXElTILZwh5A8pYobFS9B7u9hU51VVW8hw+wQzwS+
+        8FEkw+06DQ==
+      Vary:
+      - Accept-Encoding,User-Agent
+    body:
+      encoding: ASCII-8BIT
+      string: |
+        <?xml version="1.0"?>
+        <GetReportRequestListResponse xmlns="http://mws.amazonaws.com/doc/2009-01-01/">
+          <GetReportRequestListResult>
+            <HasNext>false</HasNext>
+            <ReportRequestInfo>
+              <ReportType>_GET_FBA_FULFILLMENT_INVENTORY_RECEIPTS_DATA_</ReportType>
+              <ReportProcessingStatus>_DONE_NO_DATA_</ReportProcessingStatus>
+              <EndDate>2016-11-15T09:47:26+00:00</EndDate>
+              <Scheduled>false</Scheduled>
+              <ReportRequestId>168374017120</ReportRequestId>
+              <StartedProcessingDate>2016-11-15T09:47:32+00:00</StartedProcessingDate>
+              <SubmittedDate>2016-11-15T09:47:26+00:00</SubmittedDate>
+              <StartDate>2016-11-15T09:47:26+00:00</StartDate>
+              <CompletedDate>2016-11-15T09:47:38+00:00</CompletedDate>
+            </ReportRequestInfo>
+          </GetReportRequestListResult>
+          <ResponseMetadata>
+            <RequestId>2cdef7c5-0297-4d8d-b512-0418298d0072</RequestId>
+          </ResponseMetadata>
+        </GetReportRequestListResponse>
+    http_version: 
+  recorded_at: Tue, 15 Nov 2016 10:09:14 GMT
+- request:
+    method: post
+    uri: https://mws.amazonservices.com/
+    body:
+      encoding: UTF-8
+      string: AWSAccessKeyId=AKIAJA3HRHJWHH2CEBAQ&Action=RequestReport&ReportType=_GET_FBA_FULFILLMENT_INVENTORY_RECEIPTS_DATA_&SellerId=A1HRWKXDFQTX7Z&SignatureMethod=HmacSHA256&SignatureVersion=2&Timestamp=2016-11-15T10%3A09%3A14Z&Version=2009-01-01&Signature=3%2BGLSKrNiC72VrlJrBgA1FMINg6yrjzuhUQaB4XzOjE%3D
+    headers:
+      User-Agent:
+      - Jeff/1.5.1 (Language=Ruby; pc)
+      Content-Type:
+      - application/x-www-form-urlencoded
+  response:
+    status:
+      code: 200
+      message: ''
+    headers:
+      Server:
+      - Server
+      Date:
+      - Tue, 15 Nov 2016 10:09:15 GMT
+      Content-Type:
+      - text/xml
+      Content-Length:
+      - '727'
+      Connection:
+      - keep-alive
+      X-Mws-Quota-Max:
+      - '60.0'
+      X-Mws-Quota-Remaining:
+      - '60.0'
+      X-Mws-Quota-Resetson:
+      - '2016-11-15T10:52:00.000Z'
+      X-Amz-Date:
+      - Tue, 15 Nov 2016 10:09:15 GMT
+      X-Amzn-Authorization:
+      - AAA SignedHeaders=X-Amz-Date, identity=com.amazon.aaa.FrpAndromedaReportsPlugin.AndromedaControlService.amzn1.aaa.id.qhz3ylg755gkejyk5sh44qm3wy.Default/1,
+        Signed=true, Encrypted=false, Signature=AOCYZIVdZXSs74K0Sv24Zf1CQ4eDbCNHyZsP5cn2noc=,
+        Algorithm=HmacSHA256
+      X-Mws-Request-Id:
+      - 46947568-be44-4de1-8d1b-56c868307f61
+      X-Mws-Timestamp:
+      - '2016-11-15T10:09:15.348Z'
+      X-Mws-Response-Context:
+      - yoyLZpYuv9QH91t5L8y4/q5DlR2gJzsMHI/VtcdUS9p/st3JEs9cyDVBMzVXvN16gE67HjvYFDTc
+        /keua9xkaw==
+      Vary:
+      - Accept-Encoding,User-Agent
+    body:
+      encoding: ASCII-8BIT
+      string: |
+        <?xml version="1.0"?>
+        <RequestReportResponse xmlns="http://mws.amazonaws.com/doc/2009-01-01/">
+          <RequestReportResult>
+            <ReportRequestInfo>
+              <ReportType>_GET_FBA_FULFILLMENT_INVENTORY_RECEIPTS_DATA_</ReportType>
+              <ReportProcessingStatus>_SUBMITTED_</ReportProcessingStatus>
+              <EndDate>2016-11-15T10:09:15+00:00</EndDate>
+              <Scheduled>false</Scheduled>
+              <ReportRequestId>168375017120</ReportRequestId>
+              <SubmittedDate>2016-11-15T10:09:15+00:00</SubmittedDate>
+              <StartDate>2016-11-15T10:09:15+00:00</StartDate>
+            </ReportRequestInfo>
+          </RequestReportResult>
+          <ResponseMetadata>
+            <RequestId>46947568-be44-4de1-8d1b-56c868307f61</RequestId>
+          </ResponseMetadata>
+        </RequestReportResponse>
+    http_version: 
+  recorded_at: Tue, 15 Nov 2016 10:09:15 GMT
+recorded_with: VCR 3.0.3

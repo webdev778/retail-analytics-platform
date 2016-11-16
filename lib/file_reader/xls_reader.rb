@@ -7,7 +7,7 @@ module FileReader
     end
 
     def iterate
-      if @file.row(1) == ['MSKU', 'Price', 'Date Purchased'] || @file.row(1) == ['SellerSKU', 'Price Per Unit', 'Date Purchased'] || (%w(MSKU SellerSKU).include?(@file.row(1).first) && ['Price', 'Price Per Unit'].include?(@file.row(1).second) && ['Date Purchased'].include?(@file.row(1).third))
+      if %w(MSKU SellerSKU).include?(@file.row(1).first) && ['Price', 'Price Per Unit'].include?(@file.row(1).second) && ['Date Purchased'].include?(@file.row(1).third)
         @file.each_with_index do |line, index|
           next if index.zero?
           msku = Reader.prepare_msku(line[0])

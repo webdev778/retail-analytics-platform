@@ -21,12 +21,12 @@ describe FileReader::XlsReader do
       let(:file) { create(:xlsx_second_variant) }
       subject { FileReader::XlsReader.new(file) }
 
-      xit 'should return 4 objects and include known object' do
+      it 'should return 4 objects and include known object' do
         t = []
         subject.iterate { |item| t << item }
         expect(t.count).to eq 4
         expect(t.include?(msku: '08_18_2016_102',
-                          price: '2.50',
+                          price: 2.5,
                           date_purchased: Date.new(2016, 6, 30))).to eq true
       end
     end
@@ -43,7 +43,7 @@ describe FileReader::XlsReader do
       let(:file) { create(:xlsx_wrong_headers) }
       subject { FileReader::XlsReader.new(file) }
 
-      xit 'should return error' do
+      it 'should return error' do
         t = []
         subject.iterate { |item| t << item }
         expect(t.count).to eq 0

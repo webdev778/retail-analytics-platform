@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module ApplicationHelper
   def file_extention(file)
     File.extname(file)
@@ -15,7 +16,7 @@ module ApplicationHelper
     classes_list[flash_type.to_sym] || flash_type.to_s
   end
 
-  def flash_messages(opts = {})
+  def flash_messages(_opts = {})
     # alert alert-info alert-dismissible
     # alert notice fade in
     flash.each do |msg_type, message|
@@ -36,25 +37,20 @@ module ApplicationHelper
     number_to_currency number, unit: '$ ', separator: '.', delimiter: ' '
   end
 
-  def format_decimal(number, params = {})
+  def format_value(number, params = {})
     return t 'not_available' if number.nil?
-    number = number_with_precision number, precision: 2, separator: ',', delimiter: ' '
-    if params[:percentages].present?
-      number = "#{number} %"
-    end
+
+    number = if params[:decimal]
+               number_with_precision number, precision: 2, separator: ',', delimiter: ' '
+             else
+               number_with_precision number, precision: 0, delimiter: ' '
+             end
+    number = "#{number} %" if params[:percentages].present?
+
     number
   end
 
   def value_or_dash(value)
     value.present? ? value : '-'
-  end
-
-  def format_integer(number, params = {})
-    return t 'not_available' if number.nil?
-    number = number_with_precision number, precision: 0, delimiter: ' '
-    if params[:percentages].present?
-      number = "#{number} %"
-    end
-    number
   end
 end

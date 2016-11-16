@@ -2,4 +2,4 @@
 .content-box.upload
   %p Welcome into Retail Analytics Platform!
   - unless current_user.marketplace_connected?
-    %p= "You should #{ link_to 'add your marketplace', new_account_path } credentials before to continue."
+    %p You should #{ link_to 'add your marketplace', new_account_path } credentials before to continue.

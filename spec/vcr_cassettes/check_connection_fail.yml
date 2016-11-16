@@ -1,0 +1,52 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: https://mws.amazonservices.com/Sellers/2011-07-01
+    body:
+      encoding: UTF-8
+      string: AWSAccessKeyId=AKIAJA3HRHJWHH2CEBAQ&Action=ListMarketplaceParticipations&SellerId=A1HRWKXDFQTX7Z1&SignatureMethod=HmacSHA256&SignatureVersion=2&Timestamp=2016-11-15T08%3A24%3A32Z&Version=2011-07-01&Signature=%2BTSx0Ui1GvRSEj4YKIUnzG2xYph0puPPMp%2FwX2sbRiE%3D
+    headers:
+      User-Agent:
+      - Jeff/1.5.1 (Language=Ruby; pc)
+      Content-Type:
+      - application/x-www-form-urlencoded
+  response:
+    status:
+      code: 400
+      message: ''
+    headers:
+      Server:
+      - Server
+      Date:
+      - Tue, 15 Nov 2016 08:24:33 GMT
+      Content-Type:
+      - text/xml
+      Content-Length:
+      - '317'
+      Connection:
+      - keep-alive
+      X-Mws-Request-Id:
+      - 260a6132-e2d6-4a74-b77b-4275cec928ef
+      X-Mws-Timestamp:
+      - '2016-11-15T08:24:33.487Z'
+      X-Mws-Response-Context:
+      - 6z7fQ3HAOziAp2GZVLVcUSMQtObDUdr41oR5bPuw9yOfjca+ywx/fXy+1/KF6a0dfuYJvAcXGWB3
+        8sit+c74gw==
+      Vary:
+      - Accept-Encoding,User-Agent
+    body:
+      encoding: ASCII-8BIT
+      string: |
+        <?xml version="1.0"?>
+        <ErrorResponse xmlns="https://mws.amazonservices.com/Sellers/2011-07-01">
+          <Error>
+            <Type>Sender</Type>
+            <Code>InvalidParameterValue</Code>
+            <Message>Invalid seller id: A1HRWKXDFQTX7Z1</Message>
+          </Error>
+          <RequestID>260a6132-e2d6-4a74-b77b-4275cec928ef</RequestID>
+        </ErrorResponse>
+    http_version: 
+  recorded_at: Tue, 15 Nov 2016 08:24:33 GMT
+recorded_with: VCR 3.0.3

@@ -87,6 +87,7 @@ group :development, :test do
   gem 'rails-controller-testing'
   gem 'factory_girl_rails'
   gem 'rubocop', require: false
+  gem 'haml-lint', require: false
   gem 'bullet', group: :development
   gem 'better_errors', group: :development
   gem 'binding_of_caller', group: :development

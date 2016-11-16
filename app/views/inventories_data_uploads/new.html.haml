@@ -22,7 +22,7 @@
                 = timeago(file.finished_at)
               %td.col-sm-3
                 - if file.status == 'finished'
-                  = "imported: #{file.imported_new} rows; already exist: #{file.already_exist} rows"
+                  imported: #{file.imported_new} rows; already exist: #{file.already_exist} rows
                 - if file.status == 'error'
                   = file.description
                 - unless %w(finished error).include?(file.status)
@@ -42,7 +42,7 @@
               %td.col-sm-4
                 = inventory.msku
               %td.col-sm-4
-                == $ #{inventory.price}
+                $ #{inventory.price}
               %td.col-sm-4
                 = format_datetime(inventory.date_purchased)
       = paginate @inventories

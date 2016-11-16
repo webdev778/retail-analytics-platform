@@ -1,7 +1,7 @@
 = link_to fulfillment_inbound_shipments_path, class: 'back pull-right' do
   Back
   %i.fa.fa-chevron-right
-%h4= "Shipment Summary - #{@shipment.shipment_id}"
+%h4 Shipment Summary - #{@shipment.shipment_id}
 
 .row
   .col-lg-5
@@ -14,46 +14,46 @@
         %tbody
           %tr
             %td.col-sm-7 Units received
-            %td.col-sm-5.text-center= format_integer @summary&.quantity
+            %td.col-sm-5.text-center= format_value(@summary&.quantity)
           %tr
             %td.col-sm-7 Inventory Purchase Cost
-            %td.col-sm-5.text-center= format_currency @summary&.cost_remain
+            %td.col-sm-5.text-center= format_currency(@summary&.cost_remain)
           %tr
             %td.col-sm-7 Shipping Cost
-            %td.col-sm-5.text-center= format_currency nil
+            %td.col-sm-5.text-center= format_currency(nil)
           %tr
             %td.col-sm-7 Prep Costs
-            %td.col-sm-5.text-center= format_currency nil
+            %td.col-sm-5.text-center= format_currency(nil)
           %tr
             %td.col-sm-7 Storage Fees
-            %td.col-sm-5.text-center= format_currency nil
+            %td.col-sm-5.text-center= format_currency(nil)
           %tr
             %td.col-sm-7 Total Cost
-            %td.col-sm-5.text-center= format_currency @summary&.price_total
+            %td.col-sm-5.text-center= format_currency(@summary&.price_total)
           %tr
             %td.col-sm-7 Returns ($/%)
             %td.col-sm-5.text-center
-              = format_currency @summary&.returned_cost
+              = format_currency(@summary&.returned_cost)
               \/
-              = format_integer @summary&.return_rate
+              = format_value(@summary&.return_rate)
           %tr
             %td.col-sm-7 Units Sold
-            %td.col-sm-5.text-center= format_integer @summary.sold_units
+            %td.col-sm-5.text-center= format_value(@summary.sold_units)
           %tr
             %td.col-sm-7 Revenue
-            %td.col-sm-5.text-center= format_integer @summary.revenue
+            %td.col-sm-5.text-center= format_value(@summary.revenue)
           %tr
             %td.col-sm-7 Amazon Fees
-            %td.col-sm-5.text-center= format_integer @summary.fees
+            %td.col-sm-5.text-center= format_value(@summary.fees)
           %tr
             %td.col-sm-7 COGS
-            %td.col-sm-5.text-center= format_integer @summary.cost_sold
+            %td.col-sm-5.text-center= format_value(@summary.cost_sold)
           %tr
             %td.col-sm-7 Profit
-            %td.col-sm-5.text-center= format_integer @summary.profit
+            %td.col-sm-5.text-center= format_value(@summary.profit)
           %tr
             %td.col-sm-7 ROI
-            %td.col-sm-5.text-center= format_decimal @summary.roi, percentages: true
+            %td.col-sm-5.text-center= format_value(@summary.roi, percentages: true, decimal: true)
 
   .col-lg-7
     .content-box
@@ -73,7 +73,7 @@
             %td.col-sm-4.text-center= format_currency @summary&.avg_profit
           %tr
             %td.col-sm-8 Average Days in Inventory before Sale
-            %td.col-sm-4.text-center= format_integer @summary&.avg_inventory_age
+            %td.col-sm-4.text-center= format_value(@summary&.avg_inventory_age)
 
     .content-box
       %table.table.table-fixed
@@ -89,24 +89,24 @@
             %td.col-sm-4.text-center= format_currency @summary&.profit
           %tr
             %td.col-sm-8 Shipment ROI
-            %td.col-sm-4.text-center= format_decimal @summary&.roi, percentages: true
+            %td.col-sm-4.text-center= format_value(@summary&.roi, percentages: true, decimal: true)
           %tr
             %td.col-sm-8 Breakeven Date
-            %td.col-sm-4.text-center= format_datetime @shipment&.breakeven_date
+            %td.col-sm-4.text-center= format_datetime(@shipment&.breakeven_date)
           %tr
             %td.col-sm-8 Days to Breakeven
-            %td.col-sm-4.text-center= format_integer @shipment&.days_to_breakeven
+            %td.col-sm-4.text-center= format_value(@shipment&.days_to_breakeven)
           %tr
             %td.col-sm-8 Remaining Inventory Units / $
             %td.col-sm-4.text-center
-              = format_integer @summary&.remain_units
+              = format_value(@summary&.remain_units)
               \/
-              = format_integer @summary&.cost_remain
+              = format_value(@summary&.cost_remain)
           %tr
             %td.col-sm-8 Sell through Rate
-            %td.col-sm-4.text-center= format_integer @summary&.sell_through
+            %td.col-sm-4.text-center= format_value(@summary&.sell_through)
           %tr
             %td.col-sm-8 Inventory Turnover
             %td.col-sm-4.text-center
-              = "Sales #{format_decimal @summary&.sells_turnover} /"
-              = "COGS #{format_decimal @summary&.cogs_turnover}"
+              Sales #{format_value(@summary&.sells_turnover, decimal: true)} /
+              COGS #{format_value(@summary&.cogs_turnover, decimal: true)}

@@ -12,18 +12,6 @@ describe ReportParser::SettlementParser do
 
     subject { ReportParser::SettlementParser.new(file_content, marketplace, report) }
 
-    # product_sales: 19.99
-    # fba_fees: 4.4 ! without minus
-    # other_transaction_fees: 3 ! without minus
-
-    # received_inventory.revenue: 19.99 !
-
-    # 105-9908022-0462606
-    # product_sales: 38.13
-    # fba_fees: 5.18 ! without minus
-    # other_transaction_fees: 5.34 ! without minus
-
-    # received_inventory.revenue: 38.13 !
     before { subject }
 
     it 'should be 4 Transactions' do

@@ -1,0 +1,72 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: https://mws.amazonservices.com/
+    body:
+      encoding: UTF-8
+      string: AWSAccessKeyId=AKIAJA3HRHJWHH2CEBAQ&Action=RequestReport&ReportType=_GET_FBA_FULFILLMENT_INVENTORY_RECEIPTS_DATA_&SellerId=A1HRWKXDFQTX7Z&SignatureMethod=HmacSHA256&SignatureVersion=2&Timestamp=2016-11-15T09%3A47%3A25Z&Version=2009-01-01&Signature=94kkVKikTTfDELXh%2FS2d%2FYPs5xHbEYIgDxCziseJCNQ%3D
+    headers:
+      User-Agent:
+      - Jeff/1.5.1 (Language=Ruby; pc)
+      Content-Type:
+      - application/x-www-form-urlencoded
+  response:
+    status:
+      code: 200
+      message: ''
+    headers:
+      Server:
+      - Server
+      Date:
+      - Tue, 15 Nov 2016 09:47:26 GMT
+      Content-Type:
+      - text/xml
+      Content-Length:
+      - '727'
+      Connection:
+      - keep-alive
+      X-Mws-Quota-Max:
+      - '60.0'
+      X-Mws-Quota-Remaining:
+      - '60.0'
+      X-Mws-Quota-Resetson:
+      - '2016-11-15T09:52:00.000Z'
+      X-Amz-Date:
+      - Tue, 15 Nov 2016 09:47:26 GMT
+      X-Amzn-Authorization:
+      - AAA SignedHeaders=X-Amz-Date, identity=com.amazon.aaa.FrpAndromedaReportsPlugin.AndromedaControlService.amzn1.aaa.id.qhz3ylg755gkejyk5sh44qm3wy.Default/1,
+        Signed=true, Encrypted=false, Signature=vQqY2SBdRmiLMPuAeGq5l6a852J1jQPz9BsBrXYu0Rs=,
+        Algorithm=HmacSHA256
+      X-Mws-Request-Id:
+      - 6bf3e771-b94a-4ae5-a499-2e74fa11c0e4
+      X-Mws-Timestamp:
+      - '2016-11-15T09:47:26.334Z'
+      X-Mws-Response-Context:
+      - R2xbpYPH4/gtNLL9GFNxcge0eHp9d0qfnojIyevanXtN5HFK8WNby28JTkO7wplXPBJeIPWSiQlh
+        rrI9oK7G7w==
+      Vary:
+      - Accept-Encoding,User-Agent
+    body:
+      encoding: ASCII-8BIT
+      string: |
+        <?xml version="1.0"?>
+        <RequestReportResponse xmlns="http://mws.amazonaws.com/doc/2009-01-01/">
+          <RequestReportResult>
+            <ReportRequestInfo>
+              <ReportType>_GET_FBA_FULFILLMENT_INVENTORY_RECEIPTS_DATA_</ReportType>
+              <ReportProcessingStatus>_SUBMITTED_</ReportProcessingStatus>
+              <EndDate>2016-11-15T09:47:26+00:00</EndDate>
+              <Scheduled>false</Scheduled>
+              <ReportRequestId>168374017120</ReportRequestId>
+              <SubmittedDate>2016-11-15T09:47:26+00:00</SubmittedDate>
+              <StartDate>2016-11-15T09:47:26+00:00</StartDate>
+            </ReportRequestInfo>
+          </RequestReportResult>
+          <ResponseMetadata>
+            <RequestId>6bf3e771-b94a-4ae5-a499-2e74fa11c0e4</RequestId>
+          </ResponseMetadata>
+        </RequestReportResponse>
+    http_version: 
+  recorded_at: Tue, 15 Nov 2016 09:47:26 GMT
+recorded_with: VCR 3.0.3

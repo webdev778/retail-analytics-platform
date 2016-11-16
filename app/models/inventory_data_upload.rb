@@ -3,8 +3,13 @@ class InventoryDataUpload < ApplicationRecord
   has_attached_file :file_for_import
 
   validates_attachment_content_type :file_for_import,
-                                    content_type: ['text/plain', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'],
+                                    content_type: ['text/plain', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'application/zip'],
                                     message: 'Allowed only .txt, .csv, .xls, .xlsx files extentions'
+
+  validates_attachment_file_name :file_for_import,
+                                 matches: [/txt\z/, /csv\z/, /xls\z/, /xlsx\z/],
+                                 message: 'Allowed only .txt, .csv, .xls, .xlsx files extentions'
+
   validates_attachment_presence :file_for_import
 
   belongs_to :user

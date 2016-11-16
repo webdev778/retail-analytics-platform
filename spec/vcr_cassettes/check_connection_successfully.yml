@@ -1,0 +1,189 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: https://mws.amazonservices.com/Sellers/2011-07-01
+    body:
+      encoding: UTF-8
+      string: AWSAccessKeyId=AKIAJA3HRHJWHH2CEBAQ&Action=ListMarketplaceParticipations&SellerId=A1HRWKXDFQTX7Z&SignatureMethod=HmacSHA256&SignatureVersion=2&Timestamp=2016-11-15T08%3A13%3A35Z&Version=2011-07-01&Signature=0PbBBEOF%2FGf5x4YkYQhM65DWyA2Y17lftIcLhgWoBtk%3D
+    headers:
+      User-Agent:
+      - Jeff/1.5.1 (Language=Ruby; pc)
+      Content-Type:
+      - application/x-www-form-urlencoded
+  response:
+    status:
+      code: 200
+      message: ''
+    headers:
+      Server:
+      - Server
+      Date:
+      - Tue, 15 Nov 2016 08:13:36 GMT
+      Content-Type:
+      - text/xml
+      Content-Length:
+      - '2155'
+      Connection:
+      - keep-alive
+      X-Amz-Date:
+      - Tue, 15 Nov 2016 08:13:36 GMT
+      Vary:
+      - Accept-Encoding,User-Agent
+      X-Mws-Request-Id:
+      - 27fa93bc-08b9-480b-9c4d-381ccfb943ee
+      X-Mws-Timestamp:
+      - '2016-11-15T08:13:36.161Z'
+      X-Mws-Response-Context:
+      - m0djH4yrdzifhFe4As+sLREj1z0akCsSvLFfPjr8ar6fSVUIoxNzXliopFZNWhmCfnP9HFkewS7S
+        rl5I8vN/AQ==
+    body:
+      encoding: ASCII-8BIT
+      string: |
+        <?xml version="1.0"?>
+        <ListMarketplaceParticipationsResponse xmlns="https://mws.amazonservices.com/Sellers/2011-07-01">
+          <ListMarketplaceParticipationsResult>
+            <ListParticipations>
+              <Participation>
+                <MarketplaceId>A2ZV50J4W1RKNI</MarketplaceId>
+                <SellerId>A1HRWKXDFQTX7Z</SellerId>
+                <HasSellerSuspendedListings>No</HasSellerSuspendedListings>
+              </Participation>
+              <Participation>
+                <MarketplaceId>AHRY1CZE9ZY4H</MarketplaceId>
+                <SellerId>A1HRWKXDFQTX7Z</SellerId>
+                <HasSellerSuspendedListings>No</HasSellerSuspendedListings>
+              </Participation>
+              <Participation>
+                <MarketplaceId>ATVPDKIKX0DER</MarketplaceId>
+                <SellerId>A1HRWKXDFQTX7Z</SellerId>
+                <HasSellerSuspendedListings>No</HasSellerSuspendedListings>
+              </Participation>
+            </ListParticipations>
+            <ListMarketplaces>
+              <Marketplace>
+                <MarketplaceId>A2ZV50J4W1RKNI</MarketplaceId>
+                <DefaultCountryCode>US</DefaultCountryCode>
+                <DomainName>sim1.stores.amazon.com</DomainName>
+                <Name>Non-Amazon</Name>
+                <DefaultCurrencyCode>USD</DefaultCurrencyCode>
+                <DefaultLanguageCode>en_US</DefaultLanguageCode>
+              </Marketplace>
+              <Marketplace>
+                <MarketplaceId>AHRY1CZE9ZY4H</MarketplaceId>
+                <DefaultCountryCode>US</DefaultCountryCode>
+                <DomainName>invoicing-shadow-marketplace.amazon.com</DomainName>
+                <Name>Amazon.com Invoicing Shadow Marketplace</Name>
+                <DefaultCurrencyCode>USD</DefaultCurrencyCode>
+                <DefaultLanguageCode>en_US</DefaultLanguageCode>
+              </Marketplace>
+              <Marketplace>
+                <MarketplaceId>ATVPDKIKX0DER</MarketplaceId>
+                <DefaultCountryCode>US</DefaultCountryCode>
+                <DomainName>www.amazon.com</DomainName>
+                <Name>Amazon.com</Name>
+                <DefaultCurrencyCode>USD</DefaultCurrencyCode>
+                <DefaultLanguageCode>en_US</DefaultLanguageCode>
+              </Marketplace>
+            </ListMarketplaces>
+          </ListMarketplaceParticipationsResult>
+          <ResponseMetadata>
+            <RequestId>27fa93bc-08b9-480b-9c4d-381ccfb943ee</RequestId>
+          </ResponseMetadata>
+        </ListMarketplaceParticipationsResponse>
+    http_version: 
+  recorded_at: Tue, 15 Nov 2016 08:13:36 GMT
+- request:
+    method: post
+    uri: https://mws.amazonservices.com/Sellers/2011-07-01
+    body:
+      encoding: UTF-8
+      string: AWSAccessKeyId=AKIAJA3HRHJWHH2CEBAQ&Action=ListMarketplaceParticipations&SellerId=A1HRWKXDFQTX7Z&SignatureMethod=HmacSHA256&SignatureVersion=2&Timestamp=2016-11-15T08%3A13%3A44Z&Version=2011-07-01&Signature=fw1S5fh%2F1EzVtRuYZTONAcffYToGm2jpTnTprAqtCuM%3D
+    headers:
+      User-Agent:
+      - Jeff/1.5.1 (Language=Ruby; pc)
+      Content-Type:
+      - application/x-www-form-urlencoded
+  response:
+    status:
+      code: 200
+      message: ''
+    headers:
+      Server:
+      - Server
+      Date:
+      - Tue, 15 Nov 2016 08:13:45 GMT
+      Content-Type:
+      - text/xml
+      Content-Length:
+      - '2155'
+      Connection:
+      - keep-alive
+      X-Amz-Date:
+      - Tue, 15 Nov 2016 08:13:45 GMT
+      Vary:
+      - Accept-Encoding,User-Agent
+      X-Mws-Request-Id:
+      - 10e27413-62c8-4890-aa12-2204a9521ddd
+      X-Mws-Timestamp:
+      - '2016-11-15T08:13:44.968Z'
+      X-Mws-Response-Context:
+      - dBqdrHxssr+LEuYhzDFNxmCVPAeHD2a/bkKiWS0cix2lLtMbOAu/jlOXpC2l6EDUkkUmQBzM5NCL
+        qd23Vmho6A==
+    body:
+      encoding: ASCII-8BIT
+      string: |
+        <?xml version="1.0"?>
+        <ListMarketplaceParticipationsResponse xmlns="https://mws.amazonservices.com/Sellers/2011-07-01">
+          <ListMarketplaceParticipationsResult>
+            <ListParticipations>
+              <Participation>
+                <MarketplaceId>A2ZV50J4W1RKNI</MarketplaceId>
+                <SellerId>A1HRWKXDFQTX7Z</SellerId>
+                <HasSellerSuspendedListings>No</HasSellerSuspendedListings>
+              </Participation>
+              <Participation>
+                <MarketplaceId>AHRY1CZE9ZY4H</MarketplaceId>
+                <SellerId>A1HRWKXDFQTX7Z</SellerId>
+                <HasSellerSuspendedListings>No</HasSellerSuspendedListings>
+              </Participation>
+              <Participation>
+                <MarketplaceId>ATVPDKIKX0DER</MarketplaceId>
+                <SellerId>A1HRWKXDFQTX7Z</SellerId>
+                <HasSellerSuspendedListings>No</HasSellerSuspendedListings>
+              </Participation>
+            </ListParticipations>
+            <ListMarketplaces>
+              <Marketplace>
+                <MarketplaceId>A2ZV50J4W1RKNI</MarketplaceId>
+                <DefaultCountryCode>US</DefaultCountryCode>
+                <DomainName>sim1.stores.amazon.com</DomainName>
+                <Name>Non-Amazon</Name>
+                <DefaultCurrencyCode>USD</DefaultCurrencyCode>
+                <DefaultLanguageCode>en_US</DefaultLanguageCode>
+              </Marketplace>
+              <Marketplace>
+                <MarketplaceId>AHRY1CZE9ZY4H</MarketplaceId>
+                <DefaultCountryCode>US</DefaultCountryCode>
+                <DomainName>invoicing-shadow-marketplace.amazon.com</DomainName>
+                <Name>Amazon.com Invoicing Shadow Marketplace</Name>
+                <DefaultCurrencyCode>USD</DefaultCurrencyCode>
+                <DefaultLanguageCode>en_US</DefaultLanguageCode>
+              </Marketplace>
+              <Marketplace>
+                <MarketplaceId>ATVPDKIKX0DER</MarketplaceId>
+                <DefaultCountryCode>US</DefaultCountryCode>
+                <DomainName>www.amazon.com</DomainName>
+                <Name>Amazon.com</Name>
+                <DefaultCurrencyCode>USD</DefaultCurrencyCode>
+                <DefaultLanguageCode>en_US</DefaultLanguageCode>
+              </Marketplace>
+            </ListMarketplaces>
+          </ListMarketplaceParticipationsResult>
+          <ResponseMetadata>
+            <RequestId>10e27413-62c8-4890-aa12-2204a9521ddd</RequestId>
+          </ResponseMetadata>
+        </ListMarketplaceParticipationsResponse>
+    http_version: 
+  recorded_at: Tue, 15 Nov 2016 08:13:45 GMT
+recorded_with: VCR 3.0.3

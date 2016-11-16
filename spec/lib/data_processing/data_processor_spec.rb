@@ -453,7 +453,6 @@ describe DataProcessing::DataProcessor do
   end
 
   context 'breakeven_date_processing_after_file_upload' do
-
     context 'breakeven_date check' do
       before do
         account
@@ -462,7 +461,6 @@ describe DataProcessing::DataProcessor do
         received_inventory_2
         fulfillment_inbound_shipment
       end
-
 
       let(:transaction) do
         create(:transaction,

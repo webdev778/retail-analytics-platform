@@ -15,13 +15,13 @@
           %tbody.scroll-pane
             %tr
               %td.col-sm-8 Inventory Value
-              %td.col-sm-4.text-center= format_currency @total_inventory_data&.cost_remain
+              %td.col-sm-4.text-center= format_currency(@total_inventory_data&.cost_remain)
             %tr
               %td.col-sm-8 Average ROI
-              %td.col-sm-4.text-center= format_decimal @total_inventory_data&.roi, percentages: true
+              %td.col-sm-4.text-center= format_value(@total_inventory_data&.roi, percentages: true, decimal: true)
             %tr
               %td.col-sm-8 Sell Through Rate
-              %td.col-sm-4.text-center= format_decimal @total_inventory_data&.sell_through, percentages: true
+              %td.col-sm-4.text-center= format_value(@total_inventory_data&.sell_through, percentages: true, decimal: true)
             %tr
               %td.col-sm-8 TVMInventory Age
               %td.col-sm-4.text-center N/A
@@ -37,11 +37,11 @@
             %tr
               %td.col-sm-8 Inventory Turnover
               %td.col-sm-4.text-center
-                = "Sales #{format_decimal @total_transactions_data&.sales_turnover},"
-                = "COGS #{format_decimal @total_inventory_data&.cogs_turnover}"
+                Sales #{format_value(@total_transactions_data&.sales_turnover, decimal: true)},
+                COGS #{format_value(@total_inventory_data&.cogs_turnover, decimal: true)}
             %tr
               %td.col-sm-8 Monthly Inventory Growth Rate
-              %td.col-sm-4.text-center= format_decimal @total_inventory_data&.monthly_growth_rate
+              %td.col-sm-4.text-center= format_value(@total_inventory_data&.monthly_growth_rate, decimal: true)
             %tr
               %td.col-sm-8 Monthly Payouts / Inventory Purchase Buget
               %td.col-sm-4.text-center N/A

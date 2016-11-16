@@ -19,11 +19,11 @@ describe ReportParser::ParseService do
   end
 
   subject do
-    # ReportParser::ParseService.new()
+    ReportParser::ParseService.new
   end
 
   xit '' do
-    VCR.use_cassette('fba_fullfillment_inventory_receipts_data') do
+    VCR.use_cassette('fba_fulfillment_inventory_receipts_data') do
       subject
     end
     # response = connect!(marketplace).get_report(id)

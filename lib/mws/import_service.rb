@@ -37,19 +37,17 @@ module MWS
       end
 
       def request_report(marketplace, report_type)
-        # '_GET_RESERVED_INVENTORY_DATA_'---
-        # _GET_FBA_FULFILLMENT_INVENTORY_RECEIPTS_DATA_ for first data
-        # '_GET_AMAZON_FULFILLED_SHIPMENTS_DATA_'
-
-        # _GET_AMAZON_FULFILLED_SHIPMENTS_DATA_ ???
+        # _GET_FBA_FULFILLMENT_INVENTORY_RECEIPTS_DATA_
         # _GET_V2_SETTLEMENT_REPORT_DATA_FLAT_FILE_V2_
-
         response = connect!(marketplace).request_report(report_type)
         response = response.parse
         if response['ReportRequestInfo']['ReportRequestId'].present?
           Rails.logger.info("!!!Report request - #{response['ReportRequestInfo']['ReportRequestId']}!!!")
           GetReportJob.set(wait: 1.minute).perform_later(marketplace, response['ReportRequestInfo']['ReportRequestId'])
+          report_request_id = response['ReportRequestInfo']['ReportRequestId']
         end
+
+        report_request_id || response.parse
       end
 
       def initial_import(marketplace)
@@ -71,6 +69,8 @@ module MWS
         else
           GetReportJob.set(wait: 1.minute).perform_later(marketplace, id)
         end
+
+        report_status
       end
 
       def get_previous_report(marketplace, report_type, _initial = nil)
