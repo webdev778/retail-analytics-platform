@@ -66,6 +66,7 @@ gem 'peddler'
 gem 'roo'
 
 gem 'sidekiq'
+gem 'sidekiq-scheduler', '~> 2.0'
 
 gem 'populator'
 gem 'faker'

@@ -36,10 +36,10 @@ module MWS
         )
       end
 
-      def request_report(marketplace, report_type)
+      def request_report(marketplace, report_type, start_date = nil)
         # _GET_FBA_FULFILLMENT_INVENTORY_RECEIPTS_DATA_
-        # _GET_V2_SETTLEMENT_REPORT_DATA_FLAT_FILE_V2_
-        response = connect!(marketplace).request_report(report_type)
+        # _GET_V2_SETTLEMENT_REPORT_DATA_FLAT_FILE_V2_ in get_settlement_reports_info
+        response = connect!(marketplace).request_report(report_type, start_date: start_date)
         response = response.parse
         if response['ReportRequestInfo']['ReportRequestId'].present?
           Rails.logger.info("!!!Report request - #{response['ReportRequestInfo']['ReportRequestId']}!!!")
@@ -50,8 +50,13 @@ module MWS
         report_request_id || response.parse
       end
 
-      def initial_import(marketplace)
-        ReportsJob.perform_later(marketplace, '_GET_FBA_FULFILLMENT_INVENTORY_RECEIPTS_DATA_', true)
+      def initial_import(marketplace, first_time_import = nil)
+        ReportsJob.perform_later(marketplace, '_GET_FBA_FULFILLMENT_INVENTORY_RECEIPTS_DATA_', first_time_import)
+        if first_time_import
+          marketplace.update_attribute(:initial_import, true)
+        else
+          marketplace.update_attribute(:last_periodic_information_getting, Time.zone.now)
+        end
       end
 
       def get_report_status(marketplace, id)
@@ -87,18 +92,6 @@ module MWS
           # queue in 1 hour new report request
           ReportsJob.set(wait: 1.hour).perform_later(marketplace, report_type)
         end
-        # if response.parse['ReportRequestInfo'].present?
-        #   # response.parse['ReportRequestInfo'].each do |report|
-        #     # report['StartDate']
-        #   # end
-        #   # previous_done_report = response.parse['ReportRequestInfo'].first
-        #   # previous_done_report_id = previous_done_report['GeneratedReportId']
-        #   get_data(marketplace, previous_done_report_id, report_type)
-        #   Rails.logger.info("Previous report #{previous_done_report_id} was get instead of #{id}")
-        # else
-        #   # queue new report request in few hours
-        #   Rails.logger.info("Issue with report #{id} no previous report found")
-        # end
       end
 
       def get_data(marketplace, id, report_type)
@@ -137,10 +130,6 @@ module MWS
           report_type: params['ReportType']
         }
       end
-    end
-
-    def initialize(marketplace)
-      @reports_client = MWS::ImportService.connect!(marketplace)
     end
   end
 end

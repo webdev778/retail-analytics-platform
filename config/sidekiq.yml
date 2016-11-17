@@ -1,1 +1,8 @@
 :logfile: ./log/sidekiq.log
+
+#:schedule:
+#  required_billing:
+#    cron: '* 2 * * *'
+#    # run every day on 2am
+#    class: BillingJob
+#    queue: default

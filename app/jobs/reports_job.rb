@@ -2,8 +2,9 @@
 class ReportsJob < ApplicationJob
   queue_as :default
 
-  def perform(marketplace, type, _initial_import = nil)
-    MWS::ImportService.request_report(marketplace, type)
+  def perform(marketplace, type, initial_import = nil)
+    start_date = initial_import ? 3.month.ago : (marketplace.last_received_inventory_date + 1.minute)
+    MWS::ImportService.request_report(marketplace, type, start_date)
   end
 
   after_perform do |job|

@@ -14,7 +14,7 @@ class AccountsController < ApplicationController
 
     respond_to do |format|
       if @account.save
-        MWS::ImportService.initial_import(@account.marketplace)
+        MWS::ImportService.initial_import(@account.marketplace, true)
         format.html { redirect_to accounts_path, notice: 'Account was successfully added' }
       else
         format.html { render :new }

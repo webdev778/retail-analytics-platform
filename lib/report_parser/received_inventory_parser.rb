@@ -13,7 +13,10 @@ module ReportParser
       @data.each do |line|
         ReceivedInventory.create(received_inventory_params(line))
       end
-      @marketplace.update_attribute(:get_received_inventory_finished, Time.zone.now)
+      last_received_inventory = @marketplace.received_inventories.order(received_date: :desc).take(1)
+      last_received_inventory_date = last_received_inventory.first.received_date
+      @marketplace.update_attributes(get_received_inventory_finished: Time.zone.now,
+                                     last_received_inventory_date: last_received_inventory_date)
       ProcessDataJob.perform_later(@marketplace.user)
     end
 
